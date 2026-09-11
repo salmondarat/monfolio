@@ -8,7 +8,7 @@ import SectionMarker from '../components/SectionMarker.astro';
 import FooterLinks from '../components/FooterLinks.astro';
 import FaqSection from '../components/FaqSection.astro';
 import TestimonialSection from '../components/TestimonialSection.astro';
-import HeroDesignCanvas from '../components/HeroDesignCanvas.astro';
+import HeroGridAnimation from '../components/HeroGridAnimation.astro';
 import { projects } from '../data/projects';
 import { services } from '../data/services';
 
@@ -30,7 +30,7 @@ const filterCounts = {
     <Header />
     <main>
       <section class="hero-stage bg-surface px-5 sm:px-8 lg:px-8">
-        <HeroDesignCanvas />
+        <HeroGridAnimation />
         <div class="relative z-10 mx-auto flex min-h-[calc(100svh-7.5rem)] max-w-7xl flex-col pt-8 sm:pt-10">
           <div class="hero-meta"><span class="studio-badge"><i></i> Design &amp; build studio</span><span class="location-badge">Monfolio Studio — Jakarta + remote</span></div>
           <h1 class="hero-title mt-6 max-w-4xl font-display text-[clamp(2.4rem,4.5vw,4.5rem)] font-semibold leading-[.95] tracking-[-.07em]">A partner to ambitious <span class="client-chip">Northwind <i>↗</i></span> marketing teams, accelerating growth with next-level <span class="showreel-chip">websites <b>▶</b></span>.</h1>

@@ -1,0 +1,288 @@
+---
+// HeroGridAnimation.astro — Pure Architectural Animated Grid Background
+// Features: Precision grid lines, traveling laser pulses, glowing intersection nodes, and ambient studio glow
+---
+
+<div class="hero-grid-animation" aria-hidden="true">
+  <!-- 1. Ambient Studio Atmospheric Backlight -->
+  <div class="grid-ambient">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+  </div>
+
+  <!-- 2. Interactive Spotlight Aura (Subtle mouse glow) -->
+  <div class="grid-spotlight" id="heroGridSpotlight"></div>
+
+  <!-- 3. Base Architectural Grid Mesh -->
+  <div class="grid-mesh">
+    <!-- Traveling Grid Beams (Horizontal) -->
+    <div class="grid-beam beam-h beam-h-1"></div>
+    <div class="grid-beam beam-h beam-h-2"></div>
+    <div class="grid-beam beam-h beam-h-3"></div>
+
+    <!-- Traveling Grid Beams (Vertical) -->
+    <div class="grid-beam beam-v beam-v-1"></div>
+    <div class="grid-beam beam-v beam-v-2"></div>
+
+    <!-- Pulsing Intersection Crosshair Nodes -->
+    <div class="grid-node node-1">
+      <span class="node-dot"></span>
+      <span class="node-ring"></span>
+    </div>
+    <div class="grid-node node-2">
+      <span class="node-dot accent"></span>
+      <span class="node-ring accent"></span>
+    </div>
+    <div class="grid-node node-3">
+      <span class="node-dot"></span>
+      <span class="node-ring"></span>
+    </div>
+    <div class="grid-node node-4">
+      <span class="node-dot accent"></span>
+      <span class="node-ring accent"></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .hero-grid-animation {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+  }
+
+  /* Ambient Studio Glow */
+  .grid-ambient {
+    position: absolute;
+    inset: 0;
+    opacity: .22;
+    filter: blur(95px);
+    transition: opacity .6s ease;
+  }
+  :global([data-theme="dark"]) .grid-ambient {
+    opacity: .3;
+    filter: blur(115px);
+  }
+  .orb-1 {
+    position: absolute;
+    top: -10%;
+    right: 15%;
+    width: 32rem;
+    height: 32rem;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);
+    animation: orbDrift1 18s ease-in-out infinite alternate;
+  }
+  .orb-2 {
+    position: absolute;
+    bottom: -5%;
+    left: 10%;
+    width: 26rem;
+    height: 26rem;
+    border-radius: 50%;
+    background: radial-gradient(circle, #f59e0b 0%, transparent 70%);
+    animation: orbDrift2 22s ease-in-out infinite alternate;
+  }
+  @keyframes orbDrift1 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-45px, 35px) scale(1.1); }
+  }
+  @keyframes orbDrift2 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(40px, -30px) scale(1.08); }
+  }
+
+  /* Interactive Spotlight (Tracks mouse softly) */
+  .grid-spotlight {
+    position: absolute;
+    width: 40rem;
+    height: 40rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 14%, transparent) 0%, transparent 65%);
+    opacity: 0;
+    transition: opacity .6s ease, transform .15s cubic-bezier(.2, 0, 0, 1);
+  }
+  .hero-grid-animation:hover .grid-spotlight {
+    opacity: 1;
+  }
+
+  /* Grid Mesh */
+  .grid-mesh {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(var(--color-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+    background-size: 5rem 5rem;
+    opacity: .32;
+    mask-image: radial-gradient(ellipse at 50% 35%, black 40%, transparent 88%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 35%, black 40%, transparent 88%);
+  }
+  :global([data-theme="dark"]) .grid-mesh {
+    opacity: .25;
+  }
+
+  /* Traveling Laser Grid Beams */
+  .grid-beam {
+    position: absolute;
+    opacity: 0;
+  }
+
+  /* Horizontal Beams */
+  .beam-h {
+    height: 1px;
+    width: 14rem;
+    background: linear-gradient(90deg, transparent 0%, var(--color-accent) 50%, transparent 100%);
+    box-shadow: 0 0 8px var(--color-accent);
+  }
+  .beam-h-1 {
+    top: 10rem;
+    left: 0;
+    animation: travelH 7s cubic-bezier(.4, 0, .2, 1) infinite;
+    animation-delay: .5s;
+  }
+  .beam-h-2 {
+    top: 20rem;
+    left: 0;
+    animation: travelH 9s cubic-bezier(.4, 0, .2, 1) infinite;
+    animation-delay: 3.8s;
+  }
+  .beam-h-3 {
+    top: 30rem;
+    left: 0;
+    animation: travelH 8s cubic-bezier(.4, 0, .2, 1) infinite;
+    animation-delay: 5.5s;
+  }
+
+  /* Vertical Beams */
+  .beam-v {
+    width: 1px;
+    height: 14rem;
+    background: linear-gradient(180deg, transparent 0%, var(--color-accent) 50%, transparent 100%);
+    box-shadow: 0 0 8px var(--color-accent);
+  }
+  .beam-v-1 {
+    left: 20rem;
+    top: 0;
+    animation: travelV 8.5s cubic-bezier(.4, 0, .2, 1) infinite;
+    animation-delay: 2s;
+  }
+  .beam-v-2 {
+    left: 45rem;
+    top: 0;
+    animation: travelV 10s cubic-bezier(.4, 0, .2, 1) infinite;
+    animation-delay: 6s;
+  }
+
+  @keyframes travelH {
+    0% { transform: translateX(-15rem); opacity: 0; }
+    15% { opacity: .85; }
+    85% { opacity: .85; }
+    100% { transform: translateX(110vw); opacity: 0; }
+  }
+  @keyframes travelV {
+    0% { transform: translateY(-15rem); opacity: 0; }
+    15% { opacity: .85; }
+    85% { opacity: .85; }
+    100% { transform: translateY(110vh); opacity: 0; }
+  }
+
+  /* Glowing Intersection Nodes */
+  .grid-node {
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    transform: translate(-50%, -50%);
+    display: grid;
+    place-items: center;
+  }
+  .node-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-ink);
+    opacity: .35;
+    transition: transform .3s ease;
+  }
+  :global([data-theme="dark"]) .node-dot {
+    background: var(--color-surface);
+    opacity: .45;
+  }
+  .node-dot.accent {
+    background: var(--color-accent);
+    opacity: .85;
+    box-shadow: 0 0 8px var(--color-accent);
+  }
+  .node-ring {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid var(--color-ink);
+    opacity: 0;
+    animation: nodePulse 4s ease-out infinite;
+  }
+  :global([data-theme="dark"]) .node-ring {
+    border-color: var(--color-surface);
+  }
+  .node-ring.accent {
+    border-color: var(--color-accent);
+    animation: nodePulse 3.5s ease-out infinite 1.5s;
+  }
+
+  @keyframes nodePulse {
+    0% { transform: scale(.4); opacity: .8; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+
+  /* Node Coordinates (snapped to 5rem = 80px multiples) */
+  .node-1 { top: 10rem; left: 20rem; }
+  .node-2 { top: 15rem; left: 45rem; }
+  .node-3 { top: 25rem; left: 15rem; }
+  .node-4 { top: 20rem; left: 60rem; }
+
+  @media (max-width: 768px) {
+    .grid-mesh {
+      background-size: 3.5rem 3.5rem;
+    }
+    .beam-v-2, .node-2, .node-4 {
+      display: none;
+    }
+  }
+
+  /* Respect Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .beam-h, .beam-v, .node-ring, .orb-1, .orb-2 {
+      animation: none !important;
+    }
+    .grid-beam {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Subtle interactive spotlight that smoothly tracks cursor across hero section
+  const heroStage = document.querySelector('.hero-stage');
+  const spotlight = document.getElementById('heroGridSpotlight');
+  
+  if (heroStage && spotlight && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    heroStage.addEventListener('mousemove', (e: MouseEvent) => {
+      const rect = heroStage.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      spotlight.style.transform = `translate(${x - 320}px, ${y - 320}px)`;
+      spotlight.style.opacity = '1';
+    });
+
+    heroStage.addEventListener('mouseleave', () => {
+      spotlight.style.opacity = '0';
+    });
+  }
+</script>
