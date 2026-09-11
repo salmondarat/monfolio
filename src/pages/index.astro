@@ -1,0 +1,694 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import AnnouncementBar from '../components/AnnouncementBar.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ProjectVisual from '../components/ProjectVisual.astro';
+import SectionMarker from '../components/SectionMarker.astro';
+import FooterLinks from '../components/FooterLinks.astro';
+import FaqSection from '../components/FaqSection.astro';
+import TestimonialSection from '../components/TestimonialSection.astro';
+import { projects } from '../data/projects';
+import { services } from '../data/services';
+
+const categorySlug = (category: string) => {
+  const raw = category.toLowerCase();
+  return raw.includes('custom') ? 'custom-build' : raw.includes('design') ? 'design-system' : raw.includes('migration') ? 'migration' : 'growth';
+};
+const filterCounts = {
+  all: projects.length,
+  'custom-build': projects.filter((p) => categorySlug(p.category) === 'custom-build').length,
+  'design-system': projects.filter((p) => categorySlug(p.category) === 'design-system').length,
+  migration: projects.filter((p) => categorySlug(p.category) === 'migration').length,
+  growth: projects.filter((p) => categorySlug(p.category) === 'growth').length,
+};
+---
+<Layout>
+  <div class="site-shell" id="top">
+    <AnnouncementBar />
+    <Header />
+    <main>
+      <section class="hero-stage bg-surface px-5 sm:px-8 lg:px-8">
+        <div class="relative mx-auto flex min-h-[calc(100svh-7.5rem)] max-w-7xl flex-col pt-8 sm:pt-10">
+          <div class="hero-grid" aria-hidden="true"></div>
+          <div class="hero-meta"><span class="studio-badge"><i></i> Design &amp; build studio</span><span class="location-badge">Monfolio Studio — Jakarta + remote</span></div>
+          <h1 class="hero-title mt-6 max-w-4xl font-display text-[clamp(2.4rem,4.5vw,4.5rem)] font-semibold leading-[.95] tracking-[-.07em]">A partner to ambitious <span class="client-chip">Northwind <i>↗</i></span> marketing teams, accelerating growth with next-level <span class="showreel-chip">websites <b>▶</b></span>.</h1>
+          <div class="mt-8 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div class="flex flex-col items-start gap-6">
+              <p class="max-w-md text-[15px] leading-[1.7] text-muted">We design and build custom sites that make your team faster: clear systems, considered motion and no mystery after launch.</p>
+              <div class="flex flex-wrap gap-3">
+                <a class="button button-orange rolling-button" href="#contact"><span>Start a project ↗</span><span aria-hidden="true">Start a project ↗</span></a>
+                <a class="button button-outline rolling-button" href="#work"><span>Explore our work ↓</span><span aria-hidden="true">Explore our work ↓</span></a>
+              </div>
+            </div>
+            <div class="ide-stack">
+              <div class="ide-carousel" aria-hidden="true">
+                <figure class="ide-card" data-ide-card>
+                  <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=800&auto=format&fit=crop" alt="" loading="lazy" decoding="async" />
+                  <figcaption><b>Dashboard</b><span>01 / 03</span></figcaption>
+                </figure>
+                <figure class="ide-card" data-ide-card>
+                  <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=800&auto=format&fit=crop" alt="" loading="lazy" decoding="async" />
+                  <figcaption><b>Minimal landing</b><span>02 / 03</span></figcaption>
+                </figure>
+                <figure class="ide-card" data-ide-card>
+                  <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=800&auto=format&fit=crop" alt="" loading="lazy" decoding="async" />
+                  <figcaption><b>Social media</b><span>03 / 03</span></figcaption>
+                </figure>
+              </div>
+              <div class="ide-window" aria-hidden="true">
+                <div class="ide-chrome"><span class="ide-dot"></span><span class="ide-dot"></span><span class="ide-dot"></span><span class="ide-tab">site.config</span></div>
+                <div class="ide-body">
+                  <pre class="ide-code"><code id="ide-code"><span class="ide-caret"></span></code></pre>
+                  <div class="ide-results is-hidden">
+                    <figure class="ide-result"><img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?q=80&w=400&auto=format&fit=crop" alt="" loading="lazy" decoding="async" /><figcaption>Dashboard</figcaption></figure>
+                    <figure class="ide-result"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=400&auto=format&fit=crop" alt="" loading="lazy" decoding="async" /><figcaption>Minimal landing</figcaption></figure>
+                    <figure class="ide-result"><img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=400&auto=format&fit=crop" alt="" loading="lazy" decoding="async" /><figcaption>Social media</figcaption></figure>
+                  </div>
+                </div>
+                <div class="ide-status"><span id="ide-status">ready</span><span class="ide-progress"><i id="ide-bar"></i></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="availability mt-auto pt-4 pb-4"><i></i> Available for Q4 builds <span>· 2 project slots</span></div>
+        </div>
+        <div class="client-marquee mt-16 pb-10">
+          <div class="marquee-track">
+            {['Northwind','Atlas Labs','Mora','Fieldwork','Kite','Northwind','Atlas Labs','Mora'].map((name) => (
+              <span><b>{name.slice(0,1)}</b>{name}</span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="bg-surface-lift px-5 py-20 sm:px-8 sm:py-28 lg:px-8">
+        <div class="mx-auto max-w-7xl" data-fade-stagger>
+          <SectionMarker number="1" label="How we work" />
+          <div class="intro-head">
+            <h2 class="display-heading">Design-driven craft, built to give marketing teams <em>leverage.</em></h2>
+            <p>We explore, prototype and build alongside the people who will run the site. The result is a useful system, not a handoff-shaped problem.</p>
+          </div>
+          <div class="intro-tiles">
+            <div class="intro-tile tile-studio">
+              <div class="tile-orbit"></div>
+              <div class="caption-card"><span>Monfolio studio</span><small>Working sessions in Jakarta</small></div>
+            </div>
+            <div class="intro-tile tile-system">
+              <div class="system-lines"></div>
+              <div class="caption-card dark"><span>Figma → Build</span><small>Component libraries that stay coherent</small></div>
+            </div>
+          </div>
+          <div class="pillars">
+            {[
+              ['01 · Architecture','Design systems that scale','A content model that makes the next page easier, not harder.'],
+              ['02 · Motion & UX','Interaction with a job to do','Motion that orients, explains or rewards attention.'],
+              ['03 · Growth partnership','A studio that stays useful','A clear handoff, a shared backlog and help when the next launch arrives.']
+            ].map(([label, title, body]) => (
+              <article class="pillar-card">
+                <span>{label}</span>
+                <h3>{title}</h3>
+                <p>{body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="work" class="bg-surface px-5 py-20 sm:px-8 sm:py-28 lg:px-8">
+        <div class="mx-auto max-w-7xl">
+          <div class="section-head" data-fade-stagger>
+            <SectionMarker number="2" label="Selected builds" />
+            <div class="head-row">
+              <h2 class="display-heading">Sites that do<br /><em>useful work.</em></h2>
+              <p>A few custom builds, migrations and systems made with marketing teams who needed momentum.</p>
+            </div>
+          </div>
+          <article class="featured-build" data-fade-stagger>
+            <div class="featured-copy">
+              <span class="orange-badge">Featured build</span>
+              <small>Mora Coffee / Custom build</small>
+              <h3>A warmer shop for slow mornings and good company.</h3>
+              <p>A conversion-ready shop with CMS-driven stories and a publishing workflow the team can own.</p>
+              <div>
+                <a class="white-chip" href="#contact">Explore case study ↗</a>
+                <span class="read-time">Read 3 min</span>
+              </div>
+            </div>
+            <div class="featured-visual">
+              <div class="card-stack" role="button" aria-label="Toggle Mora Coffee project cards" tabindex="0">
+                <div class="card-back" aria-hidden="true">
+                  <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=1600&auto=format&fit=crop" alt="Artisan coffee detail at Mora Coffee" loading="lazy" decoding="async" />
+                  <span class="card-back-badge">Mora · Detail</span>
+                </div>
+                <div class="card-front"><ProjectVisual image={projects[0].image} imageAlt={projects[0].imageAlt} /></div>
+              </div>
+            </div>
+          </article>
+          <div class="projects-toolbar mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between" data-fade-stagger>
+            <div class="project-filters flex flex-wrap gap-2" role="group" aria-label="Filter projects">
+              <button type="button" class="filter-tab is-active" data-filter="all" aria-pressed="true">All <span class="filter-count">({filterCounts.all})</span></button>
+              <button type="button" class="filter-tab" data-filter="custom-build" aria-pressed="false">Custom builds <span class="filter-count">({filterCounts['custom-build']})</span></button>
+              <button type="button" class="filter-tab" data-filter="design-system" aria-pressed="false">Design systems <span class="filter-count">({filterCounts['design-system']})</span></button>
+              <button type="button" class="filter-tab" data-filter="migration" aria-pressed="false">Migrations <span class="filter-count">({filterCounts.migration})</span></button>
+              <button type="button" class="filter-tab" data-filter="growth" aria-pressed="false">Growth <span class="filter-count">({filterCounts.growth})</span></button>
+            </div>
+            <span class="project-counter text-xs font-semibold text-muted" data-project-counter>Showing 4 of {projects.length} featured builds</span>
+          </div>
+          <div class="project-grid" data-max="4">
+            {projects.map((project, index) => <ProjectCard project={project} index={index} />)}
+          </div>
+          <div class="projects-actions mt-12 flex justify-center">
+            <button type="button" class="button button-outline rolling-button" data-toggle-projects>
+              <span>Show all {projects.length} projects ↓</span>
+              <span aria-hidden="true">Show all {projects.length} projects ↓</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <FaqSection />
+
+      <section id="story" class="story-section bg-ink px-5 py-20 text-surface sm:px-8 sm:py-28 lg:px-8">
+        <div class="mx-auto max-w-7xl" data-fade-stagger>
+          <SectionMarker number="4" label="Our story" />
+          <div class="story-head">
+            <h2 class="story-title">Our <span class="w-chip">W</span> studio story.</h2>
+            <p>Small enough to stay close to the work. Structured enough to make complex custom builds feel calm.</p>
+          </div>
+          <div class="story-video">
+            <div class="story-art">
+              <span class="story-circle"></span>
+              <span class="story-spark">+</span>
+              <span class="story-word">MAKE<br />SPACE</span>
+            </div>
+            <div class="play-wrap">
+              <span class="play-ring"></span>
+              <button type="button" aria-label="Play studio story">▶</button>
+              <span class="watch-pill">Watch our story · 1:30</span>
+            </div>
+            <div class="story-bar">
+              <span><i></i> Jakarta + remote / working worldwide</span>
+              <small>Custom builds, made together</small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <TestimonialSection />
+
+      <section id="services" class="bg-surface-lift px-5 py-20 sm:px-8 sm:py-28 lg:px-8">
+        <div class="mx-auto max-w-7xl" data-fade-stagger>
+          <SectionMarker number="6" label="Services" />
+          <div class="head-row services-head">
+            <h2 class="display-heading">Build once.<br /><em>Keep moving.</em></h2>
+            <p>Bring us a launch, a legacy site or a backlog. We will help you choose the right shape of engagement.</p>
+          </div>
+          <div class="service-cells">
+            {services.map((service) => (
+              <article class="service-cell" data-service-cell>
+                <div class="flex items-start justify-between">
+                  <span class="text-sm font-bold text-orange">{service.number}</span>
+                  <span class="service-plus">↗</span>
+                </div>
+                <h3>{service.title}</h3>
+                <p>{service.description}</p>
+                <ul>{service.items.map((item) => <li>{item}</li>)}</ul>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="contact-section bg-surface px-5 py-20 sm:px-8 sm:py-28 lg:px-8">
+        <div class="mx-auto max-w-7xl" data-fade-stagger>
+          <SectionMarker number="7" label="Let’s make & build together" />
+          <h2 class="contact-title">Looking to level-up your site or ship a custom design? <em>Let’s build it.</em></h2>
+          <div class="avatar-card">
+            <div>
+              <span class="eyebrow-label">The people behind the pixels</span>
+              <h3>A small studio, close to the work.</h3>
+            </div>
+            <div class="avatar-stack">
+              <span title="Maya — strategy">MS</span>
+              <span title="Rafi — design">RP</span>
+              <span title="Nadine — content">NP</span>
+              <span title="You — next project">+</span>
+            </div>
+          </div>
+          <div class="contact-bento">
+            <div class="contact-form-wrap">
+              <div class="success-card" data-success>
+                <strong>✓</strong>
+                <h3>Message received.</h3>
+                <p>We’ll get back to you within one working day.</p>
+                <button type="button" data-reset-form>Send another message</button>
+              </div>
+              <form class="contact-form" data-contact-form>
+                <fieldset class="topic-group">
+                  <legend>How can we help?</legend>
+                  <span class="topic-row">
+                    <button type="button" class="topic selected">Marketing website</button>
+                    <button type="button" class="topic">Migration</button>
+                    <button type="button" class="topic">Something else</button>
+                  </span>
+                </fieldset>
+                <div class="field-row">
+                  <label>Full name<input required name="name" placeholder="Your name" /></label>
+                  <label>Email address<input required type="email" name="email" placeholder="you@company.com" /></label>
+                </div>
+                <label>Message<textarea required name="message" rows="5" placeholder="Tell us what you are building."></textarea></label>
+                <div class="submit-row">
+                  <button class="button button-orange" type="submit">Send message ↗</button>
+                  <small>By sending this form, you agree to our privacy policy.</small>
+                </div>
+              </form>
+            </div>
+            <aside class="info-card">
+              <div>
+                <span class="eyebrow-label">Direct inquiries</span>
+                <a href="mailto:hello@monfolio.studio">hello@monfolio.studio</a>
+              </div>
+              <div>
+                <span class="eyebrow-label">Studio</span>
+                <p>Jl. Kemang Raya 12<br />Jakarta, Indonesia</p>
+              </div>
+              <div>
+                <span class="eyebrow-label">How we work</span>
+                <ul>
+                  <li>Custom design &amp; build</li>
+                  <li>Remote-first studio</li>
+                  <li>Response within 24 hours</li>
+                </ul>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer bg-ink px-5 py-16 text-surface sm:px-8 lg:px-8">
+      <div class="mx-auto max-w-7xl">
+        <div class="footer-banner">
+          <div>
+            <span>Work with us</span>
+            <h2>Looking to level-up your site or launch a custom design? Start with a free consultation.</h2>
+          </div>
+          <a class="button button-orange" href="#contact">Start a conversation ↗</a>
+        </div>
+        <div class="footer-grid">
+          <div class="footer-identity">
+            <a href="#top">monfolio<span>.</span></a>
+            <p>Design &amp; build studio for marketing teams that need a clearer way to ship.</p>
+          </div>
+          <FooterLinks title="Explore" links={[{label:'Home',href:'#top'},{label:'Work',href:'#work'},{label:'About',href:'#about'},{label:'FAQ',href:'#faq'},{label:'Reviews',href:'#reviews'},{label:'Contact',href:'#contact'}]} />
+          <FooterLinks title="Case studies" links={projects.slice(0,5).map((project) => ({label: project.title, href: '#work'}))} />
+          <FooterLinks title="Services" links={services.map((service) => ({label: service.title, href: '#services'}))} />
+        </div>
+        <div class="legal-row">
+          <span>© Monfolio Studio · Jakarta, Indonesia</span>
+          <span><a href="#contact">Privacy policy</a> · <a href="#contact">Cookie preferences</a> · <b>Designed &amp; built in-house</b></span>
+        </div>
+      </div>
+    </footer>
+  </div>
+</Layout>
+
+<style>
+  .section-marker{display:flex;align-items:center;gap:.65rem;margin-bottom:2rem;color:var(--color-muted);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+  .section-marker>span{display:grid;width:1.5rem;height:1.5rem;place-items:center;border-radius:50%;background:var(--color-ink);color:var(--color-surface);font-size:10px;letter-spacing:0}
+  .section-marker b{font-weight:700}
+  .hero-stage{position:relative;overflow:hidden}
+  .hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--color-line) 1px,transparent 1px),linear-gradient(90deg,var(--color-line) 1px,transparent 1px);background-size:6rem 6rem;opacity:.24;mask-image:linear-gradient(to bottom,black,transparent 75%)}
+  .hero-meta{display:flex;justify-content:space-between;gap:1rem}
+  .studio-badge,.location-badge{display:inline-flex;align-items:center;gap:.55rem;border:1px solid var(--color-line);border-radius:999px;padding:.55rem .8rem;color:var(--color-ink);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+  .studio-badge i,.availability i{width:.45rem;height:.45rem;border-radius:50%;background:#16a36a;box-shadow:0 0 0 .2rem color-mix(in srgb,#16a36a 18%,transparent)}
+  .location-badge{border-color:var(--color-ink);background:var(--color-ink);color:var(--color-surface)}
+  .client-chip,.showreel-chip{display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--color-line);border-radius:999px;padding:.3rem .8rem .35rem;font-size:.25em;font-weight:600;letter-spacing:-.04em;vertical-align:middle}
+  .client-chip{background:var(--color-ink);color:var(--color-surface)}
+  .client-chip i{font-size:.7em;font-style:normal;color:var(--color-accent)}
+  .showreel-chip{border-color:var(--color-accent);background:var(--color-accent);color:#070d14}
+  .showreel-chip b{display:grid;width:1.8em;height:1.8em;place-items:center;border-radius:50%;background:var(--color-surface);font-size:.45em}
+  .availability{display:flex;align-items:center;gap:.6rem;margin-top:2rem;color:var(--color-ink);font-size:11px;font-weight:700}
+  .availability span{color:var(--color-muted);font-weight:500}
+  .ide-stack{display:flex;flex-direction:column;gap:.6rem}
+  .ide-carousel{position:relative;width:26rem;max-width:100%;height:9.5rem;perspective:1000px}
+  .ide-card{position:absolute;left:50%;top:0;width:15rem;height:100%;margin:0;overflow:hidden;border-radius:1rem;border:1px solid rgba(255,255,255,.12);background:#0b1118;box-shadow:0 20px 40px -12px rgba(7,13,20,.4);transition:transform .6s cubic-bezier(.25,1,.5,1),opacity .6s;cursor:pointer}
+  .ide-card img{display:block;width:100%;height:100%;object-fit:cover}
+  .ide-card figcaption{position:absolute;left:.7rem;right:.7rem;bottom:.6rem;display:flex;align-items:center;justify-content:space-between;border-radius:999px;background:rgba(11,17,24,.82);backdrop-filter:blur(8px);padding:.35rem .65rem;color:#fff}
+  .ide-card figcaption b{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+  .ide-card figcaption span{color:rgba(255,255,255,.55);font-size:9px;font-weight:700}
+  .ide-card[data-pos="center"]{transform:translate3d(-50%,0,0) scale(1);opacity:1;z-index:10}
+  .ide-card[data-pos="left"]{transform:translate3d(-112%,0,-90px) scale(.85);opacity:.55;z-index:5}
+  .ide-card[data-pos="right"]{transform:translate3d(12%,0,-90px) scale(.85);opacity:.55;z-index:5}
+  .ide-card[data-pos="hidden"]{transform:translate3d(-50%,0,-180px) scale(.7);opacity:0;z-index:1;pointer-events:none}
+  .ide-window{display:flex;flex-direction:column;width:26rem;max-width:100%;height:14rem;overflow:hidden;border-radius:1rem;border:1px solid color-mix(in srgb,#ffffff 14%,transparent);background:#0b1118;box-shadow:0 24px 48px -12px rgba(7,13,20,.35);font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace}
+  .ide-chrome{display:flex;align-items:center;gap:.45rem;padding:.7rem .9rem;border-bottom:1px solid rgba(255,255,255,.08)}
+  .ide-dot{width:.6rem;height:.6rem;border-radius:50%;background:rgba(255,255,255,.18)}
+  .ide-dot:nth-child(1){background:#f15533}
+  .ide-dot:nth-child(2){background:#e8b93c}
+  .ide-dot:nth-child(3){background:#16a36a}
+  .ide-tab{margin-left:.6rem;color:rgba(255,255,255,.55);font-size:10px;letter-spacing:.08em}
+  .ide-code{display:block;height:100%;margin:0;padding:.9rem 1.1rem;font-size:11px;line-height:1.6;color:#dfe4ea;white-space:pre-wrap}
+  .ide-body{position:relative;flex:1;min-height:0}
+  .ide-results{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;padding:1rem 1.1rem}
+  .ide-results.is-hidden{display:none}
+  .ide-result{margin:0}
+  .ide-result img{display:block;width:100%;height:3.5rem;object-fit:cover;border-radius:.5rem;border:1px solid rgba(255,255,255,.1)}
+  .ide-result figcaption{margin-top:.4rem;color:rgba(255,255,255,.6);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+  .ide-code .tok.kw{color:#f15533}
+  .ide-code .tok.str{color:#4ade80}
+  .ide-code .tok.fn{color:#7dd3fc}
+  .ide-caret{display:inline-block;width:.55rem;height:1.05em;transform:translateY(.18em);background:#f15533;animation:ide-blink 1s steps(1) infinite}
+  @keyframes ide-blink{50%{opacity:0}}
+  .ide-status{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.65rem 1.1rem;border-top:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.6);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+  .ide-status.is-done{color:#4ade80}
+  .ide-progress{flex:1;max-width:8rem;height:3px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden}
+  .ide-progress i{display:block;height:100%;width:0;border-radius:999px;background:#f15533}
+  .client-marquee{overflow:hidden;mask-image:linear-gradient(90deg,transparent,black 12%,black 88%,transparent)}
+  .marquee-track{display:flex;width:max-content;gap:4rem;animation:marquee 25s linear infinite;color:var(--color-muted);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .marquee-track span{display:flex;align-items:center;gap:.7rem;white-space:nowrap}
+  .marquee-track b{display:grid;width:1.8rem;height:1.8rem;place-items:center;border:1px solid currentColor;border-radius:50%;font-size:9px}
+  @keyframes marquee{to{transform:translateX(-50%)}}
+  .intro-head,.head-row{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:2rem;align-items:end;margin-bottom:4rem}
+  .intro-head h2,.head-row h2{grid-column:span 8}
+  .intro-head>p,.head-row>p,.head-row>div>p{grid-column:span 4;margin-bottom:.3rem;color:var(--color-muted);font-size:15px;line-height:1.7}
+  .intro-tiles{display:grid;grid-template-columns:7fr 5fr;gap:1.5rem}
+  .intro-tile{position:relative;min-height:24rem;overflow:hidden;border-radius:1.25rem;border:1px solid var(--color-line)}
+  .tile-studio{background:var(--color-accent)}
+  .tile-system{background:var(--color-ink)}
+  .tile-orbit{position:absolute;right:12%;top:10%;width:65%;aspect-ratio:1;border:1px solid var(--color-ink);border-radius:50%;transform:rotate(-20deg) scaleX(1.4)}
+  .tile-orbit:after{content:'M';position:absolute;inset:20%;display:grid;place-items:center;color:var(--color-ink);font-size:9rem;font-weight:800;letter-spacing:-.16em}
+  .system-lines{position:absolute;inset:12%;background:repeating-linear-gradient(90deg,transparent 0 20%,var(--color-accent) 20% 20.5%),repeating-linear-gradient(0deg,transparent 0 20%,var(--color-surface) 20% 20.5%);opacity:.8}
+  .system-lines:after{content:'F / B';position:absolute;right:8%;bottom:5%;color:var(--color-surface);font-size:3rem;font-weight:800;letter-spacing:-.12em}
+  .caption-card{position:absolute;right:1rem;bottom:1rem;left:1rem;display:flex;justify-content:space-between;gap:1rem;border:1px solid color-mix(in srgb,var(--color-surface) 50%,transparent);border-radius:.75rem;padding:.75rem 1rem;background:color-mix(in srgb,var(--color-surface) 88%,transparent);color:var(--color-ink);font-size:11px;font-weight:700;backdrop-filter:blur(10px)}
+  .caption-card small{color:var(--color-muted);font-size:10px;font-weight:500}
+  .caption-card.dark{background:color-mix(in srgb,var(--color-ink) 88%,transparent);color:var(--color-surface);border-color:color-mix(in srgb,var(--color-surface) 15%,transparent)}
+  .caption-card.dark small{color:color-mix(in srgb,var(--color-surface) 70%,transparent)}
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem}
+  .pillar-card{display:flex;flex-direction:column;border-radius:1.25rem;background:var(--color-surface);border:1px solid var(--color-line);padding:2rem;transition:transform .4s var(--ease-studio),box-shadow .4s var(--ease-studio)}
+  .pillar-card:hover{transform:translateY(-4px);box-shadow:0 16px 32px -8px rgba(7,13,20,.08)}
+  .pillar-card>span{color:var(--color-accent);font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+  .pillar-card h3{margin-top:1rem;font-size:1.2rem;font-weight:700;letter-spacing:-.04em}
+  .pillar-card p{margin-top:.5rem;color:var(--color-muted);font-size:13px;line-height:1.7}
+  .head-row{margin-bottom:3rem}
+  .featured-build{display:grid;grid-template-columns:5fr 7fr;min-height:27rem;margin-bottom:4rem;overflow:hidden;border-radius:1.5rem;background:var(--color-ink);color:var(--color-surface)}
+  .featured-copy{display:flex;flex-direction:column;justify-content:space-between;gap:1.5rem;padding:2.5rem}
+  .orange-badge{align-self:flex-start;border-radius:999px;background:var(--color-accent);color:#070d14;padding:.45rem .75rem;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+  .featured-copy small{color:var(--color-accent);font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+  .featured-copy h3{font-size:clamp(1.8rem,3vw,3rem);font-weight:700;letter-spacing:-.07em;line-height:1}
+  .featured-copy p{max-width:28rem;color:color-mix(in srgb,var(--color-surface) 72%,transparent);font-size:13px;line-height:1.7}
+  .white-chip{display:inline-flex;border-radius:999px;background:var(--color-surface);color:var(--color-ink);padding:.7rem 1rem;font-size:12px;font-weight:800}
+  .read-time{margin-left:.7rem;color:color-mix(in srgb,var(--color-surface) 55%,transparent);font-size:10px}
+  .featured-visual{display:grid;place-items:center;background:color-mix(in srgb,var(--color-surface) 4%,var(--color-ink));border-left:1px solid color-mix(in srgb,var(--color-surface) 10%,transparent);padding:2.5rem 1.5rem;overflow:hidden}
+  .card-stack{position:relative;width:82%;max-width:24rem;aspect-ratio:1.08;cursor:pointer;perspective:1000px}
+  .card-back,.card-front{position:absolute;inset:0;border-radius:1rem;overflow:hidden;transition:transform .7s var(--ease-studio),box-shadow .7s var(--ease-studio),filter .7s var(--ease-studio)}
+  .card-back{z-index:1;background:var(--color-ink);border:1px solid color-mix(in srgb,var(--color-surface) 14%,transparent);box-shadow:0 16px 36px -6px rgba(0,0,0,.5);transform:translate(16px,14px) rotate(3deg);animation:slideBackCard 5.5s ease-in-out infinite alternate}
+  .card-back img{display:block;width:100%;height:100%;object-fit:cover;filter:brightness(.92);transition:filter .7s var(--ease-studio)}
+  .card-back-badge{position:absolute;top:.85rem;right:.85rem;border-radius:999px;background:color-mix(in srgb,var(--color-ink) 85%,transparent);backdrop-filter:blur(8px);color:var(--color-surface);font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:.32rem .65rem;border:1px solid color-mix(in srgb,var(--color-surface) 22%,transparent)}
+  .card-front{position:relative;z-index:2;border-radius:1rem;border:1px solid color-mix(in srgb,var(--color-surface) 14%,transparent);box-shadow:0 22px 44px -8px rgba(0,0,0,.55)}
+  .card-front :global(.project-visual){width:100%;height:100%;border-radius:1rem}
+  @keyframes slideBackCard{0%{transform:translate(14px,12px) rotate(2.2deg)}100%{transform:translate(24px,18px) rotate(4.4deg)}}
+  .featured-build:hover .card-front{transform:translateY(-6px) scale(1.015);box-shadow:0 28px 52px -10px rgba(0,0,0,.65)}
+  .featured-build:hover .card-back{animation-play-state:paused;transform:translate(32px,22px) rotate(6deg);box-shadow:0 24px 44px -8px rgba(0,0,0,.58)}
+  .featured-build:hover .card-back img{filter:brightness(1)}
+  .card-stack.is-swapped .card-front{z-index:1;transform:translate(18px,16px) rotate(3.5deg);box-shadow:0 14px 28px -6px rgba(0,0,0,.45)}
+  .card-stack.is-swapped .card-back{z-index:2;animation:none;transform:translate(0,0) rotate(0deg);box-shadow:0 24px 44px -8px rgba(0,0,0,.6)}
+  .card-stack.is-swapped .card-back img{filter:brightness(1)}
+  .featured-build:hover .card-stack.is-swapped .card-front{transform:translate(32px,22px) rotate(6deg)}
+  .featured-build:hover .card-stack.is-swapped .card-back{transform:translateY(-6px) scale(1.015)}
+  .filter-tab{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--color-line);border-radius:999px;padding:.5rem .95rem;background:var(--color-surface);color:var(--color-ink);font-size:11px;font-weight:700;cursor:pointer;transition:all .3s ease}
+  .filter-tab:hover{border-color:var(--color-ink)}
+  .filter-tab.is-active{background:var(--color-ink);color:var(--color-surface);border-color:var(--color-ink)}
+  .filter-tab.is-active .filter-count{color:var(--color-accent)}
+  .filter-count{color:var(--color-muted);font-size:10px;font-weight:600}
+  .project-grid{display:grid;grid-template-columns:1fr;gap:1.75rem}
+  .project-card.is-hidden{display:none!important}
+  @media(min-width:640px){.project-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(min-width:1080px){.project-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  .story-section :global(.section-marker){color:color-mix(in srgb,var(--color-surface) 70%,transparent)}
+  .story-section :global(.section-marker)>span{background:var(--color-accent);color:#070d14}
+  .story-head{display:flex;align-items:end;justify-content:space-between;gap:2rem;margin-bottom:3.5rem}
+  .story-title{font-size:clamp(3rem,7vw,7rem);font-weight:700;letter-spacing:-.09em;line-height:.9}
+  .story-head p{max-width:25rem;color:color-mix(in srgb,var(--color-surface) 72%,transparent);font-size:15px;line-height:1.7}
+  .w-chip{display:inline-grid;width:.8em;height:.8em;place-items:center;border-radius:.2em;background:var(--color-accent);color:#070d14;font-size:.55em;vertical-align:middle}
+  .story-video{position:relative;aspect-ratio:16/9;overflow:hidden;border:1px solid color-mix(in srgb,var(--color-surface) 15%,transparent);border-radius:1.5rem;background:var(--color-surface);transition:border-color .4s}
+  .story-video:hover{border-color:var(--color-accent)}
+  .story-art{position:absolute;inset:0;background:radial-gradient(circle at 65% 38%,color-mix(in srgb,var(--color-accent) 30%,transparent),transparent 25%),linear-gradient(135deg,var(--color-surface),var(--color-surface-lift))}
+  .story-circle{position:absolute;top:15%;right:12%;width:45%;aspect-ratio:1;border:1px solid var(--color-accent);border-radius:50%;box-shadow:0 0 0 2rem color-mix(in srgb,var(--color-accent) 8%,transparent),0 0 0 5rem color-mix(in srgb,var(--color-accent) 4%,transparent)}
+  .story-spark{position:absolute;top:20%;left:14%;color:var(--color-accent);font-size:4rem}
+  .story-word{position:absolute;bottom:15%;left:8%;color:var(--color-ink);font-size:clamp(2rem,8vw,7rem);font-weight:800;letter-spacing:-.12em;line-height:.75}
+  .play-wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
+  .play-wrap button{position:relative;z-index:1;display:grid;width:5rem;height:5rem;place-items:center;border-radius:50%;background:var(--color-accent);color:#070d14;font-size:1.2rem;box-shadow:0 .7rem 2rem color-mix(in srgb,var(--color-ink) 45%,transparent);transition:transform .3s}
+  .play-wrap button:hover{transform:scale(1.1)}
+  .play-ring{position:absolute;width:7rem;height:7rem;border:1px solid color-mix(in srgb,var(--color-accent) 65%,transparent);border-radius:50%;animation:ping 2s ease-out infinite}
+  @keyframes ping{0%{transform:scale(.75);opacity:.8}100%{transform:scale(1.3);opacity:0}}
+  .watch-pill{border-radius:999px;background:color-mix(in srgb,var(--color-ink) 80%,transparent);padding:.55rem .8rem;color:var(--color-surface);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+  .story-bar{position:absolute;right:1.5rem;bottom:1.25rem;left:1.5rem;display:flex;justify-content:space-between;color:color-mix(in srgb,var(--color-ink) 78%,transparent);font-size:11px}
+  .story-bar i{display:inline-block;width:.45rem;height:.45rem;margin-right:.4rem;border-radius:50%;background:#16a36a}
+  .services-head{margin-bottom:3rem}
+  .service-cells{display:grid;gap:1.5rem;grid-template-columns:repeat(2,1fr)}
+  .service-cell{position:relative;min-height:20rem;overflow:hidden;border-radius:1.25rem;border:1px solid var(--color-line);background:var(--color-surface);padding:2.25rem 2rem;transition:transform .5s var(--ease-studio),box-shadow .5s var(--ease-studio),border-color .3s ease}
+  .service-cell::before{position:absolute;inset:0;z-index:0;background:var(--color-accent);content:'';transform:translateY(101%);transition:transform .7s var(--ease-studio)}
+  .service-cell>*{position:relative;z-index:1}
+  .service-cell:hover{padding-left:2.75rem;transform:translateY(-4px);box-shadow:0 20px 40px -10px rgba(7,13,20,.1);border-color:var(--color-accent)}
+  .service-cell:hover::before{transform:translateY(0)}
+  .service-cell h3{margin-top:4rem;font-size:2rem;font-weight:600;letter-spacing:-.06em}
+  .service-cell p{max-width:20rem;margin-top:.75rem;color:var(--color-muted);font-size:13px;line-height:1.6}
+  .service-cell:hover p{color:var(--color-ink)}
+  .service-plus{font-size:1.5rem;transition:transform .6s var(--ease-studio)}
+  .service-cell:hover .service-plus{transform:rotate(45deg)}
+  .service-cell ul{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+  .service-cell li{border:1px solid var(--color-line);border-radius:999px;padding:.45rem .7rem;color:var(--color-muted);font-size:11px}
+  .service-cell:hover li{border-color:var(--color-ink);color:var(--color-ink)}
+  .contact-title{max-width:62rem;margin-bottom:3rem;color:var(--color-ink);font-size:clamp(2.5rem,6vw,6rem);font-weight:600;letter-spacing:-.08em;line-height:.95}
+  .contact-title em{color:var(--color-accent);font-style:normal}
+  .avatar-card{display:flex;align-items:center;justify-content:space-between;gap:2rem;margin-bottom:3rem;padding:2rem;border:1px solid var(--color-line);border-radius:1.25rem;background:var(--color-surface-lift)}
+  .eyebrow-label{display:block;margin-bottom:.5rem;color:var(--color-muted);font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+  .avatar-card h3{font-size:1.5rem;letter-spacing:-.05em}
+  .avatar-stack{display:flex;padding-left:1rem}
+  .avatar-stack span{display:grid;width:3.5rem;height:3.5rem;margin-left:-.75rem;place-items:center;border:3px solid var(--color-surface-lift);border-radius:50%;background:var(--color-ink);color:var(--color-surface);font-size:11px;transition:transform .25s}
+  .avatar-stack span:nth-child(2){background:var(--color-accent);color:#070d14}
+  .avatar-stack span:nth-child(3){background:var(--color-surface);color:var(--color-ink)}
+  .avatar-stack span:last-child{background:var(--color-ink);color:var(--color-accent)}
+  .avatar-stack span:hover{z-index:2;transform:translateY(-.4rem) scale(1.08)}
+  .contact-bento{display:grid;grid-template-columns:2fr 1fr;gap:3rem}
+  .contact-form-wrap{min-height:25rem;border-radius:1.25rem;background:var(--color-surface-lift);border:1px solid var(--color-line);padding:2.25rem}
+  .contact-form label,.contact-form legend{display:block;margin-bottom:1.5rem;color:var(--color-muted);font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+  .contact-form fieldset{border:0;padding:0;margin:0;min-width:0}
+  .topic-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem}
+  .topic{border:1px solid var(--color-line);border-radius:999px;padding:.65rem .8rem;color:var(--color-ink);font-size:11px;font-weight:600;letter-spacing:0;text-transform:none}
+  .topic.selected{border-color:var(--color-ink);background:var(--color-ink);color:var(--color-surface)}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .contact-form input,.contact-form textarea{display:block;width:100%;margin-top:.6rem;border:1px solid var(--color-line);border-radius:.7rem;background:var(--color-surface-panel);padding:.9rem 1rem;color:var(--color-ink);font:500 13px var(--font-sans);letter-spacing:0;text-transform:none}
+  .contact-form textarea{resize:vertical}
+  .contact-form input:focus,.contact-form textarea:focus{outline:2px solid var(--color-accent);outline-offset:2px}
+  .submit-row{display:flex;align-items:center;gap:1rem}
+  .submit-row small{color:var(--color-muted);font-size:10px;letter-spacing:0;text-transform:none}
+  .info-card{display:flex;flex-direction:column;gap:2rem;padding:2.25rem 2rem;border-radius:1.25rem;border:1px solid var(--color-line);background:var(--color-surface-lift)}
+  .info-card a{color:var(--color-ink);font-size:1.15rem;font-weight:800}
+  .info-card p,.info-card li{color:var(--color-ink);font-size:13px;line-height:1.7}
+  .info-card ul{display:grid;gap:.5rem}
+  .info-card li:before{content:'•';margin-right:.5rem;color:var(--color-accent)}
+  .contact-form.is-hidden{display:none}
+  .success-card{display:none;padding:3rem;border:1px solid #16a36a;border-radius:1rem;background:color-mix(in srgb,#16a36a 8%,var(--color-surface));text-align:center}
+  .success-card.is-visible{display:block}
+  .success-card>strong{display:grid;width:3rem;height:3rem;margin:0 auto 1rem;place-items:center;border-radius:50%;background:#16a36a;color:#fff;font-size:1.5rem}
+  .success-card h3{font-size:1.5rem}
+  .success-card p{margin:.5rem 0 1.5rem;color:var(--color-muted);font-size:13px}
+  .success-card button{color:var(--color-accent);font-size:11px;font-weight:800;text-transform:uppercase}
+  .footer-banner{display:flex;align-items:center;justify-content:space-between;gap:2rem;padding-bottom:4rem;margin-bottom:4rem;border-bottom:1px solid color-mix(in srgb,var(--color-surface) 18%,transparent)}
+  .footer-banner>div{max-width:48rem}
+  .footer-banner span{color:var(--color-accent);font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+  .footer-banner h2{margin-top:.8rem;color:var(--color-surface);font-size:clamp(2rem,4vw,4rem);font-weight:600;letter-spacing:-.07em;line-height:1}
+  .footer-grid{display:grid;grid-template-columns:2fr repeat(3,1fr);gap:2rem;padding-bottom:4rem;margin-bottom:1.5rem;border-bottom:1px solid color-mix(in srgb,var(--color-surface) 18%,transparent)}
+  .footer-identity>a{color:var(--color-surface);font-size:1.7rem;font-weight:800;letter-spacing:-.08em}
+  .footer-identity>a span,.legal-row b{color:var(--color-accent)}
+  .footer-identity p{max-width:18rem;margin-top:.8rem;color:color-mix(in srgb,var(--color-surface) 95%,transparent);font-size:13px;line-height:1.7}
+  .footer-links>b{display:block;margin-bottom:1rem;color:color-mix(in srgb,var(--color-surface) 58%,transparent);font-size:10px;letter-spacing:.15em;text-transform:uppercase}
+  .footer-links a{display:block;margin-bottom:.65rem;color:color-mix(in srgb,var(--color-surface) 82%,transparent);font-size:12px}
+  .footer-links a:hover,.legal-row a:hover{color:var(--color-accent)}
+  .legal-row{display:flex;justify-content:space-between;gap:1rem;color:color-mix(in srgb,var(--color-surface) 68%,transparent);font-size:12px}
+  .legal-row a{color:color-mix(in srgb,var(--color-surface) 82%,transparent)}
+  .button{position:relative;display:inline-flex;height:3.25rem;min-width:9rem;align-items:center;justify-content:center;overflow:hidden;border-radius:999px;padding:0 1.4rem;font-size:12px;font-weight:800;transition:transform .5s var(--ease-studio)}
+  .button:hover{transform:translateY(-3px)}
+  .button-orange{background:var(--color-accent);color:#070d14}
+  .button-outline{border:1px solid var(--color-line);color:var(--color-ink)}
+  .button span{display:block;transition:transform .5s var(--ease-studio),opacity .5s}
+  .button span+span{position:absolute;transform:translateY(180%);opacity:0}
+  .button:hover span:first-child{transform:translateY(-180%);opacity:0}
+  .button:hover span+span{transform:translateY(0);opacity:1}
+  @media(max-width:700px){
+    .hero-meta,.story-head,.avatar-card,.footer-banner{align-items:flex-start;flex-direction:column}
+    .location-badge{display:none}
+    .intro-head,.head-row{display:block}
+    .intro-head>p,.head-row>p,.head-row>div>p{margin-top:1.5rem}
+    .intro-tiles{grid-template-columns:1fr}
+    .intro-tile{min-height:18rem}
+    .pillars,.contact-bento,.featured-build,.footer-grid{grid-template-columns:1fr}
+    .featured-visual{min-height:20rem}
+    .card-stack{width:88%;max-width:20rem}
+    .card-back{transform:translate(12px,10px) rotate(2deg)}
+    .featured-build:hover .card-back{transform:translate(20px,14px) rotate(3.5deg)}
+    .field-row{grid-template-columns:1fr}
+    .submit-row,.legal-row{align-items:flex-start;flex-direction:column}
+    .story-bar small{display:none}
+    .service-cells{grid-template-columns:1fr}
+    .caption-card{flex-direction:column;gap:.2rem}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .marquee-track,.play-ring{animation:none}
+    .card-back{animation:none!important}
+    .button:hover,.service-cell:hover,.pillar-card:hover,.project-card:hover,.featured-build:hover .card-front,.featured-build:hover .card-back{transform:none!important;padding-left:2rem}
+  }
+</style>
+
+<script>
+  import gsap from 'gsap'; import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger); const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches; const mm=gsap.matchMedia();
+  if(!reduce) mm.add('(min-width:700px)',()=>{gsap.utils.toArray<HTMLElement>('[data-fade-stagger]').forEach((block)=>gsap.fromTo(block.children,{opacity:0,y:14},{opacity:1,y:0,duration:.7,stagger:.08,ease:'power3.out',scrollTrigger:{trigger:block,start:'top 82%',once:true}}));});
+
+  // Hero IDE build animation: type → build → deploy → results → pause → loop
+  const ideCode=document.getElementById('ide-code'),ideStatus=document.getElementById('ide-status'),ideBar=document.getElementById('ide-bar'),ideCaret=document.querySelector('.ide-caret');
+  const idePre=document.querySelector('.ide-code'),ideResults=document.querySelector('.ide-results');
+  const IDE_LINES=[
+    [['const ','kw'],['site','var'],[' = ','pl'],['await ','kw'],['studio.','pl'],['build','fn'],['({','pl']],
+    [['  design: ','pl'],["'custom'",'str'],[',','pl']],
+    [['  motion: ','pl'],["'considered'",'str'],[',','pl']],
+    [['  handoff: ','pl'],["'none'",'str'],[',','pl']],
+    [['});','pl']],
+    [['','pl']],
+    [['await ','kw'],['site.','pl'],['deploy','fn'],['();','pl']]
+  ];
+  const ideChars: { ch: string; c: string | null }[] = [];
+  IDE_LINES.forEach((line, li) => {
+    line.forEach(([text, cls]) => { for (const ch of text) ideChars.push({ ch, c: cls }); });
+    if (li < IDE_LINES.length - 1) ideChars.push({ ch: '\n', c: null });
+  });
+  function ideReset() {
+    if (ideCode && ideCaret) [...ideCode.childNodes].forEach((n) => { if (n !== ideCaret) n.remove(); });
+    if (idePre) { (idePre as HTMLElement).style.display = 'block'; gsap.set(idePre, { opacity: 1 }); }
+    if (ideResults) ideResults.classList.add('is-hidden');
+    if (ideBar) gsap.set(ideBar, { width: '0%' });
+    if (ideStatus) { ideStatus.textContent = 'ready'; ideStatus.classList.remove('is-done'); }
+  }
+  function ideFinish() {
+    if (ideStatus) {
+      ideStatus.textContent = '✓ deployed — site is live';
+      ideStatus.classList.add('is-done');
+    }
+    if (reduce || !idePre || !ideResults) { if (idePre && ideResults) { (idePre as HTMLElement).style.display = 'none'; ideResults.classList.remove('is-hidden'); } return; }
+    gsap.to(idePre, { opacity: 0, duration: .35, delay: .8, onComplete: () => {
+      (idePre as HTMLElement).style.display = 'none';
+      ideResults.classList.remove('is-hidden');
+      gsap.fromTo('.ide-result', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .45, stagger: .12, ease: 'power2.out', onComplete: () => {
+        setTimeout(() => { ideReset(); startTyping(); }, 3200);
+      } });
+    } });
+  }
+  function startTyping() {
+    if (reduce || !ideCode || !ideCaret) {
+      if (ideCode && ideCaret) { const full = document.createElement('span'); full.textContent = ideChars.map((x) => x.ch).join(''); ideCode.insertBefore(full, ideCaret); }
+      ideFinish();
+      return;
+    }
+    let cur: HTMLSpanElement | null = null, curClass: string | null = null, i = 0;
+    const step = () => {
+      if (i >= ideChars.length) {
+        if (ideStatus) { ideStatus.textContent = 'building site…'; }
+        if (ideBar) gsap.fromTo(ideBar, { width: '0%' }, { width: '100%', duration: 1, ease: 'power2.inOut', onComplete: ideFinish });
+        return;
+      }
+      const { ch, c } = ideChars[i++];
+      if (!cur || curClass !== c) { cur = document.createElement('span'); if (c) cur.className = 'tok ' + c; ideCode.insertBefore(cur, ideCaret); curClass = c; }
+      cur.textContent += ch;
+      setTimeout(step, 26);
+    };
+    setTimeout(step, 600);
+  }
+  startTyping();
+
+  // 3D design carousel above the IDE (autoplay, click-to-focus, pause on hover)
+  const ideCarousel=document.querySelector('.ide-carousel');
+  const ideCards=ideCarousel?Array.from(ideCarousel.querySelectorAll('.ide-card')):[];
+  let ideActive=0,ideTimer: ReturnType<typeof setInterval> | null = null;
+  function ideUpdate(){
+    const total=ideCards.length;
+    ideCards.forEach((card,i)=>{
+      const diff=(i-ideActive+total)%total;
+      card.dataset.pos=diff===0?'center':diff===1?'right':diff===total-1?'left':'hidden';
+    });
+  }
+  function ideAutoStart(){
+    if(reduce||!ideCards.length)return;
+    clearInterval(ideTimer);
+    ideTimer=setInterval(()=>{ideActive=(ideActive+1)%ideCards.length;ideUpdate();},3000);
+  }
+  ideCards.forEach((card,i)=>card.addEventListener('click',()=>{ideActive=i;ideUpdate();ideAutoStart();}));
+  ideCarousel?.addEventListener('mouseenter',()=>clearInterval(ideTimer));
+  ideCarousel?.addEventListener('mouseleave',ideAutoStart);
+  ideUpdate();
+  ideAutoStart();
+
+  document.querySelectorAll('.topic').forEach((topic)=>topic.addEventListener('click',()=>{document.querySelectorAll('.topic').forEach((item)=>item.classList.remove('selected'));topic.classList.add('selected');}));
+  const form=document.querySelector<HTMLFormElement>('[data-contact-form]');const success=document.querySelector<HTMLElement>('[data-success]');form?.addEventListener('submit',(event)=>{event.preventDefault();form.classList.add('is-hidden');success?.classList.add('is-visible');});document.querySelector('[data-reset-form]')?.addEventListener('click',()=>{form?.reset();form?.classList.remove('is-hidden');success?.classList.remove('is-visible');});
+  document.querySelector('[data-theme-toggle]')?.addEventListener('click',()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;localStorage.setItem('monfolio-theme',next);});
+  const cardStack=document.querySelector<HTMLElement>('.card-stack');cardStack?.addEventListener('click',()=>cardStack.classList.toggle('is-swapped'));cardStack?.addEventListener('keydown',(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();cardStack.classList.toggle('is-swapped');}});
+
+  // Dynamic Projects Grid Filtering & Max Cards Display
+  const projectCards = Array.from(document.querySelectorAll<HTMLElement>('.project-grid .project-card'));
+  const filterTabs = document.querySelectorAll<HTMLElement>('.filter-tab');
+  const toggleBtn = document.querySelector<HTMLElement>('[data-toggle-projects]');
+  const counterEl = document.querySelector<HTMLElement>('[data-project-counter]');
+  const maxDefault = 4;
+  let currentFilter = 'all';
+  let isExpanded = false;
+
+  function updateProjectGrid(animate = false) {
+    const matching = projectCards.filter(card => {
+      if (currentFilter === 'all') return true;
+      return card.dataset.category === currentFilter;
+    });
+
+    projectCards.forEach(card => card.classList.add('is-hidden'));
+
+    const visible = isExpanded ? matching : matching.slice(0, maxDefault);
+    visible.forEach(card => card.classList.remove('is-hidden'));
+
+    if (counterEl) {
+      counterEl.textContent = `Showing ${visible.length} of ${matching.length} ${matching.length === 1 ? 'build' : 'builds'}`;
+    }
+
+    if (toggleBtn) {
+      if (matching.length <= maxDefault) {
+        toggleBtn.style.display = 'none';
+      } else {
+        toggleBtn.style.display = 'inline-flex';
+        const label = isExpanded ? 'Show fewer ↑' : `Show all ${matching.length} projects ↓`;
+        toggleBtn.querySelectorAll('span').forEach(s => s.textContent = label);
+      }
+    }
+
+    if (animate && visible.length > 0) {
+      gsap.fromTo(visible, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.04, ease: 'power2.out' });
+    }
+
+    ScrollTrigger.refresh();
+  }
+
+  filterTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      filterTabs.forEach(t => { t.classList.remove('is-active'); t.setAttribute('aria-pressed', 'false'); });
+      tab.classList.add('is-active');
+      tab.setAttribute('aria-pressed', 'true');
+      currentFilter = tab.dataset.filter || 'all';
+      isExpanded = false;
+      updateProjectGrid(true);
+    });
+  });
+
+  toggleBtn?.addEventListener('click', () => {
+    isExpanded = !isExpanded;
+    updateProjectGrid(true);
+  });
+
+  updateProjectGrid(false);
+</script>

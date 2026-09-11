@@ -1,0 +1,60 @@
+---
+import SectionMarker from './SectionMarker.astro';
+
+const faqs = [
+  ['What does your design & build process look like end-to-end?', 'We start with a short working session, map the content and components, then build in small reviewable steps. We QA across devices, train your team and stay close through launch.'],
+  ['How long does a typical project take from kickoff to launch?', 'Most marketing sites take six to ten weeks. The honest answer depends on content readiness, integrations and how quickly decisions get made.'],
+  ['What engagement models do you offer — fixed scope, sprint, or retainer?', 'All three. Fixed scope works for a defined launch, sprints keep a moving backlog healthy, and retainers reserve a dependable block of studio time each month.'],
+  ['Do you build design systems from scratch or work from existing Figma libraries?', 'Both. We can turn an existing Figma library into a useful production system, or define the component rules with your design team before the build starts.'],
+  ['Can you migrate our site off WordPress or a legacy CMS without losing SEO?', 'Yes. We inventory URLs, content and metadata first, model the CMS carefully, then test redirects and key templates before anything goes live.'],
+  ['How do you handle ongoing updates, A/B tests, and new page requests after launch?', 'We keep a shared backlog and work in short, visible sprints. Small content changes can stay with your team; structural or experimental work comes through us.'],
+  ['What does your pricing look like and what’s typically included?', 'Projects are priced around scope, complexity and the level of collaboration needed. A proposal includes the build, QA, launch support and a clear list of what is not included.'],
+  ['How do we get started — and what do you need from us on day one?', 'Send the current site, the problem you are trying to solve and your target launch window. We will reply with a few useful questions, not a generic deck.']
+];
+---
+
+<section id="faq" class="bg-surface-lift px-5 py-20 sm:px-8 sm:py-28 lg:px-8">
+  <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[.7fr_1.3fr]" data-fade-stagger>
+    <div class="faq-content">
+      <SectionMarker number="3" label="FAQ" />
+      <h2 class="display-heading">The useful<br /><em>answers.</em></h2>
+      <p class="mt-8 max-w-xs text-sm leading-7 text-muted">No theatre, no vague process language. Here is how we work when the project is real.</p>
+    </div>
+    <div class="faq-list">
+      {faqs.map(([question, answer], index) => (
+        <article class="faq-item">
+          <button type="button" aria-expanded="false" aria-controls={`faq-answer-${index}`}>
+            <span>{question}</span>
+            <i>+</i>
+          </button>
+          <div id={`faq-answer-${index}`} class="faq-answer">
+            <p>{answer}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-content .display-heading{margin-bottom:3rem}
+  .faq-list{max-width:52rem;margin-left:auto;display:flex;flex-direction:column;gap:.85rem}
+  .faq-item{border-radius:1.125rem;background:var(--color-surface);border:1px solid var(--color-line);padding:0 1.5rem;transition:border-color .3s ease,box-shadow .3s ease}
+  .faq-item:hover,
+  .faq-item.is-open{border-color:color-mix(in srgb,var(--color-accent) 40%,var(--color-line));box-shadow:0 10px 24px -6px rgba(7,13,20,.05)}
+  .faq-item button{display:flex;width:100%;justify-content:space-between;align-items:center;gap:1rem;padding:1.25rem 0;text-align:left;color:var(--color-ink);font-size:14px;font-weight:600;background:transparent;border:none;cursor:pointer}
+  .faq-item button i{color:var(--color-accent);font-size:1.5rem;font-style:normal;line-height:1;transition:transform .3s}
+  .faq-item button[aria-expanded=true] i{transform:rotate(45deg)}
+  .faq-answer{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease-studio)}
+  .faq-answer p{overflow:hidden;color:var(--color-muted);font-size:13px;line-height:1.7}
+  .faq-item.is-open .faq-answer{grid-template-rows:1fr}
+  .faq-item.is-open .faq-answer p{padding:0 2rem 1.4rem 0}
+</style>
+
+<script>
+  document.querySelectorAll('.faq-item button').forEach((button) => button.addEventListener('click', () => {
+    const item = button.closest('.faq-item');
+    const open = item?.classList.toggle('is-open');
+    button.setAttribute('aria-expanded', String(open));
+  }));
+</script>

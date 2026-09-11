@@ -1,0 +1,17 @@
+<div id="announcement-bar" class="announcement-bar" role="status">
+  <a href="#contact"><span>New</span>Now booking Q4 custom builds — two slots open this quarter.</a>
+  <button type="button" aria-label="Close announcement" data-close-announcement>×</button>
+</div>
+
+<style>
+  .announcement-bar { display:flex; align-items:center; justify-content:center; gap:1rem; min-height:2.75rem; padding:.55rem 1rem; background:var(--color-ink); color:var(--color-surface); font-size:12px; font-weight:600; text-align:center; }
+  .announcement-bar a { display:flex; align-items:center; gap:.65rem; color:inherit; }
+  .announcement-bar a:hover { color:var(--color-accent); }
+  .announcement-bar a span { border-radius:999px; background:var(--color-accent); color:var(--color-surface); padding:.2rem .55rem; font-size:10px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+  .announcement-bar button { color:color-mix(in srgb, var(--color-surface) 65%, transparent); font-size:1.25rem; line-height:1; }
+  .announcement-bar button:hover { color:var(--color-surface); }
+</style>
+
+<script>
+  document.querySelector('[data-close-announcement]')?.addEventListener('click', () => document.querySelector('#announcement-bar')?.remove());
+</script>

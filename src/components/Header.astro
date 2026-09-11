@@ -1,0 +1,30 @@
+<header class="site-header sticky top-0 z-50 border-b border-transparent px-4 py-4 sm:px-6 lg:px-8" data-header>
+  <div class="mx-auto flex max-w-7xl items-center justify-between">
+    <a href="#top" class="flex items-center gap-2 font-display text-lg font-extrabold tracking-[-.06em] text-ink"><span class="logo-mark">M</span>monfolio<span class="text-orange">.</span></a>
+    <nav class="hidden items-center gap-7 text-[12px] font-bold uppercase tracking-[.12em] text-ink md:flex" aria-label="Main navigation">
+      <a class="transition-colors hover:text-orange" href="#work">Work</a><a class="transition-colors hover:text-orange" href="#services">Services</a><a class="transition-colors hover:text-orange" href="#faq">FAQ</a>
+      <button class="theme-toggle" type="button" aria-label="Toggle dark theme" data-theme-toggle><svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg><svg class="moon-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.2A8.5 8.5 0 0 1 8.8 3.5 8.5 8.5 0 1 0 20.5 15.2Z"/></svg></button>
+      <a href="#contact" class="header-cta rolling-button button-orange"><span>Start a project ↗</span><span aria-hidden="true">Start a project ↗</span></a>
+    </nav>
+    <button class="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface-panel md:hidden" type="button" aria-label="Open menu" aria-expanded="false" data-menu-button>
+      <span class="relative block h-3.5 w-4"><i class="absolute left-0 top-0 block h-px w-4 bg-ink transition-transform" data-bar></i><i class="absolute left-0 top-2.5 block h-px w-4 bg-ink transition-transform" data-bar></i></span>
+    </button>
+  </div>
+  <div class="mx-1 mt-2 hidden rounded-2xl border border-line bg-surface p-5 text-ink shadow-xl md:hidden" data-mobile-menu>
+    <nav class="grid gap-4 text-2xl font-semibold" aria-label="Mobile navigation"><a href="#work">Work</a><a href="#services">Services</a><a href="#faq">FAQ</a><a class="text-orange" href="#contact">Start a project ↗</a></nav>
+  </div>
+</header>
+
+<style>
+  .site-header { transition: background .3s ease, border-color .3s ease, box-shadow .3s ease; }
+  .site-header.is-scrolled { background: color-mix(in srgb, var(--color-surface) 88%, transparent); border-color:var(--color-line); box-shadow:0 8px 24px rgba(7,13,20,.06); backdrop-filter:blur(14px); }
+  .logo-mark { display:grid; height:1.65rem; width:1.65rem; place-items:center; border-radius:50%; background:#f15533; color:#fff; font-size:.7rem; letter-spacing:0; }
+  .theme-toggle { display:grid; height:2.25rem; width:2.25rem; place-items:center; border:1px solid var(--color-line); border-radius:50%; color:var(--color-ink); }
+  .theme-toggle svg { height:1rem; width:1rem; fill:none; stroke:currentColor; stroke-width:1.7; }
+  :global([data-theme="dark"]) .sun-icon { display:none; } :global([data-theme="light"]) .moon-icon, :global(:root:not([data-theme="dark"])) .moon-icon { display:none; }
+  .header-cta { position:relative; display:block; overflow:hidden; }
+  .header-cta span { display:block; transition:transform .45s var(--ease-studio), opacity .45s var(--ease-studio); }
+  .header-cta span + span { position:absolute; inset:0; display:grid; place-items:center; transform:translateY(150%); opacity:0; }
+  .header-cta:hover span:first-child { transform:translateY(-150%); opacity:0; }
+  .header-cta:hover span + span { transform:translateY(0); opacity:1; }
+</style>

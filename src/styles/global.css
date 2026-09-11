@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #070d14;
+  --color-surface: #ffffff;
+  --color-surface-lift: #f5f7f9;
+  --color-surface-panel: #ffffff;
+  --color-accent: #f15533;
+  --color-orange: #f15533;
+  --color-muted: #7f8183;
+  --color-line: #d8dbdd;
+  --color-paper: #ffffff;
+  --font-display: "Plus Jakarta Sans", sans-serif;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --ease-studio: cubic-bezier(.22, .61, .36, 1);
+}
+
+:root { color-scheme: light; }
+[data-theme="dark"] { color-scheme: dark; --color-surface:#11161d; --color-surface-lift:#161c25; --color-surface-panel:#161c25; --color-ink:#f5f7f9; --color-muted:#a8adb4; --color-line:#232a33; --color-paper:#11161d; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--color-surface); color: var(--color-ink); font-family: "Plus Jakarta Sans", sans-serif; font-size: 15px; transition: background .3s ease, color .3s ease; }
+::selection { background: #f15533; color: #fff; }
+.site-shell { overflow: hidden; }
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .8s var(--ease-studio), transform .8s var(--ease-studio); }
+.reveal.is-visible { opacity: 1; transform: none; }
+.focus-ring:focus-visible, a:focus-visible, button:focus-visible { outline: 2px solid #f15533; outline-offset: 5px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } .reveal { opacity: 1; transform: none; } }

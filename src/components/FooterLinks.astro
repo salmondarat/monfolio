@@ -1,0 +1,7 @@
+---
+const { title, links } = Astro.props;
+---
+<div class="footer-links"><b>{title}</b>{links.map((link: { label: string; href: string }) => <a href={link.href}>{link.label}</a>)}</div>
+<style>
+  .footer-links>b{display:block;margin-bottom:1rem;color:color-mix(in srgb,var(--color-surface) 58%,transparent);font-size:10px;letter-spacing:.15em;text-transform:uppercase}.footer-links a{display:block;margin-bottom:.65rem;color:color-mix(in srgb,var(--color-surface) 82%,transparent);font-size:12px}.footer-links a:hover{color:var(--color-accent)}
+</style>

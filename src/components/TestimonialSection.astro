@@ -1,0 +1,45 @@
+---
+import SectionMarker from './SectionMarker.astro';
+import { testimonials } from '../data/testimonials';
+---
+
+<section id="reviews" class="bg-surface px-5 py-20 sm:px-8 sm:py-28 lg:px-8">
+  <div class="mx-auto max-w-7xl" data-fade-stagger>
+    <SectionMarker number="5" label="Client reviews" />
+    <div class="reviews-head">
+      <h2 class="display-heading">Words from<br /><em>the teams.</em></h2>
+      <p>Three marketing teams on what it is like to build with us — in their own words.</p>
+    </div>
+    <div class="review-grid">
+      {testimonials.map((testimonial) => (
+        <figure class="review-card">
+          <blockquote>“{testimonial.quote}”</blockquote>
+          <figcaption>
+            <strong>{testimonial.name}</strong>
+            <span>{testimonial.role}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .reviews-head{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:2rem;align-items:end;margin-bottom:3rem}
+  .reviews-head h2{grid-column:span 8}
+  .reviews-head>p{grid-column:span 4;margin-bottom:.3rem;color:var(--color-muted);font-size:15px;line-height:1.7}
+  .review-grid{display:grid;gap:1.5rem;grid-template-columns:repeat(3,1fr)}
+  .review-card{display:flex;flex-direction:column;justify-content:space-between;gap:2rem;margin:0;border-radius:1.25rem;background:var(--color-surface);border:1px solid var(--color-line);padding:2rem;transition:transform .4s var(--ease-studio),box-shadow .4s var(--ease-studio)}
+  .review-card:hover{transform:translateY(-4px);box-shadow:0 16px 32px -8px rgba(7,13,20,.08)}
+  .review-card blockquote{margin:0;color:var(--color-ink);font-size:15px;line-height:1.7;font-weight:500}
+  .review-card figcaption{display:flex;flex-direction:column;gap:.15rem;font-size:12px;color:var(--color-muted)}
+  .review-card figcaption strong{color:var(--color-ink);font-size:13px}
+  @media(max-width:1080px){
+    .review-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:700px){
+    .reviews-head{display:block}
+    .reviews-head>p{margin-top:1.5rem}
+    .review-grid{grid-template-columns:1fr}
+  }
+</style>
