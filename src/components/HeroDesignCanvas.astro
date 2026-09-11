@@ -1,141 +1,140 @@
 ---
-// HeroDesignCanvas.astro — Graphic Design Craft Blueprint Background
-// Featuring Golden Ratio (φ), Bézier Pen Tool Paths, Typeface Anatomy & Modular Grid
+// HeroDesignCanvas.astro — Abstract Graphic Craft Atmosphere
+// Deconstructed visual craft: Golden ratio arcs, undulating vector Béziers, typographic geometry & ambient light
 ---
 
 <div class="hero-design-canvas" aria-hidden="true">
-  <!-- Ambient Atmospheric Backlight -->
+  <!-- Atmospheric Studio Ambient Glow -->
   <div class="canvas-ambient">
     <div class="ambient-orb orb-primary"></div>
     <div class="ambient-orb orb-secondary"></div>
+    <div class="ambient-orb orb-tertiary"></div>
   </div>
 
-  <!-- Layer 1: Modular Grid, Crop Marks & Coordinates -->
-  <div class="canvas-layer layer-grid">
-    <div class="crop-mark top-left">┌ 00.00 / x0</div>
-    <div class="crop-mark top-right">GRID 12-COL ┐</div>
-    <div class="crop-mark bottom-left">└ BASELINE 8PT</div>
-    <div class="crop-mark bottom-right">100% VECTOR ┘</div>
-    <div class="register-mark">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-        <circle cx="12" cy="12" r="8" />
-        <line x1="12" y1="0" x2="12" y2="24" />
-        <line x1="0" y1="12" x2="24" y2="12" />
-      </svg>
-    </div>
-  </div>
+  <!-- Abstract Graphic Geometry SVG Stage -->
+  <div class="canvas-svg-stage">
+    <svg class="canvas-svg" viewBox="0 0 1400 800" fill="none" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <!-- Subtle accent gradient for flowing vector curves -->
+        <linearGradient id="craft-accent-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="var(--color-accent)" stop-opacity="0.1" />
+          <stop offset="45%" stop-color="var(--color-accent)" stop-opacity="0.8" />
+          <stop offset="100%" stop-color="var(--color-accent)" stop-opacity="0.15" />
+        </linearGradient>
 
-  <!-- Layer 2: Golden Ratio (φ = 1.618) Section & Fibonacci Spiral -->
-  <div class="canvas-layer layer-golden" data-craft-layer="golden">
-    <svg class="canvas-svg" viewBox="0 0 1200 700" fill="none" preserveAspectRatio="xMidYMid slice">
-      <g class="golden-group" transform="translate(580, 50)">
-        <!-- Outer Golden Rectangle (460 x 284 ~ 1.618) -->
-        <rect x="0" y="0" width="460" height="284" rx="2" class="blueprint-rect" />
-        <!-- Inner squares -->
-        <rect x="0" y="0" width="284" height="284" class="blueprint-subrect" />
-        <rect x="284" y="108" width="176" height="176" class="blueprint-subrect" />
-        <rect x="284" y="0" width="108" height="108" class="blueprint-subrect" />
-        <rect x="392" y="0" width="68" height="68" class="blueprint-subrect" />
+        <linearGradient id="craft-secondary-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.1" />
+          <stop offset="50%" stop-color="var(--color-accent)" stop-opacity="0.5" />
+          <stop offset="100%" stop-color="#818cf8" stop-opacity="0.1" />
+        </linearGradient>
+      </defs>
+
+      <!-- 1. Abstract Baseline & Horizon Metrics (Typographic Guide Metaphor) -->
+      <g class="abstract-baselines">
+        <line x1="60" y1="190" x2="1340" y2="190" class="guide-line guide-cap" />
+        <line x1="120" y1="280" x2="1280" y2="280" class="guide-line guide-mean" />
+        <line x1="40" y1="420" x2="1360" y2="420" class="guide-line guide-base" />
+        <line x1="160" y1="500" x2="1240" y2="500" class="guide-line guide-desc" />
         
-        <!-- Diagonal construction guides -->
-        <line x1="0" y1="0" x2="460" y2="284" class="blueprint-diagonal" />
-        <line x1="0" y1="284" x2="284" y2="0" class="blueprint-diagonal" />
+        <!-- Subtle architectural tick marks -->
+        <g class="guide-ticks">
+          <line x1="240" y1="184" x2="240" y2="196" class="tick-mark" />
+          <line x1="520" y1="184" x2="520" y2="196" class="tick-mark" />
+          <line x1="880" y1="184" x2="880" y2="196" class="tick-mark" />
+          <line x1="1160" y1="184" x2="1160" y2="196" class="tick-mark" />
+          <circle cx="520" cy="420" r="3" class="tick-circle" />
+          <circle cx="880" cy="420" r="3" class="tick-circle" />
+        </g>
+      </g>
 
-        <!-- Golden Ratio Technical Label -->
-        <text x="296" y="26" class="blueprint-text-accent">φ = 1.61803</text>
-        <text x="296" y="42" class="blueprint-text-dim">GOLDEN SECTION</text>
+      <!-- 2. Deconstructed Golden Ratio (Harmonic Concentric Arcs & Fibonacci Spiral) -->
+      <g class="golden-abstract" transform="translate(740, 120)">
+        <!-- Rotating Geometric Concentric Circles (Proportions: 233, 144, 89) -->
+        <g class="golden-spin-group">
+          <circle cx="200" cy="200" r="233" class="phi-ring phi-outer" />
+          <circle cx="200" cy="200" r="144" class="phi-ring phi-mid" />
+          <circle cx="200" cy="200" r="89" class="phi-ring phi-inner" />
+          
+          <!-- Golden Section axis crosshairs -->
+          <line x1="-30" y1="200" x2="430" y2="200" class="phi-axis" />
+          <line x1="200" y1="-30" x2="200" y2="430" class="phi-axis" />
+          <line x1="45" y1="45" x2="355" y2="355" class="phi-diagonal" />
 
-        <!-- Dynamic Drawing Fibonacci Spiral Curve -->
-        <path class="fibonacci-spiral" 
-              d="M 0 284 A 284 284 0 0 1 284 0 A 176 176 0 0 1 460 176 A 108 108 0 0 1 392 284 A 68 68 0 0 1 392 216 A 40 40 0 0 1 432 216" 
-              stroke-linecap="round" fill="none" />
+          <!-- Delicate node markers along the golden ratio axes -->
+          <circle cx="344" cy="200" r="2.5" class="phi-node" />
+          <circle cx="200" cy="56" r="2.5" class="phi-node" />
+          <circle cx="89" cy="200" r="2.5" class="phi-node" />
+        </g>
+
+        <!-- Dynamic Ethereal Fibonacci Spiral Curve -->
+        <path class="fibonacci-spiral"
+              d="M 56,344 A 288 288 0 0 1 344 56 A 178 178 0 0 1 522 234 A 110 110 0 0 1 412 344 A 68 68 0 0 1 344 276 A 42 42 0 0 1 386 234" 
+              fill="none" />
+      </g>
+
+      <!-- 3. Fluid Abstract Bézier Vector Waves & Tangent Nodes -->
+      <g class="bezier-abstract">
+        <!-- Master Vector Curve (Flowing through hero space) -->
+        <path class="bezier-wave wave-primary" 
+              d="M 30,560 C 300,640 360,190 700,240 S 1060,460 1380,230" 
+              fill="none" stroke="url(#craft-accent-grad)" />
+        
+        <!-- Ghost Echo Curve -->
+        <path class="bezier-wave wave-ghost" 
+              d="M 30,560 C 300,640 360,190 700,240 S 1060,460 1380,230" 
+              fill="none" />
+
+        <!-- Counter-balancing secondary flow line -->
+        <path class="bezier-wave wave-secondary" 
+              d="M 60,490 C 340,390 440,600 840,430 S 1180,170 1370,380" 
+              fill="none" stroke="url(#craft-secondary-grad)" />
+
+        <!-- Abstract Tangent Handle & Anchor System (Floating softly) -->
+        <g class="tangent-system tangent-node-primary" transform="translate(700, 240)">
+          <!-- Tangent Vector Stick -->
+          <line x1="-120" y1="-26" x2="120" y2="26" class="tangent-rod" />
+          <!-- Directional Handle Nodes -->
+          <circle cx="-120" cy="-26" r="3.5" class="tangent-handle" />
+          <circle cx="120" cy="26" r="3.5" class="tangent-handle" />
+          <!-- Center Vector Anchor Point -->
+          <rect x="-4.5" y="-4.5" width="9" height="9" class="anchor-square" rx="1" />
+          <!-- Pulse Aura -->
+          <circle cx="0" cy="0" r="14" class="anchor-aura" />
+        </g>
+
+        <!-- Secondary Vector Anchor (Left) -->
+        <g class="tangent-system tangent-node-secondary" transform="translate(360, 290)">
+          <line x1="-75" y1="40" x2="75" y2="-40" class="tangent-rod-faint" />
+          <circle cx="-75" cy="40" r="2.5" class="tangent-handle-faint" />
+          <circle cx="75" cy="-40" r="2.5" class="tangent-handle-faint" />
+          <rect x="-3" y="-3" width="6" height="6" class="anchor-square-faint" rx="1" />
+        </g>
+      </g>
+
+      <!-- 4. Abstract Letterform Optical Geometry (Concentric arcs & Apex) -->
+      <g class="letterform-abstract" transform="translate(180, 260)">
+        <!-- Optical construction circles of geometric sans letterforms -->
+        <circle cx="120" cy="140" r="95" class="optical-circle circle-left" />
+        <circle cx="210" cy="140" r="95" class="optical-circle circle-right" />
+        
+        <!-- Deconstructed geometric letterform outline (Abstract 'M' / Chevron Apex) -->
+        <path d="M 30,240 L 120,60 L 210,180 L 300,60 L 390,240" class="optical-path" />
+
+        <!-- Minimalist crosshair precision markers -->
+        <g transform="translate(120, 60)" class="crosshair">
+          <line x1="-7" y1="0" x2="7" y2="0" />
+          <line x1="0" y1="-7" x2="0" y2="7" />
+        </g>
+        <g transform="translate(300, 60)" class="crosshair">
+          <line x1="-7" y1="0" x2="7" y2="0" />
+          <line x1="0" y1="-7" x2="0" y2="7" />
+        </g>
       </g>
     </svg>
   </div>
 
-  <!-- Layer 3: Bézier Vector Path & Pen Tool Anchor Handles -->
-  <div class="canvas-layer layer-bezier" data-craft-layer="bezier">
-    <svg class="canvas-svg" viewBox="0 0 1200 700" fill="none" preserveAspectRatio="xMidYMid slice">
-      <g class="bezier-interactive-group">
-        <!-- Master Bézier Vector Curve -->
-        <path class="bezier-main-curve" d="M 60,540 C 260,600 320,210 580,260 S 860,460 1140,260" fill="none" />
-        <path class="bezier-ghost-curve" d="M 60,540 C 260,600 320,210 580,260 S 860,460 1140,260" fill="none" />
-
-        <!-- Active Anchor Node 1 with Tangent Handles -->
-        <g class="bezier-node" transform="translate(580, 260)">
-          <!-- Tangent Stick -->
-          <line x1="-120" y1="-26" x2="120" y2="26" class="tangent-stick" />
-          <!-- Left Handle (Circle) -->
-          <circle cx="-120" cy="-26" r="4.5" class="handle-circle" />
-          <!-- Right Handle (Circle) -->
-          <circle cx="120" cy="26" r="4.5" class="handle-circle" />
-          <!-- Anchor Point (Square) -->
-          <rect x="-5.5" y="-5.5" width="11" height="11" class="anchor-square" rx="1.5" />
-          <!-- Pulse Halo -->
-          <circle cx="0" cy="0" r="16" class="anchor-pulse" />
-          <!-- Coordinate Tooltip -->
-          <text x="18" y="-12" class="blueprint-text-bold">Anchor P(2) [Smooth]</text>
-          <text x="18" y="2" class="blueprint-text-dim">C1: (-120, -26) • C2: (120, 26)</text>
-        </g>
-
-        <!-- Secondary Anchor Node (Left) -->
-        <g class="bezier-subnode" transform="translate(320, 210)">
-          <line x1="-70" y1="50" x2="70" y2="-50" class="tangent-stick-faint" />
-          <circle cx="-70" cy="50" r="3.5" class="handle-circle-faint" />
-          <circle cx="70" cy="-50" r="3.5" class="handle-circle-faint" />
-          <rect x="-4" y="-4" width="8" height="8" class="anchor-square-faint" rx="1" />
-        </g>
-
-        <!-- Stylized Pen Tool Pointer -->
-        <g class="pen-tool-pointer" transform="translate(680, 290)">
-          <path d="M0,0 L13,13 L6,14 L4,18 L0,0" class="pen-icon" />
-        </g>
-      </g>
-    </svg>
-  </div>
-
-  <!-- Layer 4: Typeface Anatomy & Metric Construction Lines -->
-  <div class="canvas-layer layer-typeface" data-craft-layer="typeface">
-    <svg class="canvas-svg" viewBox="0 0 1200 700" fill="none" preserveAspectRatio="xMidYMid slice">
-      <g transform="translate(0, 220)">
-        <!-- Cap Height Guide -->
-        <line x1="40" y1="30" x2="1160" y2="30" class="guide-cap" />
-        <text x="50" y="22" class="blueprint-text-accent">CAP HEIGHT [720px]</text>
-
-        <!-- Meanline / x-Height Guide -->
-        <line x1="40" y1="110" x2="1160" y2="110" class="guide-xheight" />
-        <text x="50" y="102" class="blueprint-text-dim">x-HEIGHT [510px]</text>
-
-        <!-- Baseline Guide (Solid Accent) -->
-        <line x1="40" y1="210" x2="1160" y2="210" class="guide-baseline" />
-        <text x="50" y="202" class="blueprint-text-accent">BASELINE [0.00]</text>
-
-        <!-- Descender Guide -->
-        <line x1="40" y1="280" x2="1160" y2="280" class="guide-descender" />
-        <text x="50" y="272" class="blueprint-text-dim">DESCENDER [-210px]</text>
-
-        <!-- Optical Geometry Construction Lines for Letterform 'M' -->
-        <g class="letterform-construction" transform="translate(780, 10)">
-          <circle cx="90" cy="110" r="80" class="construction-circle" />
-          <circle cx="180" cy="110" r="80" class="construction-circle" />
-          <path d="M 10,200 L 10,20 L 95,150 L 180,20 L 180,200" class="construction-letter-m" />
-          <text x="80" y="190" class="blueprint-text-accent">STEM / APEX</text>
-        </g>
-      </g>
-    </svg>
-  </div>
-
-  <!-- Chic Floating Blueprint Controller / Mode Switcher (Allows live review toggle) -->
-  <aside class="craft-controller pointer-events-auto" aria-label="Graphic design canvas mode switcher">
-    <div class="controller-badge">
-      <span class="controller-dot"></span>
-      <span class="controller-title">Craft Blueprint</span>
-    </div>
-    <div class="controller-actions">
-      <button type="button" class="mode-btn is-active" data-craft-mode="harmonious" title="Tampilkan semua elemen blueprint secara harmonis">Harmonis</button>
-      <button type="button" class="mode-btn" data-craft-mode="sequenced" title="Tampilkan secara bergantian otomatis">Bergantian</button>
-    </div>
-  </aside>
+  <!-- Layer 5: Architectural Grid with Soft Vignette -->
+  <div class="canvas-grid-overlay"></div>
 </div>
 
 <style>
@@ -148,56 +147,69 @@
     z-index: 0;
   }
 
-  /* Ambient Backlight */
+  /* 1. Ambient Studio Atmospheric Glow */
   .canvas-ambient {
     position: absolute;
     inset: 0;
-    opacity: .28;
-    filter: blur(85px);
-    transition: opacity .5s ease;
+    opacity: .24;
+    filter: blur(90px);
+    transition: opacity .6s ease;
   }
   :global([data-theme="dark"]) .canvas-ambient {
-    opacity: .36;
-    filter: blur(100px);
+    opacity: .32;
+    filter: blur(110px);
   }
   .orb-primary {
     position: absolute;
-    top: -5%;
-    right: 15%;
-    width: 30rem;
-    height: 30rem;
+    top: -8%;
+    right: 18%;
+    width: 32rem;
+    height: 32rem;
     border-radius: 50%;
     background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);
-    animation: orbFloatPrimary 16s ease-in-out infinite alternate;
+    animation: orbFloat1 18s ease-in-out infinite alternate;
   }
   .orb-secondary {
     position: absolute;
-    bottom: 5%;
-    left: 10%;
-    width: 24rem;
-    height: 24rem;
+    bottom: 0%;
+    left: 12%;
+    width: 26rem;
+    height: 26rem;
     border-radius: 50%;
     background: radial-gradient(circle, #f59e0b 0%, transparent 70%);
-    animation: orbFloatSecondary 20s ease-in-out infinite alternate;
+    animation: orbFloat2 22s ease-in-out infinite alternate;
   }
-  @keyframes orbFloatPrimary {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(-40px, 35px) scale(1.1); }
-  }
-  @keyframes orbFloatSecondary {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(35px, -30px) scale(1.08); }
+  .orb-tertiary {
+    position: absolute;
+    top: 35%;
+    left: 45%;
+    width: 18rem;
+    height: 18rem;
+    border-radius: 50%;
+    background: radial-gradient(circle, #818cf8 0%, transparent 70%);
+    animation: orbFloat3 16s ease-in-out infinite alternate;
+    opacity: .5;
   }
 
-  /* Layers Setup */
-  .canvas-layer {
+  @keyframes orbFloat1 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-45px, 40px) scale(1.12); }
+  }
+  @keyframes orbFloat2 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(40px, -35px) scale(1.08); }
+  }
+  @keyframes orbFloat3 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-25px, 20px) scale(1.15); }
+  }
+
+  /* 2. SVG Stage & Organic Vignette */
+  .canvas-svg-stage {
     position: absolute;
     inset: 0;
-    transition: opacity 1s cubic-bezier(.4, 0, .2, 1), transform 1s cubic-bezier(.4, 0, .2, 1);
-  }
-  .canvas-layer.is-faded {
-    opacity: 0;
-    transform: scale(.98);
+    mask-image: radial-gradient(ellipse at 50% 45%, black 45%, transparent 88%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 45%, black 45%, transparent 88%);
   }
   .canvas-svg {
     width: 100%;
@@ -205,379 +217,262 @@
     display: block;
   }
 
-  /* Modular Grid & Crop Marks */
-  .layer-grid {
-    background-image: 
-      linear-gradient(var(--color-line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
-    background-size: 6rem 6rem;
-    opacity: .32;
-    mask-image: linear-gradient(to bottom, black 45%, transparent 92%);
-    -webkit-mask-image: linear-gradient(to bottom, black 45%, transparent 92%);
+  /* 3. Baseline & Guide Lines */
+  .guide-line {
+    stroke: var(--color-ink);
+    stroke-width: 1;
+    opacity: .12;
   }
-  :global([data-theme="dark"]) .layer-grid {
-    opacity: .28;
+  :global([data-theme="dark"]) .guide-line {
+    stroke: var(--color-surface);
+    opacity: .14;
   }
-  .crop-mark {
-    position: absolute;
-    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--color-muted);
-    opacity: .5;
-    letter-spacing: .08em;
-  }
-  .top-left { top: 1.5rem; left: 1.5rem; }
-  .top-right { top: 1.5rem; right: 1.5rem; }
-  .bottom-left { bottom: 1.5rem; left: 1.5rem; }
-  .bottom-right { bottom: 1.5rem; right: 1.5rem; }
-  .register-mark {
-    position: absolute;
-    top: 48%;
-    left: 2rem;
-    transform: translateY(-50%);
-    color: var(--color-muted);
+  .guide-cap { stroke-dasharray: 6 8; }
+  .guide-mean { stroke-dasharray: 2 6; opacity: .08; }
+  .guide-base {
+    stroke: var(--color-accent);
+    stroke-width: 1.2;
     opacity: .35;
   }
+  .guide-desc { stroke-dasharray: 4 6; opacity: .08; }
 
-  /* Golden Ratio Blueprint */
-  .blueprint-rect {
+  .tick-mark {
     stroke: var(--color-ink);
-    stroke-width: 1.2;
+    stroke-width: 1;
     opacity: .22;
   }
-  :global([data-theme="dark"]) .blueprint-rect {
+  :global([data-theme="dark"]) .tick-mark {
     stroke: var(--color-surface);
-    opacity: .35;
+    opacity: .28;
   }
-  .blueprint-subrect {
+  .tick-circle {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 1;
+    opacity: .5;
+  }
+
+  /* 4. Golden Ratio Geometry */
+  .golden-spin-group {
+    animation: slowSpin 90s linear infinite;
+    transform-origin: 200px 200px;
+  }
+  @keyframes slowSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .phi-ring {
+    fill: none;
     stroke: var(--color-ink);
     stroke-width: 1;
-    stroke-dasharray: 4 4;
+    opacity: .12;
+  }
+  :global([data-theme="dark"]) .phi-ring {
+    stroke: var(--color-surface);
     opacity: .18;
   }
-  :global([data-theme="dark"]) .blueprint-subrect {
-    stroke: var(--color-surface);
-    opacity: .25;
-  }
-  .blueprint-diagonal {
+  .phi-outer { stroke-dasharray: 8 8; }
+  .phi-mid { stroke-dasharray: 4 6; }
+  .phi-inner { stroke-dasharray: 2 4; stroke: var(--color-accent); opacity: .3; }
+
+  .phi-axis {
     stroke: var(--color-line);
     stroke-width: 1;
-    opacity: .4;
+    stroke-dasharray: 3 6;
+    opacity: .35;
   }
-  .blueprint-text-accent {
+  .phi-diagonal {
+    stroke: var(--color-line);
+    stroke-width: 1;
+    opacity: .25;
+  }
+  .phi-node {
     fill: var(--color-accent);
-    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .08em;
-  }
-  .blueprint-text-dim {
-    fill: var(--color-muted);
-    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-    font-size: 8px;
-    font-weight: 600;
-    letter-spacing: .12em;
-    opacity: .8;
-  }
-  .blueprint-text-bold {
-    fill: var(--color-ink);
-    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-    font-size: 9px;
-    font-weight: 700;
-  }
-  :global([data-theme="dark"]) .blueprint-text-bold {
-    fill: var(--color-surface);
+    opacity: .6;
   }
 
-  /* Fibonacci Spiral Animation */
+  /* Dynamic Fibonacci Spiral Curve */
   .fibonacci-spiral {
     stroke: var(--color-accent);
-    stroke-width: 2.2;
+    stroke-width: 1.8;
     stroke-dasharray: 1400;
-    animation: spiralDraw 14s cubic-bezier(.45, 0, .25, 1) infinite;
+    opacity: .65;
+    animation: spiralFlow 16s cubic-bezier(.45, 0, .25, 1) infinite;
   }
-  @keyframes spiralDraw {
-    0% { stroke-dashoffset: 1400; opacity: .2; }
-    50% { stroke-dashoffset: 0; opacity: .9; }
-    100% { stroke-dashoffset: -1400; opacity: .2; }
+  @keyframes spiralFlow {
+    0% { stroke-dashoffset: 1400; opacity: .15; }
+    50% { stroke-dashoffset: 0; opacity: .8; }
+    100% { stroke-dashoffset: -1400; opacity: .15; }
   }
 
-  /* Bézier Curves & Handles */
-  .bezier-interactive-group {
-    animation: bezierBreathe 7s ease-in-out infinite;
-    transform-origin: 50% 50%;
+  /* 5. Fluid Bézier Waves & Handles */
+  .bezier-wave {
+    stroke-width: 1.8;
+    transition: transform .4s ease;
   }
-  @keyframes bezierBreathe {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-12px) rotate(1.8deg); }
+  .wave-primary {
+    animation: waveDrift1 14s ease-in-out infinite alternate;
   }
-  .bezier-main-curve {
-    stroke: var(--color-accent);
-    stroke-width: 2;
-    opacity: .75;
+  .wave-secondary {
+    opacity: .45;
+    stroke-dasharray: 12 8;
+    animation: waveDrift2 18s ease-in-out infinite alternate;
   }
-  .bezier-ghost-curve {
+  .wave-ghost {
     stroke: var(--color-ink);
-    stroke-width: 7;
+    stroke-width: 5;
+    opacity: .03;
+    animation: waveDrift1 14s ease-in-out infinite alternate;
+  }
+  :global([data-theme="dark"]) .wave-ghost {
+    stroke: var(--color-surface);
     opacity: .05;
   }
-  :global([data-theme="dark"]) .bezier-ghost-curve {
-    stroke: var(--color-surface);
-    opacity: .08;
+
+  @keyframes waveDrift1 {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(-14px) rotate(1.2deg); }
   }
-  .tangent-stick {
+  @keyframes waveDrift2 {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(16px) rotate(-1.5deg); }
+  }
+
+  /* Tangent System (Active Vector Handle) */
+  .tangent-node-primary {
+    animation: handleFloatPrimary 8s ease-in-out infinite alternate;
+    transform-origin: 700px 240px;
+  }
+  @keyframes handleFloatPrimary {
+    0% { transform: translate(700px, 240px) rotate(0deg); }
+    100% { transform: translate(700px, 226px) rotate(3deg); }
+  }
+
+  .tangent-rod {
     stroke: var(--color-accent);
     stroke-width: 1.2;
-    stroke-dasharray: 2 2;
-    opacity: .85;
+    stroke-dasharray: 2 3;
+    opacity: .75;
   }
-  .handle-circle {
+  .tangent-handle {
     fill: var(--color-surface);
     stroke: var(--color-accent);
-    stroke-width: 1.8;
+    stroke-width: 1.6;
   }
   .anchor-square {
     fill: var(--color-accent);
   }
-  .anchor-pulse {
+  .anchor-aura {
     stroke: var(--color-accent);
     stroke-width: 1;
     fill: none;
-    animation: anchorPulse 3s ease-out infinite;
+    animation: anchorPulse 3.5s ease-out infinite;
   }
   @keyframes anchorPulse {
-    0% { transform: scale(.7); opacity: .8; }
+    0% { transform: scale(.7); opacity: .7; }
     100% { transform: scale(1.4); opacity: 0; }
   }
-  .tangent-stick-faint {
+
+  .tangent-node-secondary {
+    animation: handleFloatSecondary 11s ease-in-out infinite alternate;
+    transform-origin: 360px 290px;
+  }
+  @keyframes handleFloatSecondary {
+    0% { transform: translate(360px, 290px) rotate(0deg); }
+    100% { transform: translate(360px, 298px) rotate(-2.5deg); }
+  }
+  .tangent-rod-faint {
     stroke: var(--color-muted);
     stroke-width: 1;
     stroke-dasharray: 2 2;
-    opacity: .4;
+    opacity: .3;
   }
-  .handle-circle-faint {
+  .tangent-handle-faint {
     fill: var(--color-surface);
     stroke: var(--color-muted);
-    stroke-width: 1.4;
+    stroke-width: 1.2;
+    opacity: .6;
   }
   .anchor-square-faint {
     fill: var(--color-muted);
-  }
-  .pen-icon {
-    fill: var(--color-accent);
-    stroke: var(--color-surface);
-    stroke-width: 1;
-    filter: drop-shadow(0 2px 4px rgba(7, 13, 20, .15));
+    opacity: .6;
   }
 
-  /* Typeface Anatomy Guidelines */
-  .guide-cap {
-    stroke: var(--color-line);
-    stroke-width: 1;
-    stroke-dasharray: 4 4;
-    opacity: .7;
+  /* 6. Letterform Optical Geometry */
+  .letterform-abstract {
+    animation: opticalBreathe 12s ease-in-out infinite alternate;
+    transform-origin: center;
   }
-  .guide-xheight {
-    stroke: var(--color-line);
-    stroke-width: 1;
-    stroke-dasharray: 2 2;
-    opacity: .5;
+  @keyframes opticalBreathe {
+    0% { opacity: .7; transform: translate(180px, 260px) scale(1); }
+    100% { opacity: .95; transform: translate(180px, 252px) scale(1.02); }
   }
-  .guide-baseline {
-    stroke: var(--color-ink);
-    stroke-width: 1.5;
-    opacity: .35;
-  }
-  :global([data-theme="dark"]) .guide-baseline {
-    stroke: var(--color-surface);
-    opacity: .4;
-  }
-  .guide-descender {
-    stroke: var(--color-line);
-    stroke-width: 1;
-    stroke-dasharray: 4 4;
-    opacity: .5;
-  }
-  .construction-circle {
+  .optical-circle {
+    fill: none;
     stroke: var(--color-accent);
     stroke-width: 1;
-    stroke-dasharray: 3 3;
-    opacity: .35;
-  }
-  .construction-letter-m {
-    stroke: var(--color-ink);
-    stroke-width: 2.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    stroke-dasharray: 3 6;
     opacity: .25;
   }
-  :global([data-theme="dark"]) .construction-letter-m {
+  .circle-left { animation: slowSpin 60s linear infinite reverse; transform-origin: 120px 140px; }
+  .circle-right { animation: slowSpin 60s linear infinite; transform-origin: 210px 140px; }
+
+  .optical-path {
+    stroke: var(--color-ink);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    opacity: .18;
+  }
+  :global([data-theme="dark"]) .optical-path {
     stroke: var(--color-surface);
-    opacity: .35;
+    opacity: .25;
+  }
+  .crosshair {
+    stroke: var(--color-accent);
+    stroke-width: 1;
+    opacity: .5;
   }
 
-  /* Floating Blueprint Controller Pill */
-  .craft-controller {
+  /* 7. Grid Overlay */
+  .canvas-grid-overlay {
     position: absolute;
-    bottom: 1.25rem;
-    right: 2rem;
-    display: inline-flex;
-    align-items: center;
-    gap: .75rem;
-    padding: .35rem .5rem .35rem .75rem;
-    border-radius: 999px;
-    border: 1px solid var(--color-line);
-    background: color-mix(in srgb, var(--color-surface) 85%, transparent);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 8px 24px -6px rgba(7, 13, 20, .1);
-    z-index: 20;
-    transition: transform .3s ease, border-color .3s ease;
+    inset: 0;
+    background-image: 
+      linear-gradient(var(--color-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+    background-size: 6rem 6rem;
+    opacity: .22;
+    mask-image: radial-gradient(ellipse at 50% 40%, black 35%, transparent 85%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 40%, black 35%, transparent 85%);
   }
-  .craft-controller:hover {
-    border-color: var(--color-accent);
-  }
-  .controller-badge {
-    display: flex;
-    align-items: center;
-    gap: .45rem;
-  }
-  .controller-dot {
-    width: .4rem;
-    height: .4rem;
-    border-radius: 50%;
-    background: var(--color-accent);
-    box-shadow: 0 0 8px var(--color-accent);
-    animation: pulseDot 2s ease-in-out infinite;
-  }
-  @keyframes pulseDot {
-    0%, 100% { transform: scale(1); opacity: .7; }
-    50% { transform: scale(1.3); opacity: 1; }
-  }
-  .controller-title {
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--color-ink);
-  }
-  .controller-actions {
-    display: flex;
-    align-items: center;
-    gap: .25rem;
-    padding: .15rem;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--color-ink) 6%, transparent);
-  }
-  :global([data-theme="dark"]) .controller-actions {
-    background: color-mix(in srgb, var(--color-surface) 10%, transparent);
-  }
-  .mode-btn {
-    border: none;
-    background: transparent;
-    padding: .25rem .6rem;
-    border-radius: 999px;
-    font-size: 9px;
-    font-weight: 700;
-    color: var(--color-muted);
-    cursor: pointer;
-    transition: all .2s ease;
-  }
-  .mode-btn:hover {
-    color: var(--color-ink);
-  }
-  .mode-btn.is-active {
-    background: var(--color-accent);
-    color: #070d14;
-    box-shadow: 0 2px 8px -2px rgba(241, 85, 51, .4);
+  :global([data-theme="dark"]) .canvas-grid-overlay {
+    opacity: .18;
   }
 
-  /* Accessibility & Media Queries */
-  @media (max-width: 768px) {
-    .craft-controller {
-      bottom: .75rem;
-      right: 1rem;
-      scale: .9;
-      transform-origin: bottom right;
-    }
-    .top-left, .top-right, .bottom-left, .bottom-right, .register-mark {
-      display: none;
-    }
-    .layer-grid {
-      background-size: 4rem 4rem;
-    }
-  }
-
+  /* Accessibility & Reduced Motion */
   @media (prefers-reduced-motion: reduce) {
     .fibonacci-spiral,
-    .bezier-interactive-group,
+    .wave-primary,
+    .wave-secondary,
+    .wave-ghost,
+    .tangent-node-primary,
+    .tangent-node-secondary,
+    .golden-spin-group,
+    .circle-left,
+    .circle-right,
     .orb-primary,
     .orb-secondary,
-    .anchor-pulse,
-    .controller-dot {
+    .orb-tertiary,
+    .anchor-aura,
+    .letterform-abstract {
       animation: none !important;
+    }
+    .fibonacci-spiral {
+      stroke-dashoffset: 0;
+      opacity: .6;
     }
   }
 </style>
-
-<script>
-  // Controller script for Graphic Design Blueprint (Harmonious vs Sequenced cycle)
-  const modeButtons = document.querySelectorAll<HTMLButtonElement>('[data-craft-mode]');
-  const layers = {
-    golden: document.querySelector<HTMLElement>('[data-craft-layer="golden"]'),
-    bezier: document.querySelector<HTMLElement>('[data-craft-layer="bezier"]'),
-    typeface: document.querySelector<HTMLElement>('[data-craft-layer="typeface"]')
-  };
-
-  const layerKeys: (keyof typeof layers)[] = ['golden', 'bezier', 'typeface'];
-  let cycleTimer: ReturnType<typeof setInterval> | null = null;
-  let currentCycleIndex = 0;
-
-  function showAllLayers() {
-    if (cycleTimer) {
-      clearInterval(cycleTimer);
-      cycleTimer = null;
-    }
-    layerKeys.forEach((key) => {
-      layers[key]?.classList.remove('is-faded');
-    });
-  }
-
-  function stepCycle() {
-    layerKeys.forEach((key, idx) => {
-      const el = layers[key];
-      if (!el) return;
-      if (idx === currentCycleIndex) {
-        el.classList.remove('is-faded');
-      } else {
-        el.classList.add('is-faded');
-      }
-    });
-    currentCycleIndex = (currentCycleIndex + 1) % layerKeys.length;
-  }
-
-  function startCycle() {
-    if (cycleTimer) clearInterval(cycleTimer);
-    currentCycleIndex = 0;
-    stepCycle();
-    cycleTimer = setInterval(stepCycle, 4800);
-  }
-
-  modeButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const mode = btn.dataset.craftMode;
-      modeButtons.forEach((b) => b.classList.remove('is-active'));
-      btn.classList.add('is-active');
-
-      if (mode === 'sequenced') {
-        startCycle();
-      } else {
-        showAllLayers();
-      }
-    });
-  });
-
-  // Default: Harmonious mode (all visible)
-  showAllLayers();
-</script>

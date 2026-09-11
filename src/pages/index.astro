@@ -615,7 +615,7 @@ const filterCounts = {
     const total=ideCards.length;
     ideCards.forEach((card,i)=>{
       const diff=(i-ideActive+total)%total;
-      card.dataset.pos=diff===0?'center':diff===1?'right':diff===total-1?'left':'hidden';
+      (card as HTMLElement).dataset.pos=diff===0?'center':diff===1?'right':diff===total-1?'left':'hidden';
     });
   }
   function ideAutoStart(){
