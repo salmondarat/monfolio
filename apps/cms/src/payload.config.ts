@@ -33,7 +33,6 @@ export default buildConfig({
     meta: {
       titleSuffix: '— Monfolio CMS',
     },
-    css: [path.resolve(dirname, './admin/theme.scss')],
   },
   collections: [
     Projects,
