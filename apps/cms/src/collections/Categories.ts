@@ -13,6 +13,7 @@ export const Categories: CollectionConfig = {
     group: 'Content',
     useAsTitle: 'name',
     defaultColumns: ['name', 'key', 'order'],
+    listSearchableFields: ['name', 'key', 'filter'],
     description:
       'Project categories. Each one gets a page at /work/<slug>, using the layout picked on the Page tab.',
   },

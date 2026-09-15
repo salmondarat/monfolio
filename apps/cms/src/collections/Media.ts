@@ -10,6 +10,7 @@ export const Media: CollectionConfig = {
   slug: 'media',
   admin: {
     group: 'Content',
+    listSearchableFields: ['alt', 'credit'],
     description: 'Uploads used across the site: project imagery, hero carousel, OG image.',
   },
   access: {

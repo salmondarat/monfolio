@@ -13,7 +13,8 @@ export const Projects: CollectionConfig = {
   admin: {
     group: 'Content',
     useAsTitle: 'title',
-    defaultColumns: ['title', 'category', 'year', 'featured', '_status'],
+    defaultColumns: ['image', 'title', 'category', 'featured', '_status', 'updatedAt'],
+    listSearchableFields: ['title', 'description', 'year'],
     description: 'Case studies shown in the work grid and the featured build block.',
   },
   versions: {

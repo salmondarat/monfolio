@@ -9,6 +9,7 @@ export const Services: CollectionConfig = {
     group: 'Marketing',
     useAsTitle: 'title',
     defaultColumns: ['number', 'title', 'order'],
+    listSearchableFields: ['title'],
     description: 'Offer cards in the services section and the footer services column.',
   },
   access: {

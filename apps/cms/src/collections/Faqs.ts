@@ -13,6 +13,7 @@ export const Faqs: CollectionConfig = {
     group: 'Marketing',
     useAsTitle: 'question',
     defaultColumns: ['question', 'order'],
+    listSearchableFields: ['question', 'answer'],
   },
   access: {
     read: anyone,

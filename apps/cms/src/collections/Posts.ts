@@ -14,6 +14,7 @@ export const Posts: CollectionConfig = {
     group: 'Content',
     useAsTitle: 'title',
     defaultColumns: ['title', 'kind', 'visual', '_status'],
+    listSearchableFields: ['title', 'excerpt'],
     description: 'Notes and process write-ups. Not linked from the site yet.',
   },
   versions: {

@@ -12,6 +12,8 @@ export const FormSubmissions: CollectionConfig = {
     group: 'Utilities',
     useAsTitle: 'email',
     defaultColumns: ['name', 'email', 'topic', 'createdAt'],
+    listSearchableFields: ['name', 'email', 'topic', 'message'],
+    pagination: { resultsPerPage: 25 },
     description: 'Contact form requests sent from the website.',
   },
   access: {

@@ -9,6 +9,7 @@ export const Testimonials: CollectionConfig = {
     group: 'Marketing',
     useAsTitle: 'name',
     defaultColumns: ['name', 'role', 'order'],
+    listSearchableFields: ['name', 'role', 'quote'],
     description: 'Client reviews shown in the reviews section.',
   },
   access: {
