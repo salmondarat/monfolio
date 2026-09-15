@@ -6,7 +6,7 @@ import { rebuildOnChange, rebuildOnDelete } from '../hooks/rebuildWebhook'
 export const Testimonials: CollectionConfig = {
   slug: 'testimonials',
   admin: {
-    group: 'Content',
+    group: 'Marketing',
     useAsTitle: 'name',
     defaultColumns: ['name', 'role', 'order'],
     description: 'Client reviews shown in the reviews section.',

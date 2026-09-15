@@ -33,6 +33,11 @@ export default buildConfig({
     meta: {
       titleSuffix: '— Monfolio CMS',
     },
+    components: {
+      graphics: {
+        Logo: '/admin/Logo',
+      },
+    },
   },
   collections: [
     Projects,

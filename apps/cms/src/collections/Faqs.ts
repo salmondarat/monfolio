@@ -10,7 +10,7 @@ export const Faqs: CollectionConfig = {
     plural: 'FAQs',
   },
   admin: {
-    group: 'Content',
+    group: 'Marketing',
     useAsTitle: 'question',
     defaultColumns: ['question', 'order'],
   },

@@ -6,7 +6,7 @@ import { rebuildOnChange, rebuildOnDelete } from '../hooks/rebuildWebhook'
 export const Services: CollectionConfig = {
   slug: 'services',
   admin: {
-    group: 'Content',
+    group: 'Marketing',
     useAsTitle: 'title',
     defaultColumns: ['number', 'title', 'order'],
     description: 'Offer cards in the services section and the footer services column.',

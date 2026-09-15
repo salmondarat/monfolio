@@ -9,7 +9,7 @@ export const FormSubmissions: CollectionConfig = {
     plural: 'Submissions',
   },
   admin: {
-    group: 'Leads',
+    group: 'Utilities',
     useAsTitle: 'email',
     defaultColumns: ['name', 'email', 'topic', 'createdAt'],
     description: 'Contact form requests sent from the website.',
