@@ -13,3 +13,5 @@ export const Logo = () => (
     mon<span style={{ color: 'var(--color-success-500, #f15533)' }}>folio</span>
   </span>
 )
+
+export default Logo
