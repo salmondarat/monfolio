@@ -1,0 +1,60 @@
+/* Monfolio admin theme — overrides Payload's CSS variables.
+   Values mirror apps/web/src/styles/global.css. */
+
+:root {
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --theme-bg: #f5f7f9;
+  --theme-text: #070d14;
+  --theme-border: #d8dbdd;
+
+  --theme-elevation-0: #f5f7f9;
+  --theme-elevation-50: #ffffff;
+  --theme-elevation-100: #ffffff;
+  --theme-elevation-150: #f5f7f9;
+  --theme-elevation-200: #ffffff;
+  --theme-elevation-300: #d8dbdd;
+  --theme-elevation-400: #7f8183;
+  --theme-elevation-500: #070d14;
+  --theme-elevation-600: #070d14;
+  --theme-elevation-700: #070d14;
+  --theme-elevation-800: #070d14;
+  --theme-elevation-900: #070d14;
+  --theme-elevation-1000: #070d14;
+
+  --theme-success: #1d8a5b;
+  --theme-warning: #c77b1e;
+  --theme-error: #c73a2e;
+
+  --theme-success-500: #1d8a5b;
+  --theme-warning-500: #c77b1e;
+  --theme-error-500: #c73a2e;
+}
+
+html[data-theme='dark'] {
+  --theme-bg: #11161d;
+  --theme-text: #f5f7f9;
+  --theme-border: #232a33;
+
+  --theme-elevation-0: #11161d;
+  --theme-elevation-50: #161c25;
+  --theme-elevation-100: #161c25;
+  --theme-elevation-150: #11161d;
+  --theme-elevation-200: #161c25;
+  --theme-elevation-300: #232a33;
+  --theme-elevation-400: #a8adb4;
+  --theme-elevation-500: #f5f7f9;
+  --theme-elevation-600: #f5f7f9;
+  --theme-elevation-700: #f5f7f9;
+  --theme-elevation-800: #f5f7f9;
+  --theme-elevation-900: #f5f7f9;
+  --theme-elevation-1000: #f5f7f9;
+
+  --theme-success-500: #2fb37a;
+  --theme-warning-500: #e09a3e;
+  --theme-error-500: #e05a4e;
+}
+
+/* Accent: Payload's primary action color */
+:root, html[data-theme='dark'] {
+  --theme-baseline: #f15533;
+}
