@@ -37,6 +37,11 @@ export default buildConfig({
       graphics: {
         Logo: '/admin/Logo',
       },
+      views: {
+        dashboard: {
+          Component: '/admin/Dashboard',
+        },
+      },
     },
   },
   collections: [
