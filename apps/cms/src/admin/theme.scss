@@ -68,7 +68,7 @@
   --theme-input-bg: #ffffff;
   --theme-overlay: rgba(7, 13, 20, 0.5);
 
-  --theme-success: #1d8a5b;
+  --theme-success: var(--color-success-500);
   --theme-warning: #c77b1e;
   --theme-error: #c73a2e;
 
