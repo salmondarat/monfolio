@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useState } from 'react'
 import { DefaultTemplate } from '@payloadcms/next/templates'
 import type { AdminViewProps } from 'payload'
