@@ -16,6 +16,11 @@ export const Projects: CollectionConfig = {
     defaultColumns: ['image', 'title', 'category', 'featured', '_status', 'updatedAt'],
     listSearchableFields: ['title', 'description', 'year'],
     description: 'Case studies shown in the work grid and the featured build block.',
+    // Targets the category page containing the project grid until per-project detail pages exist.
+    preview: ({ data }) => {
+      const base = process.env.WEB_URL ?? 'http://localhost:4321'
+      return data?.slug ? `${base}/work/${data.slug}` : base
+    },
   },
   versions: {
     drafts: true,

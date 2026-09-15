@@ -33,6 +33,16 @@ export default buildConfig({
     meta: {
       titleSuffix: '— Monfolio CMS',
     },
+    livePreview: {
+      url: process.env.WEB_URL ?? 'http://localhost:4321',
+      breakpoints: [
+        { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
+        { label: 'Tablet', name: 'tablet', width: 768, height: 1024 },
+        { label: 'Mobile', name: 'mobile', width: 390, height: 844 },
+      ],
+      collections: ['projects'],
+      globals: ['home-page'],
+    },
     components: {
       graphics: {
         Logo: '/admin/Logo',

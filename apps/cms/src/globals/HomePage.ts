@@ -14,6 +14,7 @@ export const HomePage: GlobalConfig = {
   admin: {
     group: 'Content',
     description: 'Every block of copy on the single page site.',
+    preview: () => process.env.WEB_URL ?? 'http://localhost:4321',
   },
   access: {
     read: anyone,
