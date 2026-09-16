@@ -34,7 +34,7 @@ export default buildConfig({
       titleSuffix: '— Monfolio CMS',
     },
     livePreview: {
-      url: process.env.WEB_URL ?? 'http://localhost:4321',
+      url: webOrigin ?? 'http://localhost:4321',
       breakpoints: [
         { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
         { label: 'Tablet', name: 'tablet', width: 768, height: 1024 },

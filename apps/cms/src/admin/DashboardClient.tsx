@@ -10,6 +10,7 @@ type FeaturedProject = { id: string | number; title: string; slug?: string }
 export const DashboardClient = () => {
   const [submissions, setSubmissions] = useState<Submission[] | null>(null)
   const [featured, setFeatured] = useState<FeaturedProject[] | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -19,13 +20,14 @@ export const DashboardClient = () => {
           fetch('/api/form-submissions?limit=5&sort=-createdAt&depth=0'),
           fetch('/api/projects?limit=3&depth=0&where[featured][equals]=true'),
         ])
+        if (!subsRes.ok || !featRes.ok) throw new Error('panel fetch failed')
         const subs = await subsRes.json()
         const feat = await featRes.json()
         if (cancelled) return
         setSubmissions(subs.docs ?? [])
         setFeatured(feat.docs ?? [])
-      } catch {
-        if (!cancelled) { setSubmissions([]); setFeatured([]) }
+      } catch (err) {
+        if (!cancelled) setError(err instanceof Error ? err.message : 'panel fetch failed')
       }
     }
     void load()
@@ -39,7 +41,10 @@ export const DashboardClient = () => {
         <p>Everything on the site, at a glance.</p>
       </header>
       <DashboardCounts />
-      <div className="dashboard-columns">
+      {error ? (
+        <p className="dashboard-error">Failed to load panels: {error}</p>
+      ) : (
+        <div className="dashboard-columns">
         <section className="dashboard-panel">
           <h2>Recent form submissions</h2>
           {submissions === null ? (
@@ -75,7 +80,8 @@ export const DashboardClient = () => {
             </ul>
           )}
         </section>
-      </div>
+        </div>
+      )}
     </div>
   )
 }

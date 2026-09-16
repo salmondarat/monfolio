@@ -24,11 +24,12 @@ export const DashboardCounts = () => {
     let cancelled = false
     const load = async () => {
       try {
-        const [projects, drafts, posts, services, testimonials, faqs, media, submissions] =
+        const [projects, drafts, posts, postDrafts, services, testimonials, faqs, media, submissions] =
           await Promise.all([
             fetchTotal('projects'),
             fetchTotal('projects', '&where[_status][equals]=draft'),
             fetchTotal('posts'),
+            fetchTotal('posts', '&where[_status][equals]=draft'),
             fetchTotal('services'),
             fetchTotal('testimonials'),
             fetchTotal('faqs'),
@@ -38,7 +39,7 @@ export const DashboardCounts = () => {
         if (cancelled) return
         setCards([
           { label: 'Projects', href: '/admin/collections/projects', total: projects, draft: drafts },
-          { label: 'Posts', href: '/admin/collections/posts', total: posts },
+          { label: 'Posts', href: '/admin/collections/posts', total: posts, draft: postDrafts },
           { label: 'Services', href: '/admin/collections/services', total: services },
           { label: 'Testimonials', href: '/admin/collections/testimonials', total: testimonials },
           { label: 'FAQs', href: '/admin/collections/faqs', total: faqs },
