@@ -1,0 +1,22 @@
+{
+  "name": "@monfolio/content",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@monfolio/tsconfig": "workspace:*",
+    "@types/node": "^22.19.9",
+    "typescript": "^5.9.3"
+  }
+}

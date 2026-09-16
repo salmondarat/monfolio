@@ -1,21 +1,30 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
 # build output
 dist/
+.next/
+.turbo/
+apps/cms/build/
+
+# uploaded media (local disk storage, dev only)
+apps/cms/media/
+
 # generated types
 .astro/
 
-# dependencies
-node_modules/
+# environment variables
+.env
+.env.production
+.env.local
+.env.*.local
 
 # logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-
-
-# environment variables
-.env
-.env.production
 
 # macOS-specific files
 .DS_Store
@@ -25,3 +34,8 @@ pnpm-debug.log*
 
 # antigravity / memory
 .remember/
+
+# agent tooling scratch
+.codegraph/
+.commandcode/
+.superpowers/

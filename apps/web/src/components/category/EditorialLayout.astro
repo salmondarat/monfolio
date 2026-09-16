@@ -1,0 +1,70 @@
+---
+import type { Category, Project } from '@monfolio/content';
+import CategoryHero from './CategoryHero.astro';
+
+const { category, projects } = Astro.props as { category: Category; projects: Project[] };
+---
+<CategoryHero category={category} variant="compact" />
+<section class="bg-surface px-5 pb-24 pt-12 sm:px-8 lg:px-8">
+  <div class="mx-auto max-w-7xl">
+    {projects.length === 0 ? (
+      <p class="category-empty">Nothing published in this category yet.</p>
+    ) : (
+      <ol class="editorial-list">
+        {projects.map((project, index) => (
+          <li class="editorial-row">
+            <span class="editorial-index">{String(index + 1).padStart(2, '0')}</span>
+            <div class="editorial-thumb">
+              {project.image && <img src={project.image} alt={project.imageAlt} loading="lazy" decoding="async" />}
+            </div>
+            <div class="editorial-body">
+              <h2>{project.title}</h2>
+              <p>{project.description}</p>
+              {project.quote && <blockquote>“{project.quote}”</blockquote>}
+            </div>
+            <div class="editorial-side">
+              <span class="editorial-year">{project.year}</span>
+              {project.deliverables.length > 0 && (
+                <ul>
+                  {project.deliverables.map((item) => <li>{item}</li>)}
+                </ul>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+    )}
+  </div>
+</section>
+
+<style>
+  .editorial-list { margin:0; padding:0; list-style:none; border-top:1px solid var(--color-line); }
+  .editorial-row { display:grid; grid-template-columns:auto 9rem 1fr 12rem; gap:2rem; align-items:start; padding:2.5rem 0; border-bottom:1px solid var(--color-line); transition:background .4s var(--ease-studio); }
+  .editorial-row:hover { background:var(--color-surface-lift); }
+  .editorial-index { padding-top:.35rem; color:var(--color-accent); font-size:11px; font-weight:800; letter-spacing:.14em; }
+  .editorial-thumb { overflow:hidden; border-radius:.875rem; border:1px solid var(--color-line); background:var(--color-surface-lift); }
+  .editorial-thumb img { display:block; width:100%; aspect-ratio:4/3; object-fit:cover; transition:transform .7s var(--ease-studio); }
+  .editorial-row:hover .editorial-thumb img { transform:scale(1.05); }
+  .editorial-body h2 { margin:0; font-family:var(--font-display); color:var(--color-ink); font-size:clamp(1.4rem,2.4vw,2rem); font-weight:700; letter-spacing:-.05em; line-height:1.1; transition:color .3s ease; }
+  .editorial-row:hover .editorial-body h2 { color:var(--color-accent); }
+  .editorial-body p { max-width:34rem; margin:.75rem 0 0; color:var(--color-muted); font-size:13px; line-height:1.7; }
+  .editorial-body blockquote { max-width:34rem; margin:1.25rem 0 0; border-left:2px solid var(--color-accent); padding-left:1rem; color:var(--color-ink); font-size:12px; font-style:italic; line-height:1.7; }
+  .editorial-side { padding-top:.35rem; }
+  .editorial-year { display:block; color:var(--color-muted); font-size:11px; font-weight:800; letter-spacing:.14em; }
+  .editorial-side ul { margin:1rem 0 0; padding:0; list-style:none; }
+  .editorial-side li { margin-bottom:.45rem; color:var(--color-muted); font-size:11px; line-height:1.5; }
+  .editorial-side li::before { content:'—'; margin-right:.5rem; color:var(--color-line); }
+  .category-empty { border:1px dashed var(--color-line); border-radius:1.25rem; padding:4rem 2rem; text-align:center; color:var(--color-muted); font-size:13px; }
+  @media(max-width:1080px){
+    .editorial-row { grid-template-columns:auto 7rem 1fr; gap:1.5rem; }
+    .editorial-side { grid-column:2 / -1; padding-top:0; }
+    .editorial-side ul { display:flex; flex-wrap:wrap; gap:.5rem 1.25rem; }
+    .editorial-side li { margin-bottom:0; }
+  }
+  @media(max-width:700px){
+    .editorial-row { grid-template-columns:auto 1fr; gap:1rem; }
+    .editorial-thumb { grid-column:2; }
+    .editorial-body { grid-column:2; }
+    .editorial-side { grid-column:2; }
+  }
+</style>

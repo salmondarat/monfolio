@@ -1,0 +1,53 @@
+---
+import type { Category } from '@monfolio/content';
+import {
+  getAnnouncement,
+  getCategories,
+  getNavigation,
+  getProjectsByCategory,
+  getSiteSettings,
+} from '@monfolio/content';
+import SiteShell from '../../layouts/SiteShell.astro';
+import EditorialLayout from '../../components/category/EditorialLayout.astro';
+import GridLayout from '../../components/category/GridLayout.astro';
+import ShowcaseLayout from '../../components/category/ShowcaseLayout.astro';
+
+export const getStaticPaths = async () => {
+  const categories = await getCategories();
+
+  return categories.map((category) => ({
+    params: { slug: category.slug },
+    props: { category },
+  }));
+};
+
+const { category } = Astro.props as { category: Category };
+
+const [projects, settings, navigation, announcement] = await Promise.all([
+  getProjectsByCategory(category.slug),
+  getSiteSettings(),
+  getNavigation(),
+  getAnnouncement(),
+]);
+
+const layouts = {
+  grid: GridLayout,
+  showcase: ShowcaseLayout,
+  editorial: EditorialLayout,
+};
+
+const CategoryLayout = layouts[category.page.layout] ?? GridLayout;
+
+const title = category.page.seo.title || `${category.name} — ${settings.title}`;
+const description =
+  category.page.seo.description || category.page.intro || settings.description;
+---
+<SiteShell
+  settings={settings}
+  navigation={navigation}
+  announcement={announcement}
+  title={title}
+  description={description}
+>
+  <CategoryLayout category={category} projects={projects} />
+</SiteShell>

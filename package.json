@@ -1,0 +1,21 @@
+{
+  "name": "monfolio",
+  "private": true,
+  "type": "module",
+  "version": "0.0.1",
+  "packageManager": "pnpm@12.3.4",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean",
+    "cms": "pnpm --filter @monfolio/cms",
+    "web": "pnpm --filter @monfolio/web"
+  },
+  "devDependencies": {
+    "turbo": "^2.10.13"
+  }
+}

@@ -1,0 +1,26 @@
+---
+import type { Category, Project } from '@monfolio/content';
+import CategoryHero from './CategoryHero.astro';
+import ProjectCard from '../ProjectCard.astro';
+
+const { category, projects } = Astro.props as { category: Category; projects: Project[] };
+---
+<CategoryHero category={category} variant="compact" />
+<section class="bg-surface px-5 pb-24 pt-14 sm:px-8 lg:px-8">
+  <div class="mx-auto max-w-7xl">
+    {projects.length === 0 ? (
+      <p class="category-empty">Nothing published in this category yet.</p>
+    ) : (
+      <div class="category-grid">
+        {projects.map((project, index) => <ProjectCard project={project} index={index} />)}
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .category-grid { display:grid; grid-template-columns:1fr; gap:1.75rem; }
+  .category-empty { border:1px dashed var(--color-line); border-radius:1.25rem; padding:4rem 2rem; text-align:center; color:var(--color-muted); font-size:13px; }
+  @media(min-width:640px){ .category-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media(min-width:1080px){ .category-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+</style>

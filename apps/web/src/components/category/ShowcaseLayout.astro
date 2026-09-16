@@ -1,0 +1,67 @@
+---
+import type { Category, Project } from '@monfolio/content';
+import CategoryHero from './CategoryHero.astro';
+
+const { category, projects } = Astro.props as { category: Category; projects: Project[] };
+---
+<CategoryHero category={category} variant="full" />
+<section class="bg-surface px-5 pb-24 pt-16 sm:px-8 lg:px-8">
+  <div class="mx-auto flex max-w-7xl flex-col gap-16">
+    {projects.length === 0 && <p class="category-empty">Nothing published in this category yet.</p>}
+    {projects.map((project, index) => (
+      <article class={`showcase-row${index % 2 === 1 ? ' is-reversed' : ''}`}>
+        <div class="showcase-visual">
+          {project.image
+            ? <img src={project.image} alt={project.imageAlt} loading="lazy" decoding="async" />
+            : <div class="showcase-placeholder"></div>}
+        </div>
+        <div class="showcase-copy">
+          <div class="showcase-meta">
+            <span class="showcase-index">{String(index + 1).padStart(2, '0')}</span>
+            <span class="showcase-year">{project.year}</span>
+          </div>
+          <h2>{project.title}</h2>
+          <p class="showcase-desc">{project.description}</p>
+          {project.metrics.length > 0 && (
+            <div class="showcase-metrics">
+              {project.metrics.map((metric) => <span>{metric}</span>)}
+            </div>
+          )}
+          {project.deliverables.length > 0 && (
+            <ul class="showcase-deliverables">
+              {project.deliverables.map((item) => <li>{item}</li>)}
+            </ul>
+          )}
+          {project.quote && <blockquote>“{project.quote}”</blockquote>}
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .showcase-row { display:grid; grid-template-columns:7fr 5fr; gap:3rem; align-items:center; }
+  .showcase-row.is-reversed .showcase-visual { order:2; }
+  .showcase-row.is-reversed .showcase-copy { order:1; }
+  .showcase-visual { overflow:hidden; border-radius:1.5rem; border:1px solid var(--color-line); background:var(--color-surface-lift); }
+  .showcase-visual img { display:block; width:100%; aspect-ratio:16/11; object-fit:cover; transition:transform .7s var(--ease-studio); }
+  .showcase-row:hover .showcase-visual img { transform:scale(1.03); }
+  .showcase-placeholder { aspect-ratio:16/11; }
+  .showcase-copy { display:flex; flex-direction:column; }
+  .showcase-meta { display:flex; align-items:center; gap:.75rem; margin-bottom:1rem; }
+  .showcase-index { color:var(--color-accent); font-size:11px; font-weight:800; letter-spacing:.14em; }
+  .showcase-year { color:var(--color-muted); font-size:11px; font-weight:700; letter-spacing:.14em; }
+  .showcase-copy h2 { margin:0; font-family:var(--font-display); color:var(--color-ink); font-size:clamp(1.8rem,3.2vw,2.8rem); font-weight:700; letter-spacing:-.06em; line-height:1.05; }
+  .showcase-desc { margin:1rem 0 0; color:var(--color-muted); font-size:15px; line-height:1.7; }
+  .showcase-metrics { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:1.5rem; }
+  .showcase-metrics span { border:1px solid var(--color-line); border-radius:999px; padding:.35rem .7rem; color:var(--color-ink); font-size:10px; font-weight:700; }
+  .showcase-deliverables { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 0; padding:0; list-style:none; }
+  .showcase-deliverables li { color:var(--color-muted); font-size:11px; }
+  .showcase-deliverables li + li::before { content:'·'; margin-right:.5rem; color:var(--color-line); }
+  .showcase-copy blockquote { margin:1.75rem 0 0; border-left:2px solid var(--color-accent); padding-left:1.25rem; color:var(--color-ink); font-size:14px; font-style:italic; line-height:1.7; }
+  .category-empty { border:1px dashed var(--color-line); border-radius:1.25rem; padding:4rem 2rem; text-align:center; color:var(--color-muted); font-size:13px; }
+  @media(max-width:900px){
+    .showcase-row, .showcase-row.is-reversed { grid-template-columns:1fr; gap:1.5rem; }
+    .showcase-row.is-reversed .showcase-visual, .showcase-row.is-reversed .showcase-copy { order:initial; }
+  }
+</style>

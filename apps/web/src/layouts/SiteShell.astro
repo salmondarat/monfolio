@@ -1,0 +1,64 @@
+---
+import type { AnnouncementContent, NavigationContent, SiteSettingsContent } from '@monfolio/content';
+import Layout from './Layout.astro';
+import AnnouncementBar from '../components/AnnouncementBar.astro';
+import Header from '../components/Header.astro';
+import FooterLinks from '../components/FooterLinks.astro';
+import { resolveHref } from '../lib/links';
+
+const { settings, navigation, announcement, title, description } = Astro.props as {
+  settings: SiteSettingsContent;
+  navigation: NavigationContent;
+  announcement: AnnouncementContent;
+  title?: string;
+  description?: string;
+};
+
+const pathname = Astro.url.pathname;
+---
+<Layout settings={settings} title={title} description={description}>
+  <div class="site-shell" id="top">
+    <AnnouncementBar announcement={announcement} />
+    <Header navigation={navigation} />
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer bg-ink px-5 py-16 text-surface sm:px-8 lg:px-8">
+      <div class="mx-auto max-w-7xl">
+        <div class="footer-banner">
+          <div>
+            <span>{settings.footerBanner.eyebrow}</span>
+            <h2>{settings.footerBanner.heading}</h2>
+          </div>
+          <a class="button button-orange" href={resolveHref('#contact', pathname)}>{settings.footerBanner.ctaLabel}</a>
+        </div>
+        <div class="footer-grid">
+          <div class="footer-identity">
+            <a href={resolveHref('#top', pathname)}>monfolio<span>.</span></a>
+            <p>{settings.footerTagline}</p>
+          </div>
+          {navigation.footerColumns.map((column) => (
+            <FooterLinks title={column.title} links={column.links} />
+          ))}
+        </div>
+        <div class="legal-row">
+          <span>{settings.copyright}</span>
+          <span>
+            {settings.legalLinks.map((link, index) => (
+              <Fragment>{index > 0 ? ' · ' : ''}<a href={resolveHref(link.href, pathname)}>{link.label}</a></Fragment>
+            ))}
+            {' · '}<b>Designed &amp; built in-house</b>
+          </span>
+        </div>
+      </div>
+    </footer>
+  </div>
+</Layout>
+
+<script>
+  document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('monfolio-theme', next);
+  });
+</script>

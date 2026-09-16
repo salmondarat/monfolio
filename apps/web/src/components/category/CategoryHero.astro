@@ -1,0 +1,55 @@
+---
+import type { Category } from '@monfolio/content';
+
+const { category, variant = 'compact' } = Astro.props as {
+  category: Category;
+  variant?: 'compact' | 'full';
+};
+
+const count = category.projectCount;
+---
+<section class={`category-hero is-${variant} bg-surface px-5 pt-16 sm:px-8 sm:pt-20 lg:px-8`}>
+  <div class="mx-auto max-w-7xl">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span aria-hidden="true">/</span>
+      <a href="/#work">Work</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{category.name}</span>
+    </nav>
+    {category.page.eyebrow && <span class="category-eyebrow">{category.page.eyebrow}</span>}
+    <h1 class="category-heading" set:html={category.page.heading} />
+    <div class="category-foot">
+      {category.page.intro && <p class="category-intro">{category.page.intro}</p>}
+      <span class="category-count">{count} {count === 1 ? 'project' : 'projects'}</span>
+    </div>
+  </div>
+  {variant === 'full' && category.page.heroImage && (
+    <div class="mx-auto mt-12 max-w-7xl">
+      <div class="category-band">
+        <img src={category.page.heroImage} alt="" loading="eager" decoding="async" />
+      </div>
+    </div>
+  )}
+</section>
+
+<style>
+  .breadcrumb { display:flex; align-items:center; gap:.5rem; margin-bottom:2rem; color:var(--color-muted); font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  .breadcrumb a { color:var(--color-muted); }
+  .breadcrumb a:hover { color:var(--color-accent); }
+  .breadcrumb span { color:color-mix(in srgb,var(--color-muted) 60%,transparent); }
+  .category-eyebrow { display:inline-block; margin-bottom:1rem; border:1px solid var(--color-line); border-radius:999px; padding:.5rem .85rem; color:var(--color-ink); font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+  .category-heading { max-width:56rem; margin:0; font-family:var(--font-display); color:var(--color-ink); font-size:clamp(2.4rem,5.5vw,5rem); font-weight:600; letter-spacing:-.07em; line-height:1; }
+  .category-heading :global(em) { color:var(--color-accent); font-style:normal; }
+  .category-heading :global(.client-chip), .category-heading :global(.showreel-chip) { display:inline-flex; align-items:center; gap:.5rem; border-radius:999px; padding:.3rem .8rem .35rem; font-size:.25em; font-weight:600; letter-spacing:-.04em; vertical-align:middle; }
+  .category-heading :global(.client-chip) { border:1px solid var(--color-line); background:var(--color-ink); color:var(--color-surface); }
+  .category-heading :global(.showreel-chip) { border:1px solid var(--color-accent); background:var(--color-accent); color:#070d14; }
+  .category-foot { display:flex; align-items:flex-end; justify-content:space-between; gap:2rem; margin-top:2rem; }
+  .category-intro { max-width:38rem; margin:0; color:var(--color-muted); font-size:16px; line-height:1.7; }
+  .category-count { flex:none; color:var(--color-muted); font-size:11px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+  .category-band { overflow:hidden; border-radius:1.5rem; border:1px solid var(--color-line); }
+  .category-band img { display:block; width:100%; height:clamp(16rem,42vw,32rem); object-fit:cover; }
+  @media(max-width:700px){
+    .category-foot { flex-direction:column; align-items:flex-start; gap:1rem; }
+  }
+</style>
