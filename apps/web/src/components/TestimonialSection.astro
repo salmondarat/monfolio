@@ -1,14 +1,20 @@
 ---
+import type { Marker, SectionCopy, Testimonial } from '@monfolio/content';
 import SectionMarker from './SectionMarker.astro';
-import { testimonials } from '../data/testimonials';
+
+const { testimonials, marker, copy } = Astro.props as {
+  testimonials: Testimonial[];
+  marker: Marker;
+  copy: SectionCopy;
+};
 ---
 
 <section id="reviews" class="bg-surface px-5 py-20 sm:px-8 sm:py-28 lg:px-8">
   <div class="mx-auto max-w-7xl" data-fade-stagger>
-    <SectionMarker number="5" label="Client reviews" />
+    <SectionMarker number={marker.number} label={marker.label} />
     <div class="reviews-head">
-      <h2 class="display-heading">Words from<br /><em>the teams.</em></h2>
-      <p>Three marketing teams on what it is like to build with us — in their own words.</p>
+      <h2 class="display-heading" set:html={copy.heading} />
+      <p>{copy.intro}</p>
     </div>
     <div class="review-grid">
       {testimonials.map((testimonial) => (

@@ -24,4 +24,41 @@ body { margin: 0; background: var(--color-surface); color: var(--color-ink); fon
 .reveal { opacity: 0; transform: translateY(22px); transition: opacity .8s var(--ease-studio), transform .8s var(--ease-studio); }
 .reveal.is-visible { opacity: 1; transform: none; }
 .focus-ring:focus-visible, a:focus-visible, button:focus-visible { outline: 2px solid #f15533; outline-offset: 5px; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } .reveal { opacity: 1; transform: none; } }
+
+/* ---------------------------------------------------------------- buttons */
+/* Used by the hero, the footer banner and inner pages, so they live here
+   rather than in one page's scoped styles. */
+.button { position: relative; display: inline-flex; height: 3.25rem; min-width: 9rem; align-items: center; justify-content: center; overflow: hidden; border-radius: 999px; padding: 0 1.4rem; font-size: 12px; font-weight: 800; transition: transform .5s var(--ease-studio); }
+.button:hover { transform: translateY(-3px); }
+.button-orange { background: var(--color-accent); color: #070d14; }
+.button-outline { border: 1px solid var(--color-line); color: var(--color-ink); }
+.button span { display: block; transition: transform .5s var(--ease-studio), opacity .5s; }
+.button span + span { position: absolute; transform: translateY(180%); opacity: 0; }
+.button:hover span:first-child { transform: translateY(-180%); opacity: 0; }
+.button:hover span + span { transform: translateY(0); opacity: 1; }
+
+/* ----------------------------------------------------------------- footer */
+.footer-banner { display:flex; align-items:center; justify-content:space-between; gap:2rem; padding-bottom:4rem; margin-bottom:4rem; border-bottom:1px solid color-mix(in srgb,var(--color-surface) 18%,transparent); }
+.footer-banner > div { max-width:48rem; }
+.footer-banner span { color:var(--color-accent); font-size:10px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+.footer-banner h2 { margin-top:.8rem; color:var(--color-surface); font-size:clamp(2rem,4vw,4rem); font-weight:600; letter-spacing:-.07em; line-height:1; }
+.footer-grid { display:grid; grid-template-columns:2fr repeat(3,1fr); gap:2rem; padding-bottom:4rem; margin-bottom:1.5rem; border-bottom:1px solid color-mix(in srgb,var(--color-surface) 18%,transparent); }
+.footer-identity > a { color:var(--color-surface); font-size:1.7rem; font-weight:800; letter-spacing:-.08em; }
+.footer-identity > a span, .legal-row b { color:var(--color-accent); }
+.footer-identity p { max-width:18rem; margin-top:.8rem; color:color-mix(in srgb,var(--color-surface) 95%,transparent); font-size:13px; line-height:1.7; }
+.legal-row { display:flex; justify-content:space-between; gap:1rem; color:color-mix(in srgb,var(--color-surface) 68%,transparent); font-size:12px; }
+.legal-row a { color:color-mix(in srgb,var(--color-surface) 82%,transparent); }
+.legal-row a:hover { color:var(--color-accent); }
+
+@media(max-width:700px){
+  .footer-banner { flex-direction: column; align-items: flex-start; }
+  .footer-grid { grid-template-columns:1fr; }
+  .legal-row { align-items: flex-start; flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+  .button:hover { transform: none !important; }
+}

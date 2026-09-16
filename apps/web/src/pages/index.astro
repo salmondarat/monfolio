@@ -1,81 +1,123 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import AnnouncementBar from '../components/AnnouncementBar.astro';
+import SiteShell from '../layouts/SiteShell.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ProjectVisual from '../components/ProjectVisual.astro';
 import SectionMarker from '../components/SectionMarker.astro';
-import FooterLinks from '../components/FooterLinks.astro';
 import FaqSection from '../components/FaqSection.astro';
 import TestimonialSection from '../components/TestimonialSection.astro';
 import HeroGridAnimation from '../components/HeroGridAnimation.astro';
-import { projects } from '../data/projects';
-import { services } from '../data/services';
+import {
+  getAnnouncement,
+  getFaqs,
+  getHomePage,
+  getNavigation,
+  getProjects,
+  getServices,
+  getSiteSettings,
+  getTestimonials,
+} from '@monfolio/content';
 
-const categorySlug = (category: string) => {
-  const raw = category.toLowerCase();
-  return raw.includes('custom') ? 'custom-build' : raw.includes('design') ? 'design-system' : raw.includes('migration') ? 'migration' : 'growth';
-};
-const filterCounts = {
-  all: projects.length,
-  'custom-build': projects.filter((p) => categorySlug(p.category) === 'custom-build').length,
-  'design-system': projects.filter((p) => categorySlug(p.category) === 'design-system').length,
-  migration: projects.filter((p) => categorySlug(p.category) === 'migration').length,
-  growth: projects.filter((p) => categorySlug(p.category) === 'growth').length,
-};
+const [projects, services, testimonials, faqs, home, navigation, settings, announcement] =
+  await Promise.all([
+    getProjects(),
+    getServices(),
+    getTestimonials(),
+    getFaqs(),
+    getHomePage(),
+    getNavigation(),
+    getSiteSettings(),
+    getAnnouncement(),
+  ]);
+
+const featuredProject =
+  home.work.featured.project ?? projects.find((project) => project.featured) ?? projects[0];
+
+const filterCounts = Object.fromEntries(
+  home.work.filters.map((filter) => [
+    filter.key,
+    filter.key === 'all'
+      ? projects.length
+      : projects.filter((project) => project.categoryKey === filter.key).length,
+  ]),
+);
+
+const visibleProjectCount = Math.min(projects.length, home.work.maxVisible);
+const slideTotal = String(home.hero.carousel.length).padStart(2, '0');
 ---
-<Layout>
-  <div class="site-shell" id="top">
-    <AnnouncementBar />
-    <Header />
+<SiteShell settings={settings} navigation={navigation} announcement={announcement}>
     <main>
       <section class="hero-stage bg-surface px-5 sm:px-8 lg:px-8">
         <HeroGridAnimation />
-        <div class="relative z-10 mx-auto flex min-h-[calc(100svh-7.5rem)] max-w-7xl flex-col pt-8 sm:pt-10">
-          <div class="hero-meta"><span class="studio-badge"><i></i> Design &amp; build studio</span><span class="location-badge">Monfolio Studio — Jakarta + remote</span></div>
-          <h1 class="hero-title mt-6 max-w-4xl font-display text-[clamp(2.4rem,4.5vw,4.5rem)] font-semibold leading-[.95] tracking-[-.07em]">A partner to ambitious <span class="client-chip">Northwind <i>↗</i></span> marketing teams, accelerating growth with next-level <span class="showreel-chip">websites <b>▶</b></span>.</h1>
-          <div class="mt-8 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div class="flex flex-col items-start gap-6">
-              <p class="max-w-md text-[15px] leading-[1.7] text-muted">We design and build custom sites that make your team faster: clear systems, considered motion and no mystery after launch.</p>
-              <div class="flex flex-wrap gap-3">
-                <a class="button button-orange rolling-button" href="#contact"><span>Start a project ↗</span><span aria-hidden="true">Start a project ↗</span></a>
-                <a class="button button-outline rolling-button" href="#work"><span>Explore our work ↓</span><span aria-hidden="true">Explore our work ↓</span></a>
+        <div class="hero-wrap relative z-10 mx-auto flex min-h-[calc(100svh-7.5rem)] max-w-7xl flex-col pt-4 sm:pt-5 lg:h-[calc(100svh-7.5rem)]">
+          <div class="hero-grid-row my-auto grid gap-8 pb-28 lg:grid-cols-[7fr_3fr] lg:gap-14">
+            <div class="hero-left flex flex-col items-start gap-12">
+              <span class="studio-badge"><i></i> {home.hero.badge}</span>
+              <h1 class="hero-title mt-4 max-w-5xl font-display text-[clamp(2.6rem,4.8vw,5rem)] font-semibold leading-[1.02] tracking-[-.06em]" set:html={home.hero.heading} />
+              <div class="hero-skills flex flex-wrap gap-2">
+                {home.hero.skills.map((skill) => (
+                  <span class="skill-chip"><em>✦</em> {skill}</span>
+                ))}
               </div>
+              <p class="hero-desc max-w-md text-[15px] leading-[1.7] text-muted">{home.hero.description}</p>
+              <div class="hero-cta flex flex-wrap gap-3">
+                <a class="button button-orange rolling-button" href={home.hero.primaryCta.href}><span>{home.hero.primaryCta.label}</span><span aria-hidden="true">{home.hero.primaryCta.label}</span></a>
+                <a class="button button-outline rolling-button" href={home.hero.secondaryCta.href}><span>{home.hero.secondaryCta.label}</span><span aria-hidden="true">{home.hero.secondaryCta.label}</span></a>
+              </div>
+              <div class="availability pt-2"><i></i> {home.hero.availability} <span>· {home.hero.availabilityNote}</span></div>
             </div>
-            <div class="ide-stack">
+            <div class="hero-right flex flex-col items-start gap-6">
+              <span class="location-badge">{home.hero.locationBadge}</span>
+              <div class="ide-stack w-full">
               <div class="ide-carousel" aria-hidden="true">
-                <figure class="ide-card" data-ide-card>
-                  <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=800&auto=format&fit=crop" alt="" loading="lazy" decoding="async" />
-                  <figcaption><b>Dashboard</b><span>01 / 03</span></figcaption>
-                </figure>
-                <figure class="ide-card" data-ide-card>
-                  <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=800&auto=format&fit=crop" alt="" loading="lazy" decoding="async" />
-                  <figcaption><b>Minimal landing</b><span>02 / 03</span></figcaption>
-                </figure>
-                <figure class="ide-card" data-ide-card>
-                  <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=800&auto=format&fit=crop" alt="" loading="lazy" decoding="async" />
-                  <figcaption><b>Social media</b><span>03 / 03</span></figcaption>
-                </figure>
+                {home.hero.carousel.map((slide, index) => (
+                  <figure class="ide-card" data-ide-card>
+                    <img src={slide.image} alt="" loading="lazy" decoding="async" />
+                    <figcaption><b>{slide.caption}</b><span>{String(index + 1).padStart(2, '0')} / {slideTotal}</span></figcaption>
+                  </figure>
+                ))}
               </div>
+              <div class="ide-dots" aria-hidden="true"></div>
               <div class="ide-window" aria-hidden="true">
-                <div class="ide-chrome"><span class="ide-dot"></span><span class="ide-dot"></span><span class="ide-dot"></span><span class="ide-tab">site.config</span></div>
+                <div class="ide-chrome"><span class="ide-dot"></span><span class="ide-dot"></span><span class="ide-dot"></span><span class="ide-tab">designer.config</span></div>
                 <div class="ide-body">
                   <pre class="ide-code"><code id="ide-code"><span class="ide-caret"></span></code></pre>
                   <div class="ide-results is-hidden">
-                    <figure class="ide-result"><img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?q=80&w=400&auto=format&fit=crop" alt="" loading="lazy" decoding="async" /><figcaption>Dashboard</figcaption></figure>
-                    <figure class="ide-result"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=400&auto=format&fit=crop" alt="" loading="lazy" decoding="async" /><figcaption>Minimal landing</figcaption></figure>
-                    <figure class="ide-result"><img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=400&auto=format&fit=crop" alt="" loading="lazy" decoding="async" /><figcaption>Social media</figcaption></figure>
+                    <figure class="ide-result">
+                      <div class="mock-screen mock-dash">
+                        <i class="mock-el mock-title"></i>
+                        <div class="mock-stats"><i class="mock-el"></i><i class="mock-el"></i><i class="mock-el"></i></div>
+                        <div class="mock-chart"><i class="mock-el mock-bar" style="--h:62%"></i><i class="mock-el mock-bar" style="--h:88%"></i><i class="mock-el mock-bar" style="--h:45%"></i><i class="mock-el mock-bar" style="--h:74%"></i><i class="mock-el mock-bar" style="--h:56%"></i></div>
+                      </div>
+                      <figcaption>Dashboard</figcaption>
+                    </figure>
+                    <figure class="ide-result">
+                      <div class="mock-screen mock-landing">
+                        <div class="mock-nav"><i class="mock-el"></i><i class="mock-el"></i><i class="mock-el"></i></div>
+                        <div class="mock-headline"><i class="mock-el"></i><i class="mock-el"></i></div>
+                        <i class="mock-el mock-btn"></i>
+                        <div class="mock-blocks"><i class="mock-el"></i><i class="mock-el"></i></div>
+                      </div>
+                      <figcaption>Minimal landing</figcaption>
+                    </figure>
+                    <figure class="ide-result">
+                      <div class="mock-screen mock-social">
+                        <div class="mock-profile"><i class="mock-el mock-avatar"></i><div class="mock-id"><i class="mock-el"></i><i class="mock-el"></i></div></div>
+                        <div class="mock-lines"><i class="mock-el"></i><i class="mock-el"></i></div>
+                        <div class="mock-actions"><i class="mock-el"></i><i class="mock-el"></i><i class="mock-el"></i></div>
+                      </div>
+                      <figcaption>Social media</figcaption>
+                    </figure>
                   </div>
                 </div>
                 <div class="ide-status"><span id="ide-status">ready</span><span class="ide-progress"><i id="ide-bar"></i></span></div>
               </div>
             </div>
           </div>
-          <div class="availability mt-auto pt-4 pb-4"><i></i> Available for Q4 builds <span>· 2 project slots</span></div>
         </div>
+      </div>
         <div class="client-marquee mt-16 pb-10">
           <div class="marquee-track">
-            {['Northwind','Atlas Labs','Mora','Fieldwork','Kite','Northwind','Atlas Labs','Mora'].map((name) => (
+            {home.hero.marquee.map((name) => (
               <span><b>{name.slice(0,1)}</b>{name}</span>
             ))}
           </div>
@@ -84,31 +126,25 @@ const filterCounts = {
 
       <section id="about" class="bg-surface-lift px-5 py-20 sm:px-8 sm:py-28 lg:px-8">
         <div class="mx-auto max-w-7xl" data-fade-stagger>
-          <SectionMarker number="1" label="How we work" />
+          <SectionMarker number={home.markers.about.number} label={home.markers.about.label} />
           <div class="intro-head">
-            <h2 class="display-heading">Design-driven craft, built to give marketing teams <em>leverage.</em></h2>
-            <p>We explore, prototype and build alongside the people who will run the site. The result is a useful system, not a handoff-shaped problem.</p>
+            <h2 class="display-heading" set:html={home.about.heading} />
+            <p>{home.about.intro}</p>
           </div>
           <div class="intro-tiles">
-            <div class="intro-tile tile-studio">
-              <div class="tile-orbit"></div>
-              <div class="caption-card"><span>Monfolio studio</span><small>Working sessions in Jakarta</small></div>
-            </div>
-            <div class="intro-tile tile-system">
-              <div class="system-lines"></div>
-              <div class="caption-card dark"><span>Figma → Build</span><small>Component libraries that stay coherent</small></div>
-            </div>
+            {home.about.tiles.map((tile) => (
+              <div class={`intro-tile ${tile.variant === 'dark' ? 'tile-system' : 'tile-studio'}`}>
+                {tile.variant === 'dark' ? <div class="system-lines"></div> : <div class="tile-orbit"></div>}
+                <div class={`caption-card${tile.variant === 'dark' ? ' dark' : ''}`}><span>{tile.label}</span><small>{tile.caption}</small></div>
+              </div>
+            ))}
           </div>
           <div class="pillars">
-            {[
-              ['01 · Architecture','Design systems that scale','A content model that makes the next page easier, not harder.'],
-              ['02 · Motion & UX','Interaction with a job to do','Motion that orients, explains or rewards attention.'],
-              ['03 · Growth partnership','A studio that stays useful','A clear handoff, a shared backlog and help when the next launch arrives.']
-            ].map(([label, title, body]) => (
+            {home.about.pillars.map((pillar) => (
               <article class="pillar-card">
-                <span>{label}</span>
-                <h3>{title}</h3>
-                <p>{body}</p>
+                <span>{pillar.label}</span>
+                <h3>{pillar.title}</h3>
+                <p>{pillar.body}</p>
               </article>
             ))}
           </div>
@@ -118,91 +154,100 @@ const filterCounts = {
       <section id="work" class="bg-surface px-5 py-20 sm:px-8 sm:py-28 lg:px-8">
         <div class="mx-auto max-w-7xl">
           <div class="section-head" data-fade-stagger>
-            <SectionMarker number="2" label="Selected builds" />
+            <SectionMarker number={home.markers.work.number} label={home.markers.work.label} />
             <div class="head-row">
-              <h2 class="display-heading">Sites that do<br /><em>useful work.</em></h2>
-              <p>A few custom builds, migrations and systems made with marketing teams who needed momentum.</p>
+              <h2 class="display-heading" set:html={home.work.heading} />
+              <p>{home.work.intro}</p>
             </div>
           </div>
           <article class="featured-build" data-fade-stagger>
             <div class="featured-copy">
-              <span class="orange-badge">Featured build</span>
-              <small>Mora Coffee / Custom build</small>
-              <h3>A warmer shop for slow mornings and good company.</h3>
-              <p>A conversion-ready shop with CMS-driven stories and a publishing workflow the team can own.</p>
+              <span class="orange-badge">{home.work.featured.badge}</span>
+              <small>{home.work.featured.category}</small>
+              <h3>{home.work.featured.title}</h3>
+              <p>{home.work.featured.description}</p>
               <div>
-                <a class="white-chip" href="#contact">Explore case study ↗</a>
-                <span class="read-time">Read 3 min</span>
+                <a class="white-chip" href={home.work.featured.cta.href}>{home.work.featured.cta.label}</a>
+                <span class="read-time">{home.work.featured.readTime}</span>
               </div>
             </div>
             <div class="featured-visual">
-              <div class="card-stack" role="button" aria-label="Toggle Mora Coffee project cards" tabindex="0">
+              <div class="card-stack" role="button" aria-label="Toggle project cards" tabindex="0">
                 <div class="card-back" aria-hidden="true">
-                  <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=1600&auto=format&fit=crop" alt="Artisan coffee detail at Mora Coffee" loading="lazy" decoding="async" />
-                  <span class="card-back-badge">Mora · Detail</span>
+                  {home.work.featured.backImage && <img src={home.work.featured.backImage} alt="" loading="lazy" decoding="async" />}
+                  <span class="card-back-badge">{home.work.featured.backBadge}</span>
                 </div>
-                <div class="card-front"><ProjectVisual image={projects[0].image} imageAlt={projects[0].imageAlt} /></div>
+                <div class="card-front"><ProjectVisual image={featuredProject?.image ?? ''} imageAlt={featuredProject?.imageAlt ?? ''} /></div>
               </div>
             </div>
           </article>
           <div class="projects-toolbar mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between" data-fade-stagger>
             <div class="project-filters flex flex-wrap gap-2" role="group" aria-label="Filter projects">
-              <button type="button" class="filter-tab is-active" data-filter="all" aria-pressed="true">All <span class="filter-count">({filterCounts.all})</span></button>
-              <button type="button" class="filter-tab" data-filter="custom-build" aria-pressed="false">Custom builds <span class="filter-count">({filterCounts['custom-build']})</span></button>
-              <button type="button" class="filter-tab" data-filter="design-system" aria-pressed="false">Design systems <span class="filter-count">({filterCounts['design-system']})</span></button>
-              <button type="button" class="filter-tab" data-filter="migration" aria-pressed="false">Migrations <span class="filter-count">({filterCounts.migration})</span></button>
-              <button type="button" class="filter-tab" data-filter="growth" aria-pressed="false">Growth <span class="filter-count">({filterCounts.growth})</span></button>
+              {home.work.filters.map((filter, index) => (
+                <button
+                  type="button"
+                  class={`filter-tab${index === 0 ? ' is-active' : ''}`}
+                  data-filter={filter.key}
+                  aria-pressed={index === 0 ? 'true' : 'false'}
+                >{filter.label} <span class="filter-count">({filterCounts[filter.key] ?? 0})</span></button>
+              ))}
             </div>
-            <span class="project-counter text-xs font-semibold text-muted" data-project-counter>Showing 4 of {projects.length} featured builds</span>
+            <span class="project-counter text-xs font-semibold text-muted" data-project-counter>Showing {visibleProjectCount} of {projects.length} featured builds</span>
           </div>
-          <div class="project-grid" data-max="4">
+          <div class="project-grid" data-max={home.work.maxVisible}>
             {projects.map((project, index) => <ProjectCard project={project} index={index} />)}
           </div>
           <div class="projects-actions mt-12 flex justify-center">
-            <button type="button" class="button button-outline rolling-button" data-toggle-projects>
-              <span>Show all {projects.length} projects ↓</span>
-              <span aria-hidden="true">Show all {projects.length} projects ↓</span>
+            <button
+              type="button"
+              class="button button-outline rolling-button"
+              data-toggle-projects
+              data-show-all={home.work.showAllLabel}
+              data-show-less={home.work.showLessLabel}
+            >
+              <span>{home.work.showAllLabel} {projects.length} projects ↓</span>
+              <span aria-hidden="true">{home.work.showAllLabel} {projects.length} projects ↓</span>
             </button>
           </div>
         </div>
       </section>
 
-      <FaqSection />
+      <FaqSection faqs={faqs} marker={home.markers.faq} copy={home.faq} />
 
       <section id="story" class="story-section bg-ink px-5 py-20 text-surface sm:px-8 sm:py-28 lg:px-8">
         <div class="mx-auto max-w-7xl" data-fade-stagger>
-          <SectionMarker number="4" label="Our story" />
+          <SectionMarker number={home.markers.story.number} label={home.markers.story.label} />
           <div class="story-head">
-            <h2 class="story-title">Our <span class="w-chip">W</span> studio story.</h2>
-            <p>Small enough to stay close to the work. Structured enough to make complex custom builds feel calm.</p>
+            <h2 class="story-title" set:html={home.story.title} />
+            <p>{home.story.intro}</p>
           </div>
           <div class="story-video">
             <div class="story-art">
               <span class="story-circle"></span>
               <span class="story-spark">+</span>
-              <span class="story-word">MAKE<br />SPACE</span>
+              <span class="story-word" set:html={home.story.artWord} />
             </div>
             <div class="play-wrap">
               <span class="play-ring"></span>
               <button type="button" aria-label="Play studio story">▶</button>
-              <span class="watch-pill">Watch our story · 1:30</span>
+              <span class="watch-pill">{home.story.videoLabel}</span>
             </div>
             <div class="story-bar">
-              <span><i></i> Jakarta + remote / working worldwide</span>
-              <small>Custom builds, made together</small>
+              <span><i></i> {home.story.barLocation}</span>
+              <small>{home.story.barNote}</small>
             </div>
           </div>
         </div>
       </section>
 
-      <TestimonialSection />
+      <TestimonialSection testimonials={testimonials} marker={home.markers.reviews} copy={home.reviews} />
 
       <section id="services" class="bg-surface-lift px-5 py-20 sm:px-8 sm:py-28 lg:px-8">
         <div class="mx-auto max-w-7xl" data-fade-stagger>
-          <SectionMarker number="6" label="Services" />
+          <SectionMarker number={home.markers.services.number} label={home.markers.services.label} />
           <div class="head-row services-head">
-            <h2 class="display-heading">Build once.<br /><em>Keep moving.</em></h2>
-            <p>Bring us a launch, a legacy site or a backlog. We will help you choose the right shape of engagement.</p>
+            <h2 class="display-heading" set:html={home.services.heading} />
+            <p>{home.services.intro}</p>
           </div>
           <div class="service-cells">
             {services.map((service) => (
@@ -222,35 +267,34 @@ const filterCounts = {
 
       <section id="contact" class="contact-section bg-surface px-5 py-20 sm:px-8 sm:py-28 lg:px-8">
         <div class="mx-auto max-w-7xl" data-fade-stagger>
-          <SectionMarker number="7" label="Let’s make & build together" />
-          <h2 class="contact-title">Looking to level-up your site or ship a custom design? <em>Let’s build it.</em></h2>
+          <SectionMarker number={home.markers.contact.number} label={home.markers.contact.label} />
+          <h2 class="contact-title" set:html={home.contact.title} />
           <div class="avatar-card">
             <div>
-              <span class="eyebrow-label">The people behind the pixels</span>
-              <h3>A small studio, close to the work.</h3>
+              <span class="eyebrow-label">{home.contact.eyebrow}</span>
+              <h3>{home.contact.heading}</h3>
             </div>
             <div class="avatar-stack">
-              <span title="Maya — strategy">MS</span>
-              <span title="Rafi — design">RP</span>
-              <span title="Nadine — content">NP</span>
-              <span title="You — next project">+</span>
+              {home.contact.avatars.map((avatar) => (
+                <span title={avatar.name}>{avatar.initials}</span>
+              ))}
             </div>
           </div>
           <div class="contact-bento">
             <div class="contact-form-wrap">
               <div class="success-card" data-success>
                 <strong>✓</strong>
-                <h3>Message received.</h3>
-                <p>We’ll get back to you within one working day.</p>
-                <button type="button" data-reset-form>Send another message</button>
+                <h3>{home.contact.form.successHeading}</h3>
+                <p>{home.contact.form.successBody}</p>
+                <button type="button" data-reset-form>{home.contact.form.resetLabel}</button>
               </div>
               <form class="contact-form" data-contact-form>
                 <fieldset class="topic-group">
                   <legend>How can we help?</legend>
                   <span class="topic-row">
-                    <button type="button" class="topic selected">Marketing website</button>
-                    <button type="button" class="topic">Migration</button>
-                    <button type="button" class="topic">Something else</button>
+                    {home.contact.topics.map((topic, index) => (
+                      <button type="button" class={`topic${index === 0 ? ' selected' : ''}`}>{topic}</button>
+                    ))}
                   </span>
                 </fieldset>
                 <div class="field-row">
@@ -259,26 +303,24 @@ const filterCounts = {
                 </div>
                 <label>Message<textarea required name="message" rows="5" placeholder="Tell us what you are building."></textarea></label>
                 <div class="submit-row">
-                  <button class="button button-orange" type="submit">Send message ↗</button>
-                  <small>By sending this form, you agree to our privacy policy.</small>
+                  <button class="button button-orange" type="submit">{home.contact.form.submitLabel}</button>
+                  <small>{home.contact.form.consent}</small>
                 </div>
               </form>
             </div>
             <aside class="info-card">
               <div>
-                <span class="eyebrow-label">Direct inquiries</span>
-                <a href="mailto:hello@monfolio.studio">hello@monfolio.studio</a>
+                <span class="eyebrow-label">{home.contact.infoCard.emailLabel}</span>
+                <a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a>
               </div>
               <div>
-                <span class="eyebrow-label">Studio</span>
-                <p>Jl. Kemang Raya 12<br />Jakarta, Indonesia</p>
+                <span class="eyebrow-label">{home.contact.infoCard.studioLabel}</span>
+                <p class="whitespace-pre-line">{settings.address}</p>
               </div>
               <div>
-                <span class="eyebrow-label">How we work</span>
+                <span class="eyebrow-label">{home.contact.infoCard.howWeWorkLabel}</span>
                 <ul>
-                  <li>Custom design &amp; build</li>
-                  <li>Remote-first studio</li>
-                  <li>Response within 24 hours</li>
+                  {home.contact.infoCard.howWeWorkItems.map((item) => <li>{item}</li>)}
                 </ul>
               </div>
             </aside>
@@ -286,32 +328,7 @@ const filterCounts = {
         </div>
       </section>
     </main>
-    <footer class="site-footer bg-ink px-5 py-16 text-surface sm:px-8 lg:px-8">
-      <div class="mx-auto max-w-7xl">
-        <div class="footer-banner">
-          <div>
-            <span>Work with us</span>
-            <h2>Looking to level-up your site or launch a custom design? Start with a free consultation.</h2>
-          </div>
-          <a class="button button-orange" href="#contact">Start a conversation ↗</a>
-        </div>
-        <div class="footer-grid">
-          <div class="footer-identity">
-            <a href="#top">monfolio<span>.</span></a>
-            <p>Design &amp; build studio for marketing teams that need a clearer way to ship.</p>
-          </div>
-          <FooterLinks title="Explore" links={[{label:'Home',href:'#top'},{label:'Work',href:'#work'},{label:'About',href:'#about'},{label:'FAQ',href:'#faq'},{label:'Reviews',href:'#reviews'},{label:'Contact',href:'#contact'}]} />
-          <FooterLinks title="Case studies" links={projects.slice(0,5).map((project) => ({label: project.title, href: '#work'}))} />
-          <FooterLinks title="Services" links={services.map((service) => ({label: service.title, href: '#services'}))} />
-        </div>
-        <div class="legal-row">
-          <span>© Monfolio Studio · Jakarta, Indonesia</span>
-          <span><a href="#contact">Privacy policy</a> · <a href="#contact">Cookie preferences</a> · <b>Designed &amp; built in-house</b></span>
-        </div>
-      </div>
-    </footer>
-  </div>
-</Layout>
+</SiteShell>
 
 <style>
   .section-marker{display:flex;align-items:center;gap:.65rem;margin-bottom:2rem;color:var(--color-muted);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
@@ -328,20 +345,34 @@ const filterCounts = {
   .client-chip i{font-size:.7em;font-style:normal;color:var(--color-accent)}
   .showreel-chip{border-color:var(--color-accent);background:var(--color-accent);color:#070d14}
   .showreel-chip b{display:grid;width:1.8em;height:1.8em;place-items:center;border-radius:50%;background:var(--color-surface);font-size:.45em}
-  .availability{display:flex;align-items:center;gap:.6rem;margin-top:2rem;color:var(--color-ink);font-size:11px;font-weight:700}
+  .availability{display:flex;align-items:center;gap:.6rem;color:var(--color-ink);font-size:11px;font-weight:700}
   .availability span{color:var(--color-muted);font-weight:500}
-  .ide-stack{display:flex;flex-direction:column;gap:.6rem}
-  .ide-carousel{position:relative;width:26rem;max-width:100%;height:9.5rem;perspective:1000px}
-  .ide-card{position:absolute;left:50%;top:0;width:15rem;height:100%;margin:0;overflow:hidden;border-radius:1rem;border:1px solid rgba(255,255,255,.12);background:#0b1118;box-shadow:0 20px 40px -12px rgba(7,13,20,.4);transition:transform .6s cubic-bezier(.25,1,.5,1),opacity .6s;cursor:pointer}
+  .skill-chip{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--color-line);border-radius:999px;padding:.4rem .75rem;font-size:10px;font-weight:700;background:var(--color-surface);color:var(--color-ink)}
+  .skill-chip em{color:var(--color-accent);font-style:normal}
+  .ide-stack{display:flex;flex-direction:column;gap:1.5rem;width:100%}
+  .ide-dots{display:none}
+  .ide-carousel{position:relative;width:100%;aspect-ratio:16/10;height:auto;perspective:1000px;flex:none}
+  /* Per-device sizing: kompresi judul di layar pendek agar hero muat 1 layar */
+  @media (min-width:1024px) and (max-height:820px){
+    .hero-stage .hero-title{font-size:clamp(1.9rem,3.2vw,2.8rem)}
+    .ide-carousel{aspect-ratio:2/1}
+    .ide-stack{gap:1rem}
+  }
+  /* Jaminan muat: availability selalu terlihat */
+  @media (min-width:1024px){
+    .hero-grid-row{min-height:0}
+  }
+  .ide-card{position:absolute;top:50%;height:auto;width:40%;aspect-ratio:4/5;margin:0;overflow:hidden;border-radius:1rem;border:1px solid rgba(255,255,255,.12);background:#0b1118;box-shadow:0 20px 40px -12px rgba(7,13,20,.4);transition:transform .8s cubic-bezier(.22,1,.36,1),opacity .8s cubic-bezier(.22,1,.36,1),left .8s cubic-bezier(.22,1,.36,1),filter .8s cubic-bezier(.22,1,.36,1);cursor:pointer;will-change:transform,left,opacity}
   .ide-card img{display:block;width:100%;height:100%;object-fit:cover}
   .ide-card figcaption{position:absolute;left:.7rem;right:.7rem;bottom:.6rem;display:flex;align-items:center;justify-content:space-between;border-radius:999px;background:rgba(11,17,24,.82);backdrop-filter:blur(8px);padding:.35rem .65rem;color:#fff}
   .ide-card figcaption b{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
   .ide-card figcaption span{color:rgba(255,255,255,.55);font-size:9px;font-weight:700}
-  .ide-card[data-pos="center"]{transform:translate3d(-50%,0,0) scale(1);opacity:1;z-index:10}
-  .ide-card[data-pos="left"]{transform:translate3d(-112%,0,-90px) scale(.85);opacity:.55;z-index:5}
-  .ide-card[data-pos="right"]{transform:translate3d(12%,0,-90px) scale(.85);opacity:.55;z-index:5}
-  .ide-card[data-pos="hidden"]{transform:translate3d(-50%,0,-180px) scale(.7);opacity:0;z-index:1;pointer-events:none}
-  .ide-window{display:flex;flex-direction:column;width:26rem;max-width:100%;height:14rem;overflow:hidden;border-radius:1rem;border:1px solid color-mix(in srgb,#ffffff 14%,transparent);background:#0b1118;box-shadow:0 24px 48px -12px rgba(7,13,20,.35);font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace}
+  .ide-card[data-pos="center"]{left:25%;width:50%;transform:translateY(calc(-50% - 6px));opacity:1;z-index:10;box-shadow:0 25px 50px -12px rgba(7,13,20,.9),0 0 0 1px rgba(255,255,255,.25),0 0 30px color-mix(in srgb,var(--color-accent) 25%,transparent)}
+  .ide-card[data-pos="center"]:hover{transform:translateY(calc(-50% - 10px)) scale(1.03)}
+  .ide-card[data-pos="left"]{left:8%;width:40%;transform:translateY(calc(-50% + 6px)) scale(.9);opacity:.55;z-index:5;filter:brightness(.65)}
+  .ide-card[data-pos="right"]{left:52%;width:40%;transform:translateY(calc(-50% + 6px)) scale(.9);opacity:.55;z-index:5;filter:brightness(.65)}
+  .ide-card[data-pos="hidden"]{left:25%;transform:translateY(-50%) scale(.7);opacity:0;z-index:1;pointer-events:none}
+  .ide-window{display:flex;flex-direction:column;width:100%;aspect-ratio:16/9;height:auto;overflow:hidden;border-radius:1rem;border:1px solid color-mix(in srgb,#ffffff 14%,transparent);background:#0b1118;box-shadow:0 24px 48px -12px rgba(7,13,20,.35);font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace}
   .ide-chrome{display:flex;align-items:center;gap:.45rem;padding:.7rem .9rem;border-bottom:1px solid rgba(255,255,255,.08)}
   .ide-dot{width:.6rem;height:.6rem;border-radius:50%;background:rgba(255,255,255,.18)}
   .ide-dot:nth-child(1){background:#f15533}
@@ -350,10 +381,35 @@ const filterCounts = {
   .ide-tab{margin-left:.6rem;color:rgba(255,255,255,.55);font-size:10px;letter-spacing:.08em}
   .ide-code{display:block;height:100%;margin:0;padding:.9rem 1.1rem;font-size:11px;line-height:1.6;color:#dfe4ea;white-space:pre-wrap}
   .ide-body{position:relative;flex:1;min-height:0}
-  .ide-results{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;padding:1rem 1.1rem}
+  .ide-results{position:absolute;inset:0}
   .ide-results.is-hidden{display:none}
-  .ide-result{margin:0}
-  .ide-result img{display:block;width:100%;height:3.5rem;object-fit:cover;border-radius:.5rem;border:1px solid rgba(255,255,255,.1)}
+  .ide-result{position:absolute;inset:1rem 1.1rem;margin:0;display:flex;flex-direction:column;opacity:0;visibility:hidden}
+  .mock-screen{display:flex;flex-direction:column;gap:.45rem;flex:1;min-height:0;border-radius:.5rem;border:1px solid rgba(255,255,255,.1);background:linear-gradient(160deg,#101a24,#0b1118);padding:.55rem;overflow:hidden}
+  .mock-el{display:block;background:rgba(255,255,255,.16);border-radius:2px}
+  .mock-title{width:55%;height:5px;background:var(--color-accent)}
+  .mock-stats{display:flex;gap:.35rem}
+  .mock-stats .mock-el{flex:1;height:.75rem;border-radius:3px}
+  .mock-chart{display:flex;align-items:flex-end;gap:4px;flex:1;min-height:0}
+  .mock-bar{flex:1;height:var(--h,50%);background:var(--color-accent);opacity:.85;transform-origin:bottom}
+  .mock-nav{display:flex;gap:4px}
+  .mock-nav .mock-el{width:.6rem;height:4px}
+  .mock-headline .mock-el{height:6px;margin-bottom:4px}
+  .mock-headline .mock-el:first-child{width:80%}
+  .mock-headline .mock-el:last-child{width:55%}
+  .mock-btn{width:2rem;height:.6rem;border-radius:999px;background:var(--color-accent)}
+  .mock-blocks{display:flex;gap:4px;flex:1;min-height:0}
+  .mock-blocks .mock-el{flex:1;border-radius:3px}
+  .mock-profile{display:flex;align-items:center;gap:.35rem}
+  .mock-avatar{width:.85rem;height:.85rem;border-radius:50%;background:var(--color-accent);flex:none}
+  .mock-id{flex:1}
+  .mock-id .mock-el{height:4px;margin-bottom:3px}
+  .mock-id .mock-el:first-child{width:60%}
+  .mock-id .mock-el:last-child{width:40%;margin-bottom:0}
+  .mock-lines .mock-el{height:4px;margin-bottom:4px}
+  .mock-lines .mock-el:first-child{width:90%}
+  .mock-lines .mock-el:last-child{width:65%;margin-bottom:0}
+  .mock-actions{display:flex;gap:.4rem;margin-top:auto}
+  .mock-actions .mock-el{width:.65rem;height:.65rem;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:transparent}
   .ide-result figcaption{margin-top:.4rem;color:rgba(255,255,255,.6);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
   .ide-code .tok.kw{color:#f15533}
   .ide-code .tok.str{color:#4ade80}
@@ -496,49 +552,65 @@ const filterCounts = {
   .success-card h3{font-size:1.5rem}
   .success-card p{margin:.5rem 0 1.5rem;color:var(--color-muted);font-size:13px}
   .success-card button{color:var(--color-accent);font-size:11px;font-weight:800;text-transform:uppercase}
-  .footer-banner{display:flex;align-items:center;justify-content:space-between;gap:2rem;padding-bottom:4rem;margin-bottom:4rem;border-bottom:1px solid color-mix(in srgb,var(--color-surface) 18%,transparent)}
-  .footer-banner>div{max-width:48rem}
-  .footer-banner span{color:var(--color-accent);font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
-  .footer-banner h2{margin-top:.8rem;color:var(--color-surface);font-size:clamp(2rem,4vw,4rem);font-weight:600;letter-spacing:-.07em;line-height:1}
-  .footer-grid{display:grid;grid-template-columns:2fr repeat(3,1fr);gap:2rem;padding-bottom:4rem;margin-bottom:1.5rem;border-bottom:1px solid color-mix(in srgb,var(--color-surface) 18%,transparent)}
-  .footer-identity>a{color:var(--color-surface);font-size:1.7rem;font-weight:800;letter-spacing:-.08em}
-  .footer-identity>a span,.legal-row b{color:var(--color-accent)}
-  .footer-identity p{max-width:18rem;margin-top:.8rem;color:color-mix(in srgb,var(--color-surface) 95%,transparent);font-size:13px;line-height:1.7}
-  .footer-links>b{display:block;margin-bottom:1rem;color:color-mix(in srgb,var(--color-surface) 58%,transparent);font-size:10px;letter-spacing:.15em;text-transform:uppercase}
-  .footer-links a{display:block;margin-bottom:.65rem;color:color-mix(in srgb,var(--color-surface) 82%,transparent);font-size:12px}
-  .footer-links a:hover,.legal-row a:hover{color:var(--color-accent)}
-  .legal-row{display:flex;justify-content:space-between;gap:1rem;color:color-mix(in srgb,var(--color-surface) 68%,transparent);font-size:12px}
-  .legal-row a{color:color-mix(in srgb,var(--color-surface) 82%,transparent)}
-  .button{position:relative;display:inline-flex;height:3.25rem;min-width:9rem;align-items:center;justify-content:center;overflow:hidden;border-radius:999px;padding:0 1.4rem;font-size:12px;font-weight:800;transition:transform .5s var(--ease-studio)}
-  .button:hover{transform:translateY(-3px)}
-  .button-orange{background:var(--color-accent);color:#070d14}
-  .button-outline{border:1px solid var(--color-line);color:var(--color-ink)}
-  .button span{display:block;transition:transform .5s var(--ease-studio),opacity .5s}
-  .button span+span{position:absolute;transform:translateY(180%);opacity:0}
-  .button:hover span:first-child{transform:translateY(-180%);opacity:0}
-  .button:hover span+span{transform:translateY(0);opacity:1}
   @media(max-width:700px){
-    .hero-meta,.story-head,.avatar-card,.footer-banner{align-items:flex-start;flex-direction:column}
+    .hero-meta,.story-head,.avatar-card{align-items:flex-start;flex-direction:column}
     .location-badge{display:none}
     .intro-head,.head-row{display:block}
     .intro-head>p,.head-row>p,.head-row>div>p{margin-top:1.5rem}
     .intro-tiles{grid-template-columns:1fr}
     .intro-tile{min-height:18rem}
-    .pillars,.contact-bento,.featured-build,.footer-grid{grid-template-columns:1fr}
+    .pillars,.contact-bento,.featured-build{grid-template-columns:1fr}
     .featured-visual{min-height:20rem}
     .card-stack{width:88%;max-width:20rem}
     .card-back{transform:translate(12px,10px) rotate(2deg)}
     .featured-build:hover .card-back{transform:translate(20px,14px) rotate(3.5deg)}
     .field-row{grid-template-columns:1fr}
-    .submit-row,.legal-row{align-items:flex-start;flex-direction:column}
+    .submit-row{align-items:flex-start;flex-direction:column}
     .story-bar small{display:none}
     .service-cells{grid-template-columns:1fr}
     .caption-card{flex-direction:column;gap:.2rem}
   }
+  /* Hero mobile: satu kolom, IDE jadi background, carousel full-width, availability di dasar layar */
+  @media(max-width:699px){
+    .hero-wrap{min-height:calc(100svh - 4.75rem);padding-top:1rem}
+    .hero-grid-row{display:flex;flex:1;flex-direction:column;gap:.75rem;margin:0;padding:.5rem 0}
+    .hero-left{display:contents}
+    .hero-title{order:1;margin-top:0;font-size:clamp(2rem,8.5vw,2.5rem)}
+    .hero-skills{order:2;flex-wrap:nowrap;max-width:100%;overflow-x:auto;padding-bottom:.15rem;scrollbar-width:none}
+    .hero-skills::-webkit-scrollbar{display:none}
+    .skill-chip{flex:none}
+    .hero-desc{order:3;max-width:100%;font-size:15px;line-height:1.6}
+    .hero-cta{order:4;width:100%}
+    .hero-cta .button{flex:1;min-width:0;height:3rem}
+    .hero-right{order:5;width:100%}
+    .availability{order:6;margin-top:auto;padding-top:.75rem}
+    .ide-stack{gap:0}
+    .ide-carousel{aspect-ratio:16/9}
+    .ide-card{transition:opacity .5s ease;aspect-ratio:auto;height:auto;overflow:visible;background:transparent;border:0;box-shadow:none}
+    .ide-card img{height:auto;aspect-ratio:16/9;border-radius:1rem;border:1px solid rgba(255,255,255,.12);box-shadow:0 20px 40px -12px rgba(7,13,20,.4)}
+    .ide-card[data-pos="center"]{top:0;left:0;width:100%;transform:none}
+    .ide-card[data-pos="center"]:hover{transform:none}
+    .ide-card[data-pos="left"],.ide-card[data-pos="right"],.ide-card[data-pos="hidden"]{top:0;left:0;width:100%;transform:none;opacity:0;pointer-events:none}
+    .ide-card figcaption{position:static;margin:.55rem 0 0;background:transparent;padding:0;backdrop-filter:none}
+    .ide-card figcaption b{color:var(--color-ink)}
+    .ide-card figcaption span{color:var(--color-muted)}
+    .ide-card figcaption b,.ide-card figcaption span{font-size:11px}
+    .ide-dots{display:flex;justify-content:center;gap:.45rem;margin-top:1.9rem}
+    .ide-navdot{width:.55rem;height:.55rem;border:1px solid var(--color-line);border-radius:50%;background:transparent;padding:0;cursor:pointer;transition:background .3s,border-color .3s}
+    .ide-navdot.is-active{background:var(--color-accent);border-color:var(--color-accent)}
+    .ide-window{position:absolute;inset:0;z-index:-1;aspect-ratio:auto;height:auto;opacity:.14;border-radius:0;border:0;box-shadow:none;pointer-events:none}
+    .ide-status{font-size:9px}
+  }
+  /* Hero tablet: perapian layout — carousel & IDE berdampingan, spacing lebih ketat */
+  @media(min-width:700px) and (max-width:1023px){
+    .hero-grid-row{padding-bottom:4rem;gap:2.5rem}
+    .ide-stack{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;align-items:start}
+    .ide-carousel{aspect-ratio:16/11}
+  }
   @media(prefers-reduced-motion:reduce){
     .marquee-track,.play-ring{animation:none}
     .card-back{animation:none!important}
-    .button:hover,.service-cell:hover,.pillar-card:hover,.project-card:hover,.featured-build:hover .card-front,.featured-build:hover .card-back{transform:none!important;padding-left:2rem}
+    .service-cell:hover,.pillar-card:hover,.project-card:hover,.featured-build:hover .card-front,.featured-build:hover .card-back{transform:none!important;padding-left:2rem}
   }
 </style>
 
@@ -551,13 +623,12 @@ const filterCounts = {
   const ideCode=document.getElementById('ide-code'),ideStatus=document.getElementById('ide-status'),ideBar=document.getElementById('ide-bar'),ideCaret=document.querySelector('.ide-caret');
   const idePre=document.querySelector('.ide-code'),ideResults=document.querySelector('.ide-results');
   const IDE_LINES=[
-    [['const ','kw'],['site','var'],[' = ','pl'],['await ','kw'],['studio.','pl'],['build','fn'],['({','pl']],
-    [['  design: ','pl'],["'custom'",'str'],[',','pl']],
-    [['  motion: ','pl'],["'considered'",'str'],[',','pl']],
-    [['  handoff: ','pl'],["'none'",'str'],[',','pl']],
-    [['});','pl']],
+    [['const ','kw'],['designer','var'],[' = {','pl']],
+    [['  focus: ','pl'],["'brand & illustration'",'str'],[',','pl']],
+    [['  work: ','pl'],["'real & shipped'",'str'],[',','pl']],
+    [['}','pl']],
     [['','pl']],
-    [['await ','kw'],['site.','pl'],['deploy','fn'],['();','pl']]
+    [['await ','kw'],['deploy','fn'],['();','pl']]
   ];
   const ideChars: { ch: string; c: string | null }[] = [];
   IDE_LINES.forEach((line, li) => {
@@ -572,17 +643,31 @@ const filterCounts = {
     if (ideStatus) { ideStatus.textContent = 'ready'; ideStatus.classList.remove('is-done'); }
   }
   function ideFinish() {
+    const ideResultEls = Array.from(document.querySelectorAll('.ide-result'));
     if (ideStatus) {
-      ideStatus.textContent = '✓ deployed — site is live';
+      ideStatus.textContent = '✓ deployed — portfolio live';
       ideStatus.classList.add('is-done');
     }
-    if (reduce || !idePre || !ideResults) { if (idePre && ideResults) { (idePre as HTMLElement).style.display = 'none'; ideResults.classList.remove('is-hidden'); } return; }
+    if (reduce || !idePre || !ideResults) { if (idePre && ideResults) { (idePre as HTMLElement).style.display = 'none'; ideResults.classList.remove('is-hidden'); if (ideResultEls[0]) gsap.set(ideResultEls[0], { autoAlpha: 1 }); } return; }
     gsap.to(idePre, { opacity: 0, duration: .35, delay: .8, onComplete: () => {
       (idePre as HTMLElement).style.display = 'none';
       ideResults.classList.remove('is-hidden');
-      gsap.fromTo('.ide-result', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .45, stagger: .12, ease: 'power2.out', onComplete: () => {
-        setTimeout(() => { ideReset(); startTyping(); }, 3200);
+      // Show one full mockup at a time: assemble its elements one by one, hold, fade, next
+      const tl = gsap.timeline({ onComplete: () => {
+        setTimeout(() => { ideReset(); startTyping(); }, 2200);
       } });
+      ideResultEls.forEach((result) => {
+        tl.set(result, { autoAlpha: 1 });
+        result.querySelectorAll('.mock-el').forEach((el) => {
+          const pos = tl.duration() > 0 ? '-=.16' : undefined;
+          if ((el as HTMLElement).classList.contains('mock-bar')) {
+            tl.fromTo(el, { scaleY: 0 }, { scaleY: 1, duration: .3, ease: 'power2.out' }, pos);
+          } else {
+            tl.fromTo(el, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: .3, ease: 'power2.out' }, pos);
+          }
+        });
+        tl.to(result, { autoAlpha: 0, duration: .35 }, '+=1.2');
+      });
     } });
   }
   function startTyping() {
@@ -608,38 +693,112 @@ const filterCounts = {
   startTyping();
 
   // 3D design carousel above the IDE (autoplay, click-to-focus, pause on hover)
-  const ideCarousel=document.querySelector('.ide-carousel');
+  const ideCarousel=document.querySelector<HTMLElement>('.ide-carousel');
   const ideCards=ideCarousel?Array.from(ideCarousel.querySelectorAll('.ide-card')):[];
-  let ideActive=0,ideTimer: ReturnType<typeof setInterval> | null = null;
+  const ideDots=document.querySelector('.ide-dots');
+  let ideActive=0,ideTimer: ReturnType<typeof setInterval> | undefined = undefined,ideSwiped=false;
   function ideUpdate(){
     const total=ideCards.length;
     ideCards.forEach((card,i)=>{
       const diff=(i-ideActive+total)%total;
       (card as HTMLElement).dataset.pos=diff===0?'center':diff===1?'right':diff===total-1?'left':'hidden';
     });
+    if(ideDots) Array.from(ideDots.children).forEach((d,i)=>d.classList.toggle('is-active',i===ideActive));
   }
   function ideAutoStart(){
     if(reduce||!ideCards.length)return;
     clearInterval(ideTimer);
     ideTimer=setInterval(()=>{ideActive=(ideActive+1)%ideCards.length;ideUpdate();},3000);
   }
-  ideCards.forEach((card,i)=>card.addEventListener('click',()=>{ideActive=i;ideUpdate();ideAutoStart();}));
+  ideCards.forEach((card,i)=>card.addEventListener('click',()=>{if(ideSwiped){ideSwiped=false;return;}ideActive=i;ideUpdate();ideAutoStart();}));
   ideCarousel?.addEventListener('mouseenter',()=>clearInterval(ideTimer));
   ideCarousel?.addEventListener('mouseleave',ideAutoStart);
   ideUpdate();
   ideAutoStart();
 
+  // Mobile: dot indicator + swipe navigation untuk carousel
+  if(ideDots&&ideCards.length){
+    ideCards.forEach((_,i)=>{
+      const d=document.createElement('button');
+      d.type='button';d.className='ide-navdot';d.setAttribute('aria-label','Slide '+(i+1));
+      d.addEventListener('click',()=>{ideActive=i;ideUpdate();ideAutoStart();});
+      ideDots.appendChild(d);
+    });
+    ideUpdate();
+  }
+  let ideTouchX: number | null = null;
+  ideCarousel?.addEventListener('touchstart',(e: TouchEvent)=>{ideTouchX=e.touches[0].clientX;ideSwiped=false;clearInterval(ideTimer);},{passive:true});
+  ideCarousel?.addEventListener('touchmove',(e: TouchEvent)=>{if(ideTouchX!==null&&Math.abs(e.touches[0].clientX-ideTouchX)>10)ideSwiped=true;},{passive:true});
+  ideCarousel?.addEventListener('touchend',(e: TouchEvent)=>{
+    if(ideTouchX===null||!ideCards.length)return;
+    const dx=e.changedTouches[0].clientX-ideTouchX;ideTouchX=null;
+    if(Math.abs(dx)>40){ideActive=(ideActive+(dx<0?1:-1)+ideCards.length)%ideCards.length;ideUpdate();}
+    ideAutoStart();
+  });
+
+  // Align IDE window bottom edge with the CTA buttons' bottom edge
+  const ideStackEl=document.querySelector<HTMLElement>('.ide-stack'),ideWinEl=document.querySelector<HTMLElement>('.ide-window'),ctaEl=document.querySelector<HTMLElement>('.hero-grid-row .button-orange'),locBadge=document.querySelector<HTMLElement>('.location-badge');
+  function alignIde(){
+    if(!ideStackEl||!ideWinEl||!ctaEl||!locBadge) return;
+    // Alignment hanya relevan di layout desktop (≥1024px); di mobile/tablet IDE tidak di-align
+    if(window.matchMedia('(max-width:1023px)').matches){(ideStackEl as HTMLElement).style.marginTop='0px';(ideStackEl as HTMLElement).style.marginBottom='0px';return;}
+    (ideStackEl as HTMLElement).style.marginTop='0px'; (ideStackEl as HTMLElement).style.marginBottom='0px';
+    const carEl=ideStackEl.querySelector('.ide-carousel');
+    const carH=carEl?(carEl as HTMLElement).offsetHeight:0;
+    const need=ctaEl.getBoundingClientRect().bottom - locBadge.getBoundingClientRect().bottom - carH - (ideWinEl as HTMLElement).offsetHeight - 48;
+    ideStackEl.style.marginTop=Math.max(24,need)+'px';
+  }
+  alignIde();
+  window.addEventListener('resize',alignIde);
+  window.addEventListener('load',alignIde);
+  document.fonts?.ready.then(alignIde);
+  [600,1500,3000].forEach((t)=>setTimeout(alignIde,t));
+
   document.querySelectorAll('.topic').forEach((topic)=>topic.addEventListener('click',()=>{document.querySelectorAll('.topic').forEach((item)=>item.classList.remove('selected'));topic.classList.add('selected');}));
-  const form=document.querySelector<HTMLFormElement>('[data-contact-form]');const success=document.querySelector<HTMLElement>('[data-success]');form?.addEventListener('submit',(event)=>{event.preventDefault();form.classList.add('is-hidden');success?.classList.add('is-visible');});document.querySelector('[data-reset-form]')?.addEventListener('click',()=>{form?.reset();form?.classList.remove('is-hidden');success?.classList.remove('is-visible');});
-  document.querySelector('[data-theme-toggle]')?.addEventListener('click',()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;localStorage.setItem('monfolio-theme',next);});
+
+  // Contact form → Payload REST API (no Astro server needed, site stays static)
+  const CMS_URL = import.meta.env.PUBLIC_CMS_URL ?? 'http://localhost:3000';
+  const form=document.querySelector<HTMLFormElement>('[data-contact-form]');
+  const success=document.querySelector<HTMLElement>('[data-success]');
+  form?.addEventListener('submit', async (event)=>{
+    event.preventDefault();
+    const submitButton=form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const payload=new FormData(form);
+    submitButton?.setAttribute('disabled','true');
+    try{
+      const response=await fetch(`${CMS_URL}/api/form-submissions`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          name:payload.get('name'),
+          email:payload.get('email'),
+          message:payload.get('message'),
+          topic:document.querySelector('.topic.selected')?.textContent?.trim()||'',
+          source:window.location.href,
+        }),
+      });
+      if(!response.ok) throw new Error(`Request failed with ${response.status}`);
+      form.classList.add('is-hidden');
+      success?.classList.add('is-visible');
+    }catch(error){
+      console.error(error);
+      window.alert('We could not send your message. Please email us instead.');
+    }finally{
+      submitButton?.removeAttribute('disabled');
+    }
+  });
+  document.querySelector('[data-reset-form]')?.addEventListener('click',()=>{form?.reset();form?.classList.remove('is-hidden');success?.classList.remove('is-visible');});
   const cardStack=document.querySelector<HTMLElement>('.card-stack');cardStack?.addEventListener('click',()=>cardStack.classList.toggle('is-swapped'));cardStack?.addEventListener('keydown',(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();cardStack.classList.toggle('is-swapped');}});
 
   // Dynamic Projects Grid Filtering & Max Cards Display
+  const projectGrid = document.querySelector<HTMLElement>('.project-grid');
   const projectCards = Array.from(document.querySelectorAll<HTMLElement>('.project-grid .project-card'));
   const filterTabs = document.querySelectorAll<HTMLElement>('.filter-tab');
   const toggleBtn = document.querySelector<HTMLElement>('[data-toggle-projects]');
   const counterEl = document.querySelector<HTMLElement>('[data-project-counter]');
-  const maxDefault = 4;
+  const maxDefault = Number(projectGrid?.dataset.max ?? 4) || 4;
+  const showAllLabel = toggleBtn?.dataset.showAll || 'Show all';
+  const showLessLabel = toggleBtn?.dataset.showLess || 'Show fewer';
   let currentFilter = 'all';
   let isExpanded = false;
 
@@ -663,7 +822,7 @@ const filterCounts = {
         toggleBtn.style.display = 'none';
       } else {
         toggleBtn.style.display = 'inline-flex';
-        const label = isExpanded ? 'Show fewer ↑' : `Show all ${matching.length} projects ↓`;
+        const label = isExpanded ? `${showLessLabel} ↑` : `${showAllLabel} ${matching.length} projects ↓`;
         toggleBtn.querySelectorAll('span').forEach(s => s.textContent = label);
       }
     }

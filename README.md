@@ -1,43 +1,66 @@
-# Astro Starter Kit: Minimal
+# Monfolio
+
+Marketing site for a design & build studio: an Astro frontend fed by a Payload CMS, organised as a
+Turborepo monorepo.
+
+```
+apps/web          Astro 7 site (static)
+apps/cms          Payload CMS 3 + PostgreSQL, admin at /admin
+packages/content  typed CMS client and mappers
+packages/tsconfig shared TypeScript config
+```
+
+## Getting started
+
+You need Node >= 22.12, pnpm, and a PostgreSQL database.
 
 ```sh
-npm create astro@latest -- --template minimal
+pnpm install
+
+# 1. Configure the CMS
+cp apps/cms/.env.example apps/cms/.env      # then set DATABASE_URL and PAYLOAD_SECRET
+createdb monfolio_cms
+
+# 2. Point the site at the CMS
+cp apps/web/.env.example apps/web/.env      # PUBLIC_CMS_URL
+
+# 3. Run both apps (cms :3000, web :4321)
+pnpm dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Open <http://localhost:3000/admin> and create the first admin user. The CMS creates its tables on
+first boot in development.
 
-## 🚀 Project Structure
+## Loading the content
 
-Inside of your Astro project, you'll see the following folders and files:
+The site's original content ships as a seed script:
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```sh
+pnpm --filter @monfolio/cms seed              # skips if projects already exist
+SEED_RESET=1 pnpm --filter @monfolio/cms seed # wipe and reseed
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## How content reaches the site
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+`apps/web` is a static build. It fetches from the CMS REST API when `astro build` runs, so **the CMS
+must be reachable at build time** via `PUBLIC_CMS_URL`.
 
-Any static assets, like images, can be placed in the `public/` directory.
+Set `REVALIDATE_WEBHOOK_URL` in `apps/cms/.env` to a deploy hook and the CMS will ping it after any
+content change, triggering a rebuild. Left empty, the hook is a no-op.
 
-## 🧞 Commands
+## Commands
 
-All commands are run from the root of the project, from a terminal:
+| Command | Action |
+| :--- | :--- |
+| `pnpm dev` | Both dev servers |
+| `pnpm build` | Build both apps |
+| `pnpm typecheck` | Type-check every package |
+| `pnpm --filter @monfolio/cms generate:types` | Regenerate Payload types |
+| `pnpm --filter @monfolio/cms seed` | Seed content |
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Notes
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- The CMS runs Next.js with `--webpack`; Turbopack cannot resolve `next` through the pnpm 12
+  workspace layout used here.
+- Uploaded media is written to `apps/cms/media` in development. Production needs an S3-compatible
+  storage plugin.

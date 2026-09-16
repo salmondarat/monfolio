@@ -269,7 +269,7 @@
 
 <script>
   // Subtle interactive spotlight that smoothly tracks cursor across hero section
-  const heroStage = document.querySelector('.hero-stage');
+  const heroStage = document.querySelector<HTMLElement>('.hero-stage');
   const spotlight = document.getElementById('heroGridSpotlight');
   
   if (heroStage && spotlight && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

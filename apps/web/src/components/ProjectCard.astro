@@ -1,20 +1,11 @@
 ---
-import type { Project } from '../data/projects';
+import type { Project } from '@monfolio/content';
 import ProjectVisual from './ProjectVisual.astro';
 const { project, index } = Astro.props as { project: Project; index?: number };
-
-const rawCat = project.category.toLowerCase();
-const categorySlug = rawCat.includes('custom')
-  ? 'custom-build'
-  : rawCat.includes('design')
-    ? 'design-system'
-    : rawCat.includes('migration')
-      ? 'migration'
-      : 'growth';
 ---
 <article
   class="project-card"
-  data-category={categorySlug}
+  data-category={project.categoryKey}
   data-index={index}
   data-fade-stagger
 >
@@ -24,12 +15,12 @@ const categorySlug = rawCat.includes('custom')
   <div class="project-caption">
     <div class="project-info">
       <div class="project-meta-row">
-        <span class="project-cat-pill">{project.category.split('/')[0].trim()}</span>
+        <a class="project-cat-pill" href={`/work/${project.categorySlug}`}>{project.category.split('/')[0].trim()}</a>
         <span class="project-year">{project.year}</span>
       </div>
       <h3 class="project-title">{project.title}</h3>
       <p class="project-desc">{project.description}</p>
-      {project.metrics && (
+      {project.metrics.length > 0 && (
         <div class="project-metrics">
           {project.metrics.map((metric) => <span class="metric">{metric}</span>)}
         </div>

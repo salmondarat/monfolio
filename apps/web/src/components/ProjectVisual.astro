@@ -2,7 +2,7 @@
 const { image, imageAlt } = Astro.props as { image: string; imageAlt: string };
 ---
 <div class="project-visual">
-  <img src={image} alt={imageAlt} loading="lazy" decoding="async" />
+  {image ? <img src={image} alt={imageAlt} loading="lazy" decoding="async" /> : null}
 </div>
 
 <style>
