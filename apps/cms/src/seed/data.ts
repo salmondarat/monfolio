@@ -123,7 +123,7 @@ export const projects = [
     gallery: [
       { url: unsplash('1495474472287-4d71bcdd2085'), alt: 'Mora Coffee homepage hero on desktop' },
       { url: unsplash('1447933601403-0c6688de566e'), alt: 'Coffee beans and brewing equipment detail' },
-      { url: unsplash('1442512595191-816bb52a0ace'), alt: 'Barista pouring a flat white at the counter' },
+      { url: unsplash('1509042239860-f550ce710b93'), alt: 'Barista pouring a flat white at the counter' },
     ],
     size: 'wide',
     metrics: ['+42% sign-ups', '6 weeks'],
@@ -141,7 +141,7 @@ export const projects = [
     imageAlt: 'Hand sketching interface wireframes on paper',
     gallery: [
       { url: unsplash('1581291518857-4e27b48ff24e'), alt: 'Component library overview page' },
-      { url: unsplash('1524758631624-e3c20b28a1af'), alt: 'Material samples arranged on a studio table' },
+      { url: unsplash('1495020689067-958852a7765e'), alt: 'Material samples arranged on a studio table' },
     ],
     size: 'tall',
     metrics: ['38 components', '3 markets'],
@@ -194,8 +194,8 @@ export const projects = [
     imageAlt: 'Handmade ceramic vessels in soft daylight',
     gallery: [
       { url: unsplash('1610701596007-11502861dcfa'), alt: 'Product listing grid for ceramic objects' },
-      { url: unsplash('1578749472219-02ba66a4b3b3'), alt: 'Ceramic vessel detail in studio light' },
-      { url: unsplash('1493106819501-66d381c466f9'), alt: 'Packaging and unboxing sequence' },
+      { url: unsplash('1460925895917-afdab827c52f'), alt: 'Ceramic vessel detail in studio light' },
+      { url: unsplash('1466781783364-36c955e42a7f'), alt: 'Packaging and unboxing sequence' },
     ],
     size: 'wide',
     metrics: [],
