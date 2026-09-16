@@ -1,13 +1,15 @@
 import { fetchCollection, publishedOnly } from './client'
-import { mediaAlt, mediaUrl } from './media'
-import { group, num, text, textArray } from './normalize'
+import { asMedia, mediaAlt, mediaUrl } from './media'
+import { group, num, rows, text, textArray } from './normalize'
 import type {
   Category,
   CategoryLayout,
   Faq,
   JournalEntry,
   Project,
+  ProjectBlock,
   ProjectGalleryImage,
+  ProjectImageWidth,
   ProjectSize,
   Service,
   Testimonial,
@@ -26,6 +28,7 @@ type RawProject = {
   category?: unknown
   year?: unknown
   description?: unknown
+  content?: unknown
   image?: unknown
   imageAlt?: unknown
   gallery?: unknown
@@ -48,6 +51,93 @@ export const mapGallery = (value: unknown): ProjectGalleryImage[] =>
 const toSize = (value: unknown): ProjectSize =>
   PROJECT_SIZES.includes(value as ProjectSize) ? (value as ProjectSize) : 'standard'
 
+const toImageWidth = (value: unknown): ProjectImageWidth =>
+  value === 'standard' || value === 'narrow' ? value : 'wide'
+
+const toColumns = (value: unknown): 2 | 3 => (text(value) === '3' ? 3 : 2)
+
+const mediaCredit = (value: unknown): string | undefined =>
+  text(asMedia(value)?.credit) || undefined
+
+/**
+ * Normalise Payload story blocks into the view model. Blocks that are broken
+ * (missing media, empty text) are skipped rather than rendered half-alive.
+ */
+export const mapBlocks = (value: unknown): ProjectBlock[] => {
+  if (!Array.isArray(value)) return []
+
+  const blocks: ProjectBlock[] = []
+
+  for (const item of value) {
+    const block = group(item)
+
+    switch (text(block.blockType)) {
+      case 'text': {
+        const textValue = text(block.text)
+        if (textValue) blocks.push({ blockType: 'text', text: textValue })
+        break
+      }
+      case 'image': {
+        const url = mediaUrl(block.image, 'wide')
+        if (!url) break
+        blocks.push({
+          blockType: 'image',
+          url,
+          alt: text(block.alt) || mediaAlt(block.image),
+          width: toImageWidth(block.width),
+          caption: text(block.caption) || undefined,
+          credit: mediaCredit(block.image),
+        })
+        break
+      }
+      case 'gallery': {
+        const images = mapGallery(block.images)
+        if (images.length === 0) break
+        blocks.push({
+          blockType: 'gallery',
+          images,
+          columns: toColumns(block.columns),
+          caption: text(block.caption) || undefined,
+        })
+        break
+      }
+      case 'quote': {
+        const quote = text(block.quote)
+        if (!quote) break
+        blocks.push({
+          blockType: 'quote',
+          text: quote,
+          attribution: text(block.attribution) || undefined,
+        })
+        break
+      }
+      case 'stats': {
+        const items = rows(block.items)
+          .map((row) => ({ value: text(row.value), label: text(row.label) }))
+          .filter((item) => item.value !== '' && item.label !== '')
+        if (items.length === 0) break
+        blocks.push({ blockType: 'stats', items })
+        break
+      }
+      case 'split': {
+        const url = mediaUrl(block.image, 'wide')
+        const textValue = text(block.text)
+        if (!url || !textValue) break
+        blocks.push({
+          blockType: 'split',
+          text: textValue,
+          url,
+          alt: text(block.alt) || mediaAlt(block.image),
+          imageSide: text(block.imageSide) === 'right' ? 'right' : 'left',
+        })
+        break
+      }
+    }
+  }
+
+  return blocks
+}
+
 export const mapProject = (doc: RawProject): Project => {
   const category =
     doc.category && typeof doc.category === 'object' ? (doc.category as RawCategory) : undefined
@@ -66,6 +156,7 @@ export const mapProject = (doc: RawProject): Project => {
     image: mediaUrl(doc.image, 'card'),
     imageAlt: imageAlt || mediaAlt(doc.image),
     gallery: mapGallery(doc.gallery),
+    blocks: mapBlocks(doc.content),
     size: toSize(doc.size),
     metrics: textArray(doc.metrics),
     deliverables: textArray(doc.deliverables),

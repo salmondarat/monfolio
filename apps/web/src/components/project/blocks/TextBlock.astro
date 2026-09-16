@@ -1,0 +1,27 @@
+---
+import { paragraphHtml } from '@monfolio/content';
+
+const { block } = Astro.props as { block: { blockType: 'text'; text: string } };
+const paragraphs = paragraphHtml(block.text);
+---
+<div class="bl-text">
+  {paragraphs.map((paragraph) => <p set:html={paragraph} />)}
+</div>
+
+<style>
+  .bl-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+  .bl-text p {
+    margin: 0;
+    font-size: 1.0625rem;
+    line-height: 1.85;
+    color: var(--color-ink);
+    text-wrap: pretty;
+  }
+  .bl-text :global(em) {
+    font-style: italic;
+  }
+</style>

@@ -15,6 +15,27 @@ export type ProjectGalleryImage = {
   alt: string
 }
 
+export type ProjectImageWidth = 'wide' | 'standard' | 'narrow'
+
+/**
+ * One free-form story block on the project detail page, in display order.
+ * Text blocks keep their raw string so inline HTML can survive to the renderer.
+ */
+export type ProjectBlock =
+  | { blockType: 'text'; text: string }
+  | {
+      blockType: 'image'
+      url: string
+      alt: string
+      width: ProjectImageWidth
+      caption?: string
+      credit?: string
+    }
+  | { blockType: 'gallery'; images: ProjectGalleryImage[]; columns: 2 | 3; caption?: string }
+  | { blockType: 'quote'; text: string; attribution?: string }
+  | { blockType: 'stats'; items: { value: string; label: string }[] }
+  | { blockType: 'split'; text: string; url: string; alt: string; imageSide: 'left' | 'right' }
+
 export type Project = {
   title: string
   slug: string
@@ -30,6 +51,8 @@ export type Project = {
   imageAlt: string
   /** Case study images in display order; empty when the project has no gallery. */
   gallery: ProjectGalleryImage[]
+  /** Free-form story blocks for the detail page; may be empty (legacy fields become the fallback). */
+  blocks: ProjectBlock[]
   size: ProjectSize
   metrics: string[]
   deliverables: string[]
@@ -137,23 +160,17 @@ export type HeroContent = {
   marquee: string[]
 }
 
-export type AboutTile = {
-  label: string
-  caption: string
-  variant: 'accent' | 'dark'
-}
-
-export type AboutPillar = {
-  label: string
+export type AboutStep = {
+  number: string
   title: string
   body: string
+  deliverables: string[]
 }
 
 export type AboutContent = {
   heading: string
   intro: string
-  tiles: AboutTile[]
-  pillars: AboutPillar[]
+  steps: AboutStep[]
 }
 
 export type FeaturedBuildContent = {

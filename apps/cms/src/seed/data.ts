@@ -6,6 +6,34 @@
 const unsplash = (id: string, width = 1600) =>
   `https://images.unsplash.com/photo-${id}?q=80&w=${width}&auto=format&fit=crop`
 
+/** A media reference in seed data; the seed script uploads it and swaps in the id. */
+export type SeedMedia = { url: string; alt: string }
+
+export type SeedBlock =
+  | { blockType: 'text'; text: string }
+  | { blockType: 'image'; image: SeedMedia; width?: 'wide' | 'standard' | 'narrow'; caption?: string }
+  | { blockType: 'gallery'; images: SeedMedia[]; columns?: '2' | '3'; caption?: string }
+  | { blockType: 'quote'; quote: string; attribution?: string }
+  | { blockType: 'stats'; items: { value: string; label: string }[] }
+  | { blockType: 'split'; text: string; image: SeedMedia; imageSide?: 'left' | 'right' }
+
+export type SeedProject = {
+  title: string
+  categoryKey: string
+  description: string
+  year: string
+  image: string
+  imageAlt: string
+  gallery: SeedMedia[]
+  size: 'wide' | 'tall' | 'standard'
+  metrics: string[]
+  deliverables: string[]
+  quote?: string
+  featured: boolean
+  order: number
+  content?: SeedBlock[]
+}
+
 export const categories = [
   {
     name: 'Custom build',
@@ -111,7 +139,7 @@ export const categories = [
   },
 ]
 
-export const projects = [
+export const projects: SeedProject[] = [
   {
     title: 'Mora Coffee',
     categoryKey: 'custom-build',
@@ -131,6 +159,50 @@ export const projects = [
     quote: 'We can finally update the site without waiting on a developer.',
     featured: true,
     order: 1,
+    content: [
+      {
+        blockType: 'text',
+        text: 'Mora Coffee had outgrown its template shop: every menu change meant a support ticket, and the checkout funnel leaked on mobile. We rebuilt the storefront around a small content model the team can actually run — drinks, stories and seasonal collections live as separate CMS collections, and nothing on the site waits on a developer anymore.',
+      },
+      {
+        blockType: 'image',
+        image: { url: unsplash('1447933601403-0c6688de566e'), alt: 'Coffee beans and brewing equipment detail' },
+        width: 'wide',
+        caption: 'The seasonal collection page, rebuilt around a single reusable grid.',
+      },
+      {
+        blockType: 'text',
+        text: 'The first working session produced a one-page content map: three collections, four page types, one editorial rhythm. Everything we built after that — including the motion system — had to fit inside it.\n\nOrders still come through the same checkout as before, so nothing changed in the back office on launch day.',
+      },
+      {
+        blockType: 'gallery',
+        images: [
+          { url: unsplash('1509042239860-f550ce710b93'), alt: 'Barista pouring a flat white at the counter' },
+          { url: unsplash('1495474472287-4d71bcdd2085'), alt: 'Warm interior of the Mora Coffee shop with seating and pendant lamps' },
+        ],
+        columns: '2',
+        caption: 'Product detail and the counter page, photographed during launch week.',
+      },
+      {
+        blockType: 'quote',
+        quote: 'We can finally update the site without waiting on a developer.',
+        attribution: 'Maya Santoso — Founder, Mora Coffee',
+      },
+      {
+        blockType: 'stats',
+        items: [
+          { value: '+42%', label: 'Sign-ups after relaunch' },
+          { value: '6 weeks', label: 'From kickoff to launch' },
+          { value: '3', label: 'CMS collections in production' },
+        ],
+      },
+      {
+        blockType: 'split',
+        text: 'The design system ships with a motion kit: every card, chip and button has one job and one easing curve. Nothing on the page moves without a reason.',
+        image: { url: unsplash('1501339847302-ac426a4a7cbb'), alt: 'Artisan coffee detail at Mora Coffee' },
+        imageSide: 'left',
+      },
+    ],
   },
   {
     title: 'Form / Function',
@@ -148,6 +220,32 @@ export const projects = [
     deliverables: ['Component library', 'CMS architecture'],
     featured: false,
     order: 2,
+    content: [
+      {
+        blockType: 'text',
+        text: 'Form / Function is a materials studio selling to three markets at once. Their marketing site had drifted into a set of one-off pages that disagreed about type, spacing and buttons, so we started with the system rather than the screens: tokens, components and naming rules agreed before anything was designed.',
+      },
+      {
+        blockType: 'gallery',
+        images: [
+          { url: unsplash('1495020689067-958852a7765e'), alt: 'Material samples arranged on a studio table' },
+          { url: unsplash('1581291518857-4e27b48ff24e'), alt: 'Component library overview page' },
+          { url: unsplash('1504711434969-e33886168f5c'), alt: 'Material documentation spread' },
+        ],
+        columns: '3',
+        caption: 'The component library, reviewed on paper before it was built.',
+      },
+      {
+        blockType: 'split',
+        text: 'Every component ships with a CMS schema and a content example, so the team sees how a block behaves with real copy — not placeholder text.',
+        image: { url: unsplash('1495020689067-958852a7765e'), alt: 'Material samples arranged on a studio table' },
+        imageSide: 'right',
+      },
+      {
+        blockType: 'text',
+        text: 'Six weeks in, the studio shipped two new market pages themselves. That was the point of the system.',
+      },
+    ],
   },
   {
     title: 'Good News Daily',
@@ -166,6 +264,35 @@ export const projects = [
     deliverables: ['SEO migration', 'Editorial CMS'],
     featured: false,
     order: 3,
+    content: [
+      {
+        blockType: 'text',
+        text: 'Good News Daily ran on a WordPress theme that had been patched for nine years. The newsroom needed faster publishing without losing the URLs readers and search engines already knew, so the migration plan came before any design work.',
+      },
+      {
+        blockType: 'image',
+        image: { url: unsplash('1504711434969-e33886168f5c'), alt: 'Newly designed article template' },
+        width: 'wide',
+        caption: 'The rebuilt article template — same reading rhythm, lighter page.',
+      },
+      {
+        blockType: 'text',
+        text: 'We inventoried 1,847 URLs before touching anything, mapped every redirect, and ran the new templates past the editors for two weeks before cutover.',
+      },
+      {
+        blockType: 'quote',
+        quote: 'The migration was calm and methodical. We kept our rankings and gained a much better publishing workflow.',
+        attribution: 'Nadine Putri — Brand Lead, Good News Daily',
+      },
+      {
+        blockType: 'stats',
+        items: [
+          { value: '0', label: 'Redirects lost' },
+          { value: '2×', label: 'Publishing speed' },
+          { value: '1,847', label: 'URLs mapped' },
+        ],
+      },
+    ],
   },
   {
     title: 'Kite Finance',
@@ -183,6 +310,24 @@ export const projects = [
     deliverables: ['Landing pages', 'A/B-ready sections'],
     featured: false,
     order: 4,
+    content: [
+      {
+        blockType: 'text',
+        text: 'Kite Finance ships product updates every sprint, but their landing pages still told last quarter’s story. We rebuilt the marketing surface as A/B-ready sections the growth team can reorder without a deploy.',
+      },
+      {
+        blockType: 'image',
+        image: { url: unsplash('1460925895917-afdab827c52f'), alt: 'Analytics dashboard with growth charts' },
+        width: 'wide',
+        caption: 'The pricing section, instrumented for the first experiment.',
+      },
+      {
+        blockType: 'split',
+        text: 'Each section carries its own analytics hooks, so a new experiment starts with clean data on day one.',
+        image: { url: unsplash('1554224155-6726b3ff858f'), alt: 'Desk with tax paperwork, a calculator and a hand taking notes' },
+        imageSide: 'left',
+      },
+    ],
   },
   {
     title: 'Nara Objects',
@@ -202,6 +347,32 @@ export const projects = [
     deliverables: ['CMS collections', 'Training handoff'],
     featured: false,
     order: 5,
+    content: [
+      {
+        blockType: 'text',
+        text: 'Nara Objects makes ceramics that sell out in days. The catalogue needed to grow without a developer on call, so every product, material note and studio story is a CMS entry the two-person team edits themselves.',
+      },
+      {
+        blockType: 'gallery',
+        images: [
+          { url: unsplash('1610701596007-11502861dcfa'), alt: 'Product listing grid for ceramic objects' },
+          { url: unsplash('1466781783364-36c955e42a7f'), alt: 'Packaging and unboxing sequence' },
+        ],
+        columns: '2',
+        caption: 'Product grid and the packaging story.',
+      },
+      {
+        blockType: 'image',
+        image: { url: unsplash('1460925895917-afdab827c52f'), alt: 'Ceramic vessel detail in studio light' },
+        width: 'narrow',
+        caption: 'Studio light, one vessel, no retouching.',
+      },
+      {
+        blockType: 'quote',
+        quote: 'Our team published the winter collection the same week the training ended.',
+        attribution: 'Rani Wibowo — Studio Manager, Nara Objects',
+      },
+    ],
   },
   {
     title: 'Pollen Club',
@@ -434,33 +605,30 @@ export const homePage = {
     heading: 'Design-driven craft, built to give marketing teams <em>leverage.</em>',
     intro:
       'We explore, prototype and build alongside the people who will run the site. The result is a useful system, not a handoff-shaped problem.',
-    tiles: [
+    steps: [
       {
-        label: 'Monfolio studio',
-        caption: 'Working sessions in Jakarta',
-        variant: 'accent' as const,
+        number: '01',
+        title: 'Discovery',
+        body: 'A working session, not a pitch. We map your content, your publishing rhythm and what the site actually has to do before anything gets designed.',
+        deliverables: ['Content map', 'Project scope'],
       },
       {
-        label: 'Figma → Build',
-        caption: 'Component libraries that stay coherent',
-        variant: 'dark' as const,
-      },
-    ],
-    pillars: [
-      {
-        label: '01 · Architecture',
-        title: 'Design systems that scale',
-        body: 'A content model that makes the next page easier, not harder.',
+        number: '02',
+        title: 'Design',
+        body: 'Systems before screens. Type, colour and components are decided as a system, so every page that follows stays coherent.',
+        deliverables: ['Design system', 'Page designs'],
       },
       {
-        label: '02 · Motion & UX',
-        title: 'Interaction with a job to do',
-        body: 'Motion that orients, explains or rewards attention.',
+        number: '03',
+        title: 'Build',
+        body: 'The site comes together in small, reviewable steps you can click and run, with the CMS wired in from the first build.',
+        deliverables: ['CMS architecture', 'Motion & interactions'],
       },
       {
-        label: '03 · Growth partnership',
-        title: 'A studio that stays useful',
-        body: 'A clear handoff, a shared backlog and help when the next launch arrives.',
+        number: '04',
+        title: 'Launch & support',
+        body: 'We QA across devices, train your team and stay close through launch, then keep a shared backlog for whatever comes next.',
+        deliverables: ['QA + launch', 'Team training', 'Ongoing backlog'],
       },
     ],
   },

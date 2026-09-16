@@ -3,6 +3,7 @@ import SiteShell from '../layouts/SiteShell.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ProjectVisual from '../components/ProjectVisual.astro';
 import SectionMarker from '../components/SectionMarker.astro';
+import ProcessSection from '../components/ProcessSection.astro';
 import FaqSection from '../components/FaqSection.astro';
 import TestimonialSection from '../components/TestimonialSection.astro';
 import HeroGridAnimation from '../components/HeroGridAnimation.astro';
@@ -124,32 +125,7 @@ const slideTotal = String(home.hero.carousel.length).padStart(2, '0');
         </div>
       </section>
 
-      <section id="about" class="bg-surface-lift px-5 py-20 sm:px-8 sm:py-28 lg:px-8">
-        <div class="mx-auto max-w-7xl" data-fade-stagger>
-          <SectionMarker number={home.markers.about.number} label={home.markers.about.label} />
-          <div class="intro-head">
-            <h2 class="display-heading" set:html={home.about.heading} />
-            <p>{home.about.intro}</p>
-          </div>
-          <div class="intro-tiles">
-            {home.about.tiles.map((tile) => (
-              <div class={`intro-tile ${tile.variant === 'dark' ? 'tile-system' : 'tile-studio'}`}>
-                {tile.variant === 'dark' ? <div class="system-lines"></div> : <div class="tile-orbit"></div>}
-                <div class={`caption-card${tile.variant === 'dark' ? ' dark' : ''}`}><span>{tile.label}</span><small>{tile.caption}</small></div>
-              </div>
-            ))}
-          </div>
-          <div class="pillars">
-            {home.about.pillars.map((pillar) => (
-              <article class="pillar-card">
-                <span>{pillar.label}</span>
-                <h3>{pillar.title}</h3>
-                <p>{pillar.body}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ProcessSection about={home.about} marker={home.markers.about} />
 
       <section id="work" class="bg-surface px-5 py-20 sm:px-8 sm:py-28 lg:px-8">
         <div class="mx-auto max-w-7xl">
@@ -428,24 +404,6 @@ const slideTotal = String(home.hero.carousel.length).padStart(2, '0');
   .intro-head,.head-row{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:2rem;align-items:end;margin-bottom:4rem}
   .intro-head h2,.head-row h2{grid-column:span 8}
   .intro-head>p,.head-row>p,.head-row>div>p{grid-column:span 4;margin-bottom:.3rem;color:var(--color-muted);font-size:15px;line-height:1.7}
-  .intro-tiles{display:grid;grid-template-columns:7fr 5fr;gap:1.5rem}
-  .intro-tile{position:relative;min-height:24rem;overflow:hidden;border-radius:1.25rem;border:1px solid var(--color-line)}
-  .tile-studio{background:var(--color-accent)}
-  .tile-system{background:var(--color-ink)}
-  .tile-orbit{position:absolute;right:12%;top:10%;width:65%;aspect-ratio:1;border:1px solid var(--color-ink);border-radius:50%;transform:rotate(-20deg) scaleX(1.4)}
-  .tile-orbit:after{content:'M';position:absolute;inset:20%;display:grid;place-items:center;color:var(--color-ink);font-size:9rem;font-weight:800;letter-spacing:-.16em}
-  .system-lines{position:absolute;inset:12%;background:repeating-linear-gradient(90deg,transparent 0 20%,var(--color-accent) 20% 20.5%),repeating-linear-gradient(0deg,transparent 0 20%,var(--color-surface) 20% 20.5%);opacity:.8}
-  .system-lines:after{content:'F / B';position:absolute;right:8%;bottom:5%;color:var(--color-surface);font-size:3rem;font-weight:800;letter-spacing:-.12em}
-  .caption-card{position:absolute;right:1rem;bottom:1rem;left:1rem;display:flex;justify-content:space-between;gap:1rem;border:1px solid color-mix(in srgb,var(--color-surface) 50%,transparent);border-radius:.75rem;padding:.75rem 1rem;background:color-mix(in srgb,var(--color-surface) 88%,transparent);color:var(--color-ink);font-size:11px;font-weight:700;backdrop-filter:blur(10px)}
-  .caption-card small{color:var(--color-muted);font-size:10px;font-weight:500}
-  .caption-card.dark{background:color-mix(in srgb,var(--color-ink) 88%,transparent);color:var(--color-surface);border-color:color-mix(in srgb,var(--color-surface) 15%,transparent)}
-  .caption-card.dark small{color:color-mix(in srgb,var(--color-surface) 70%,transparent)}
-  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem}
-  .pillar-card{display:flex;flex-direction:column;border-radius:1.25rem;background:var(--color-surface);border:1px solid var(--color-line);padding:2rem;transition:transform .4s var(--ease-studio),box-shadow .4s var(--ease-studio)}
-  .pillar-card:hover{transform:translateY(-4px);box-shadow:0 16px 32px -8px rgba(7,13,20,.08)}
-  .pillar-card>span{color:var(--color-accent);font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
-  .pillar-card h3{margin-top:1rem;font-size:1.2rem;font-weight:700;letter-spacing:-.04em}
-  .pillar-card p{margin-top:.5rem;color:var(--color-muted);font-size:13px;line-height:1.7}
   .head-row{margin-bottom:3rem}
   .featured-build{display:grid;grid-template-columns:5fr 7fr;min-height:27rem;margin-bottom:4rem;overflow:hidden;border-radius:1.5rem;background:var(--color-ink);color:var(--color-surface)}
   .featured-copy{display:flex;flex-direction:column;justify-content:space-between;gap:1.5rem;padding:2.5rem}
@@ -557,9 +515,7 @@ const slideTotal = String(home.hero.carousel.length).padStart(2, '0');
     .location-badge{display:none}
     .intro-head,.head-row{display:block}
     .intro-head>p,.head-row>p,.head-row>div>p{margin-top:1.5rem}
-    .intro-tiles{grid-template-columns:1fr}
-    .intro-tile{min-height:18rem}
-    .pillars,.contact-bento,.featured-build{grid-template-columns:1fr}
+    .contact-bento,.featured-build{grid-template-columns:1fr}
     .featured-visual{min-height:20rem}
     .card-stack{width:88%;max-width:20rem}
     .card-back{transform:translate(12px,10px) rotate(2deg)}
@@ -568,7 +524,6 @@ const slideTotal = String(home.hero.carousel.length).padStart(2, '0');
     .submit-row{align-items:flex-start;flex-direction:column}
     .story-bar small{display:none}
     .service-cells{grid-template-columns:1fr}
-    .caption-card{flex-direction:column;gap:.2rem}
   }
   /* Hero mobile: satu kolom, IDE jadi background, carousel full-width, availability di dasar layar */
   @media(max-width:699px){
@@ -610,7 +565,7 @@ const slideTotal = String(home.hero.carousel.length).padStart(2, '0');
   @media(prefers-reduced-motion:reduce){
     .marquee-track,.play-ring{animation:none}
     .card-back{animation:none!important}
-    .service-cell:hover,.pillar-card:hover,.project-card:hover,.featured-build:hover .card-front,.featured-build:hover .card-back{transform:none!important;padding-left:2rem}
+    .service-cell:hover,.project-card:hover,.featured-build:hover .card-front,.featured-build:hover .card-back{transform:none!important;padding-left:2rem}
   }
 </style>
 

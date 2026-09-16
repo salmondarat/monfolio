@@ -41,3 +41,15 @@ export const group = (value: unknown): Record<string, unknown> =>
 
 export const rows = (value: unknown): Record<string, unknown>[] =>
   Array.isArray(value) ? value.map((row) => group(row)) : []
+
+/**
+ * Turn a textarea value into paragraph strings for the web renderer.
+ * Blank lines split paragraphs; single newlines become <br /> so editors can
+ * force line breaks. Strings survive verbatim otherwise — inline HTML is the
+ * author's responsibility, matching the house convention for display copy.
+ */
+export const paragraphHtml = (value: unknown): string[] =>
+  text(value)
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.trim().replace(/\n/g, '<br />'))
+    .filter((paragraph) => paragraph.length > 0)

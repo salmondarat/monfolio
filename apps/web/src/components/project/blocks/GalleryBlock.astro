@@ -1,0 +1,69 @@
+---
+import type { ProjectBlock } from '@monfolio/content';
+
+type GalleryBlock = Extract<ProjectBlock, { blockType: 'gallery' }>;
+
+const { block } = Astro.props as { block: GalleryBlock };
+---
+<figure class="bl-gallery" data-columns={block.columns}>
+  <div class="bl-gallery-grid">
+    {block.images.map((image) => (
+      <div class="bl-cell">
+        <img src={image.url} alt={image.alt} loading="lazy" decoding="async" />
+      </div>
+    ))}
+  </div>
+  {block.caption && <figcaption>{block.caption}</figcaption>}
+</figure>
+
+<style>
+  .bl-gallery {
+    margin: 0;
+  }
+  .bl-gallery-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .bl-gallery[data-columns='3'] .bl-gallery-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .bl-cell {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.875rem;
+    aspect-ratio: 4 / 3;
+    background: var(--color-surface-lift);
+  }
+  .bl-cell::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-ink) 10%, transparent);
+  }
+  .bl-cell img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .bl-gallery figcaption {
+    margin-top: 0.75rem;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+  @media (max-width: 64rem) {
+    .bl-gallery[data-columns='3'] .bl-gallery-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 48rem) {
+    .bl-gallery-grid,
+    .bl-gallery[data-columns='3'] .bl-gallery-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

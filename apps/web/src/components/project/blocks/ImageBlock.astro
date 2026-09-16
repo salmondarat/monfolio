@@ -1,0 +1,52 @@
+---
+import type { ProjectBlock } from '@monfolio/content';
+
+type ImageBlock = Extract<ProjectBlock, { blockType: 'image' }>;
+
+const { block } = Astro.props as { block: ImageBlock };
+---
+<figure class="bl-image">
+  <div class="bl-image-frame">
+    <img src={block.url} alt={block.alt} loading="lazy" decoding="async" />
+  </div>
+  {(block.caption || block.credit) && (
+    <figcaption>
+      {block.caption}
+      {block.credit && <span class="bl-credit"> — {block.credit}</span>}
+    </figcaption>
+  )}
+</figure>
+
+<style>
+  .bl-image {
+    margin: 0;
+  }
+  .bl-image-frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    background: var(--color-surface-lift);
+  }
+  .bl-image-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-ink) 10%, transparent);
+  }
+  .bl-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .bl-image figcaption {
+    margin-top: 0.75rem;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+  .bl-credit {
+    color: color-mix(in srgb, var(--color-muted) 72%, transparent);
+  }
+</style>

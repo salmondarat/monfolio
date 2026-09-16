@@ -158,6 +158,82 @@ export interface Project {
   year: string;
   description: string;
   /**
+   * Free-form case study body, rendered in order on the detail page. Leave empty to fall back to the gallery, quote and metrics below.
+   */
+  content?:
+    | (
+        | {
+            /**
+             * Separate paragraphs with a blank line. Inline HTML is allowed, e.g. <em>…</em> or <br />.
+             */
+            text: string;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'text';
+          }
+        | {
+            image: number | Media;
+            /**
+             * Falls back to the media alt text.
+             */
+            alt?: string | null;
+            width?: ('wide' | 'standard' | 'narrow') | null;
+            caption?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'image';
+          }
+        | {
+            images: (number | Media)[];
+            columns?: ('2' | '3') | null;
+            caption?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'gallery';
+          }
+        | {
+            quote: string;
+            /**
+             * e.g. "Maya Santoso — Founder, Mora Coffee".
+             */
+            attribution?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'quote';
+          }
+        | {
+            items?:
+              | {
+                  /**
+                   * e.g. "47.2%", "+312 orders", "6 weeks".
+                   */
+                  value: string;
+                  label: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'stats';
+          }
+        | {
+            /**
+             * Separate paragraphs with a blank line. Inline HTML is allowed, e.g. <em>…</em>.
+             */
+            text: string;
+            image: number | Media;
+            /**
+             * Falls back to the media alt text.
+             */
+            alt?: string | null;
+            imageSide?: ('left' | 'right') | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'split';
+          }
+      )[]
+    | null;
+  /**
    * Main visual for the project card. Without this the card renders empty.
    */
   image?: (number | null) | Media;
@@ -166,7 +242,7 @@ export interface Project {
    */
   imageAlt?: string | null;
   /**
-   * Case study images, rendered in order on the detail page.
+   * Fallback story images, used when the story blocks above are empty. Also feeds the card.
    */
   gallery?: (number | Media)[] | null;
   /**
@@ -174,11 +250,11 @@ export interface Project {
    */
   metrics?: string[] | null;
   /**
-   * Stored for the future project detail page.
+   * Shown in the detail page meta rail.
    */
   deliverables?: string[] | null;
   /**
-   * Stored for the future project detail page.
+   * Fallback quote, used when the story blocks above are empty.
    */
   quote?: string | null;
   size?: ('standard' | 'wide' | 'tall') | null;
@@ -550,6 +626,67 @@ export interface ProjectsSelect<T extends boolean = true> {
   category?: T;
   year?: T;
   description?: T;
+  content?:
+    | T
+    | {
+        text?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+              blockName?: T;
+            };
+        image?:
+          | T
+          | {
+              image?: T;
+              alt?: T;
+              width?: T;
+              caption?: T;
+              id?: T;
+              blockName?: T;
+            };
+        gallery?:
+          | T
+          | {
+              images?: T;
+              columns?: T;
+              caption?: T;
+              id?: T;
+              blockName?: T;
+            };
+        quote?:
+          | T
+          | {
+              quote?: T;
+              attribution?: T;
+              id?: T;
+              blockName?: T;
+            };
+        stats?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    value?: T;
+                    label?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        split?:
+          | T
+          | {
+              text?: T;
+              image?: T;
+              alt?: T;
+              imageSide?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
   image?: T;
   imageAlt?: T;
   gallery?: T;
@@ -823,19 +960,18 @@ export interface HomePage {
      */
     heading?: string | null;
     intro?: string | null;
-    tiles?:
+    steps?:
       | {
-          label: string;
-          caption: string;
-          variant: 'accent' | 'dark';
-          id?: string | null;
-        }[]
-      | null;
-    pillars?:
-      | {
-          label: string;
+          /**
+           * e.g. "01".
+           */
+          number: string;
           title: string;
           body: string;
+          /**
+           * Short chips, e.g. "Content map".
+           */
+          deliverables?: string[] | null;
           id?: string | null;
         }[]
       | null;
@@ -1159,20 +1295,13 @@ export interface HomePageSelect<T extends boolean = true> {
     | {
         heading?: T;
         intro?: T;
-        tiles?:
+        steps?:
           | T
           | {
-              label?: T;
-              caption?: T;
-              variant?: T;
-              id?: T;
-            };
-        pillars?:
-          | T
-          | {
-              label?: T;
+              number?: T;
               title?: T;
               body?: T;
+              deliverables?: T;
               id?: T;
             };
       };

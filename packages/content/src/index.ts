@@ -1,5 +1,6 @@
 export * from './types'
 export * from './client'
 export * from './media'
+export * from './normalize'
 export * from './collections'
 export * from './globals'

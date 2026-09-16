@@ -1,0 +1,49 @@
+---
+import type { ProjectBlock } from '@monfolio/content';
+
+type StatsBlock = Extract<ProjectBlock, { blockType: 'stats' }>;
+
+const { block } = Astro.props as { block: StatsBlock };
+---
+<div class="bl-stats">
+  {block.items.map((item) => (
+    <div class="bl-stat">
+      <span class="bl-value">{item.value}</span>
+      {item.label && <span class="bl-label">{item.label}</span>}
+    </div>
+  ))}
+</div>
+
+<style>
+  .bl-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+    gap: 1px;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: 1rem;
+    background: var(--color-line);
+  }
+  .bl-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1.5rem 1.25rem;
+    background: var(--color-surface-lift);
+  }
+  .bl-value {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--color-ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .bl-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+</style>

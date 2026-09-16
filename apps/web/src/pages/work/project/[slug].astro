@@ -8,9 +8,7 @@ import {
   getSiteSettings,
 } from '@monfolio/content';
 import SiteShell from '../../../layouts/SiteShell.astro';
-import CaseStudyLayout from '../../../components/project/CaseStudyLayout.astro';
-import GalleryLayout from '../../../components/project/GalleryLayout.astro';
-import EditorialDetailLayout from '../../../components/project/EditorialDetailLayout.astro';
+import StoryLayout from '../../../components/project/StoryLayout.astro';
 
 export const getStaticPaths = async () => {
   const projects = await getProjects();
@@ -26,23 +24,17 @@ export const getStaticPaths = async () => {
 
 const { project, next } = Astro.props as { project: Project; next: Project };
 
-const categories = await getCategories();
+const [categories, projects] = await Promise.all([getCategories(), getProjects()]);
 const category = categories.find((entry) => entry.slug === project.categorySlug);
-const layout = category?.page.layout ?? 'grid';
+const related = projects
+  .filter((entry) => entry.slug !== project.slug && entry.categoryKey === project.categoryKey)
+  .slice(0, 3);
 
 const [settings, navigation, announcement] = await Promise.all([
   getSiteSettings(),
   getNavigation(),
   getAnnouncement(),
 ]);
-
-const layouts = {
-  grid: GalleryLayout,
-  showcase: CaseStudyLayout,
-  editorial: EditorialDetailLayout,
-};
-
-const DetailLayout = layouts[layout] ?? GalleryLayout;
 
 const title = `${project.title} — ${settings.title}`;
 const description = project.description;
@@ -54,5 +46,5 @@ const description = project.description;
   title={title}
   description={description}
 >
-  <DetailLayout project={project} next={next} category={category} />
+  <StoryLayout project={project} next={next} category={category} related={related} />
 </SiteShell>

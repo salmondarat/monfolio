@@ -148,15 +148,11 @@ export const getHomePage = async (): Promise<HomeContent> => {
     about: {
       heading: text(about.heading),
       intro: text(about.intro),
-      tiles: rows(about.tiles).map((row) => ({
-        label: text(row.label),
-        caption: text(row.caption),
-        variant: text(row.variant) === 'dark' ? ('dark' as const) : ('accent' as const),
-      })),
-      pillars: rows(about.pillars).map((row) => ({
-        label: text(row.label),
+      steps: rows(about.steps).map((row) => ({
+        number: text(row.number),
         title: text(row.title),
         body: text(row.body),
+        deliverables: textArray(row.deliverables),
       })),
     },
     work: {

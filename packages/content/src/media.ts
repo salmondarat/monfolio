@@ -9,6 +9,7 @@ export type MediaSize = {
 export type MediaDoc = {
   id: number | string
   alt?: string | null
+  credit?: string | null
   url?: string | null
   filename?: string | null
   width?: number | null

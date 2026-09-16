@@ -2,6 +2,7 @@ import { getPayload } from 'payload'
 import type { Payload } from 'payload'
 
 import config from './payload.config'
+import type { Project } from './payload-types'
 import {
   announcement,
   categories,
@@ -17,6 +18,7 @@ import {
   siteSettings,
   testimonials,
 } from './seed/data'
+import type { SeedBlock } from './seed/data'
 
 type Id = number
 
@@ -87,6 +89,43 @@ const uploadImage = async (
   uploadCache.set(url, id)
 
   return id
+}
+
+/**
+ * Story blocks arrive with media references as `{ url, alt }`; upload each one
+ * (deduplicated by the shared cache) and swap in the media id Payload expects.
+ */
+const resolveSeedBlocks = async (
+  payload: Payload,
+  blocks: SeedBlock[] | undefined,
+): Promise<NonNullable<Project['content']>> => {
+  if (!blocks || blocks.length === 0) return []
+
+  const resolved: NonNullable<Project['content']> = []
+
+  for (const block of blocks) {
+    if (block.blockType === 'image') {
+      const image = await uploadImage(payload, block.image.url, block.image.alt)
+      if (image === undefined) continue
+      resolved.push({ blockType: 'image', image, width: block.width ?? 'wide', caption: block.caption })
+    } else if (block.blockType === 'gallery') {
+      const images: Id[] = []
+      for (const item of block.images) {
+        const id = await uploadImage(payload, item.url, item.alt)
+        if (id !== undefined) images.push(id)
+      }
+      if (images.length === 0) continue
+      resolved.push({ blockType: 'gallery', images, columns: block.columns ?? '2', caption: block.caption })
+    } else if (block.blockType === 'split') {
+      const image = await uploadImage(payload, block.image.url, block.image.alt)
+      if (image === undefined) continue
+      resolved.push({ blockType: 'split', text: block.text, image, imageSide: block.imageSide ?? 'left' })
+    } else {
+      resolved.push(block)
+    }
+  }
+
+  return resolved
 }
 
 const clearAll = async (payload: Payload): Promise<void> => {
@@ -201,6 +240,7 @@ const seed = async (): Promise<void> => {
         image: projectImages.get(project.title),
         imageAlt: project.imageAlt,
         gallery: projectGalleries.get(project.title) ?? [],
+        content: await resolveSeedBlocks(payload, project.content),
         size: project.size as 'wide' | 'tall' | 'standard',
         metrics: project.metrics,
         deliverables: project.deliverables,

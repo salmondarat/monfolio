@@ -1,0 +1,241 @@
+---
+import type { AboutContent } from '@monfolio/content';
+import SectionMarker from './SectionMarker.astro';
+
+const { about, marker } = Astro.props as { about: AboutContent; marker: { number: string; label: string } };
+const steps = about.steps;
+---
+<section id="about" class="process-section bg-surface-lift px-5 py-20 sm:px-8 sm:py-28 lg:px-8">
+  <div class="mx-auto max-w-7xl process-frame" data-fade-stagger>
+    <SectionMarker number={marker.number} label={marker.label} />
+    <div class="intro-head">
+      <h2 class="display-heading" set:html={about.heading} />
+      <p>{about.intro}</p>
+    </div>
+
+    <div class="process-stage">
+      <div class="process-gauge" aria-hidden="true">
+        <span class="gauge-num" data-gauge-num>{steps[0]?.number ?? '01'}</span>
+        <span class="gauge-track"><i data-gauge-bar></i></span>
+        <span class="gauge-total">/{String(steps.length).padStart(2, '0')}</span>
+      </div>
+
+      <div class="process-steps">
+        {steps.map((step, index) => (
+          <article class:list={['process-step', { 'is-active': index === 0 }]} data-step={index}>
+            <button
+              type="button"
+              class="step-head"
+              aria-expanded={index === 0 ? 'true' : 'false'}
+              aria-controls={`step-body-${index}`}
+              data-step-toggle
+            >
+              <span class="step-number">{step.number}</span>
+              <span class="step-title">{step.title}</span>
+              <span class="step-indicator" aria-hidden="true"></span>
+            </button>
+            <div class="step-body" id={`step-body-${index}`} data-step-body>
+              <div class="step-body-inner">
+                <p class="step-copy">{step.body}</p>
+                {step.deliverables.length > 0 && (
+                  <div class="step-chips">
+                    {step.deliverables.map((item) => <span class="step-chip">{item}</span>)}
+                  </div>
+                )}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .process-stage {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .process-gauge { display: none; }
+
+  .process-steps { display: flex; flex-direction: column; }
+  .process-step { border-top: 1px solid var(--color-line); }
+  .process-step:last-child { border-bottom: 1px solid var(--color-line); }
+
+  .step-head {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    width: 100%;
+    padding: 1.4rem 0;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    text-align: left;
+  }
+  .step-head:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; border-radius: 4px; }
+
+  .step-number {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: var(--color-muted);
+    transition: color .3s ease;
+  }
+  .step-title {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--color-ink);
+    transition: color .3s ease;
+  }
+  .step-indicator {
+    margin-left: auto;
+    width: 2rem;
+    height: 2rem;
+    flex: none;
+    border: 1px solid var(--color-line);
+    border-radius: 50%;
+    position: relative;
+    transition: all .4s var(--ease-studio);
+  }
+  .step-indicator::before,
+  .step-indicator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 1.5px;
+    background: var(--color-ink);
+    transform: translate(-50%, -50%);
+    transition: transform .4s var(--ease-studio), background .3s ease;
+  }
+  .step-indicator::after { transform: translate(-50%, -50%) rotate(90deg); }
+  .is-active .step-indicator { background: var(--color-accent); border-color: var(--color-accent); }
+  .is-active .step-indicator::before,
+  .is-active .step-indicator::after { background: #fff; }
+  .is-active .step-indicator::after { transform: translate(-50%, -50%) rotate(0deg); }
+
+  .step-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .5s var(--ease-studio);
+  }
+  .step-body-inner { overflow: hidden; }
+  .is-active .step-body { grid-template-rows: 1fr; }
+
+  .step-copy {
+    max-width: 34rem;
+    padding-bottom: 1.25rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-muted);
+  }
+  .step-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; padding-bottom: 1.6rem; }
+  .step-chip {
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    padding: 0.32rem 0.75rem;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-ink);
+    background: var(--color-surface);
+  }
+
+  .is-active .step-number { color: var(--color-accent); }
+
+  /* Desktop: pinned scroll-driven stage */
+  @media (min-width: 1024px) {
+    .process-stage {
+      grid-template-columns: 18rem 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .process-gauge {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      position: sticky;
+      top: 8rem;
+    }
+    .gauge-num {
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 9vw, 8.5rem);
+      font-weight: 700;
+      letter-spacing: -0.06em;
+      line-height: 1;
+      color: var(--color-accent);
+    }
+    .gauge-total {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--color-muted);
+    }
+    .gauge-track {
+      position: absolute;
+      left: 0;
+      bottom: -2.5rem;
+      width: 100%;
+      height: 2px;
+      background: var(--color-line);
+      overflow: hidden;
+    }
+    .gauge-track i {
+      display: block;
+      height: 100%;
+      width: 100%;
+      background: var(--color-accent);
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.querySelector<HTMLElement>('.process-section');
+  const steps = Array.from(section?.querySelectorAll<HTMLElement>('[data-step]') ?? []);
+  const gaugeNum = section?.querySelector<HTMLElement>('[data-gauge-num]');
+  const gaugeBar = section?.querySelector<HTMLElement>('[data-gauge-bar]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const setActive = (index: number) => {
+    steps.forEach((step, i) => {
+      const active = i === index;
+      step.classList.toggle('is-active', active);
+      step.querySelector('[data-step-toggle]')?.setAttribute('aria-expanded', String(active));
+    });
+    if (gaugeNum) gaugeNum.textContent = steps[index]?.querySelector('.step-number')?.textContent ?? '01';
+  };
+
+  // Manual toggling always works: click or keyboard on any step head.
+  steps.forEach((step, index) => {
+    step.querySelector('[data-step-toggle]')?.addEventListener('click', () => setActive(index));
+  });
+
+  // Desktop + motion: pin the stage and let scroll drive the active step.
+  if (!reduce && section && steps.length > 0 && window.matchMedia('(min-width: 1024px)').matches) {
+    const total = steps.length;
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top top',
+      end: () => `+=${total * 60}%`,
+      pin: '.process-frame',
+      pinSpacing: true,
+      scrub: true,
+      onUpdate: (self) => {
+        const index = Math.min(total - 1, Math.floor(self.progress * total));
+        setActive(index);
+        if (gaugeBar) gaugeBar.style.transform = `scaleX(${self.progress})`;
+      },
+    });
+  }
+</script>

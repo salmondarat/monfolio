@@ -139,39 +139,21 @@ export const HomePage: GlobalConfig = {
                   type: 'textarea',
                 },
                 {
-                  name: 'tiles',
+                  name: 'steps',
                   type: 'array',
-                  maxRows: 4,
+                  label: 'Process steps',
+                  minRows: 2,
+                  maxRows: 6,
                   fields: [
-                    {
-                      name: 'label',
-                      type: 'text',
-                      required: true,
-                    },
-                    {
-                      name: 'caption',
-                      type: 'text',
-                      required: true,
-                    },
-                    {
-                      name: 'variant',
-                      type: 'select',
-                      required: true,
-                      defaultValue: 'accent',
-                      options: [
-                        { label: 'Accent (orange)', value: 'accent' },
-                        { label: 'Dark', value: 'dark' },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  name: 'pillars',
-                  type: 'array',
-                  fields: [
-                    { name: 'label', type: 'text', required: true },
+                    { name: 'number', type: 'text', required: true, admin: { description: 'e.g. "01".' } },
                     { name: 'title', type: 'text', required: true },
                     { name: 'body', type: 'textarea', required: true },
+                    {
+                      name: 'deliverables',
+                      type: 'text',
+                      hasMany: true,
+                      admin: { description: 'Short chips, e.g. "Content map".' },
+                    },
                   ],
                 },
               ],
