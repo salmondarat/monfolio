@@ -16,11 +16,11 @@ export const Projects: CollectionConfig = {
     defaultColumns: ['image', 'title', 'category', 'featured', '_status', 'updatedAt'],
     listSearchableFields: ['title', 'description', 'year'],
     description: 'Case studies shown in the work grid and the featured build block.',
-    // Targets the category page containing the project grid until per-project detail pages exist.
+    // Per-project detail page.
     preview: ({ data }) => {
       const base = process.env.WEB_URL ?? 'http://localhost:4321'
       const slug = (data as { slug?: string })?.slug
-      return slug ? `${base}/work/${slug}` : base
+      return slug ? `${base}/work/project/${slug}` : base
     },
   },
   versions: {
@@ -84,6 +84,15 @@ export const Projects: CollectionConfig = {
       type: 'text',
       admin: {
         description: 'Alt text for the card image. Falls back to the media alt text.',
+      },
+    },
+    {
+      name: 'gallery',
+      type: 'upload',
+      relationTo: 'media',
+      hasMany: true,
+      admin: {
+        description: 'Case study images, rendered in order on the detail page.',
       },
     },
     {

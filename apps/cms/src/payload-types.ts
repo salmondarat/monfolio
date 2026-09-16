@@ -166,6 +166,10 @@ export interface Project {
    */
   imageAlt?: string | null;
   /**
+   * Case study images, rendered in order on the detail page.
+   */
+  gallery?: (number | Media)[] | null;
+  /**
    * Short result chips, e.g. "+42% sign-ups".
    */
   metrics?: string[] | null;
@@ -548,6 +552,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   description?: T;
   image?: T;
   imageAlt?: T;
+  gallery?: T;
   metrics?: T;
   deliverables?: T;
   quote?: T;
