@@ -3,8 +3,9 @@ import type { Project } from '@monfolio/content';
 import ProjectVisual from './ProjectVisual.astro';
 const { project, index } = Astro.props as { project: Project; index?: number };
 ---
-<article
+<a
   class="project-card"
+  href={`/work/project/${project.slug}`}
   data-category={project.categoryKey}
   data-index={index}
   data-fade-stagger
@@ -15,7 +16,7 @@ const { project, index } = Astro.props as { project: Project; index?: number };
   <div class="project-caption">
     <div class="project-info">
       <div class="project-meta-row">
-        <a class="project-cat-pill" href={`/work/${project.categorySlug}`}>{project.category.split('/')[0].trim()}</a>
+        <span class="project-cat-pill">{project.category.split('/')[0].trim()}</span>
         <span class="project-year">{project.year}</span>
       </div>
       <h3 class="project-title">{project.title}</h3>
@@ -31,7 +32,7 @@ const { project, index } = Astro.props as { project: Project; index?: number };
       <span class="project-arrow" aria-hidden="true">↗</span>
     </div>
   </div>
-</article>
+</a>
 
 <style>
   .project-card {
