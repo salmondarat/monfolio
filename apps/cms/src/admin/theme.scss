@@ -1,0 +1,121 @@
+/* Monfolio admin theme — overrides Payload's CSS variables.
+   Values mirror apps/web/src/styles/global.css.
+
+   Notes:
+   - `--theme-baseline` is a SPACING token in Payload (default 20px), never a color.
+   - Payload's primary action color reads the `--color-success-*` ramp
+     (surfaced as `--theme-success-500: var(--color-success-500)`), so the
+     accent orange is applied by overriding that raw ramp in `:root`.
+   - Some components read the raw `--color-base-*` ramp directly, so it is
+     overridden alongside the `--theme-elevation-*` tokens. */
+
+:root {
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --theme-bg: #f5f7f9;
+  --theme-text: #070d14;
+  --theme-border: #d8dbdd;
+
+  --theme-elevation-0: #f5f7f9;
+  --theme-elevation-50: #ffffff;
+  --theme-elevation-100: #ffffff;
+  --theme-elevation-150: #f5f7f9;
+  --theme-elevation-200: #ffffff;
+  --theme-elevation-300: #d8dbdd;
+  --theme-elevation-400: #7f8183;
+  --theme-elevation-500: #070d14;
+  --theme-elevation-600: #070d14;
+  --theme-elevation-700: #070d14;
+  --theme-elevation-800: #070d14;
+  --theme-elevation-900: #070d14;
+  --theme-elevation-1000: #070d14;
+
+  /* Raw base ramp — mirrors the elevation values above */
+  --color-base-0: #f5f7f9;
+  --color-base-50: #ffffff;
+  --color-base-100: #ffffff;
+  --color-base-150: #f5f7f9;
+  --color-base-200: #ffffff;
+  --color-base-250: #f5f7f9;
+  --color-base-300: #d8dbdd;
+  --color-base-400: #7f8183;
+  --color-base-500: #4a4d50;
+  --color-base-600: #3a3d40;
+  --color-base-700: #2a2d30;
+  --color-base-800: #1a1d20;
+  --color-base-850: #14171a;
+  --color-base-900: #070d14;
+  --color-base-950: #05080c;
+  --color-base-1000: #070d14;
+
+  /* Accent orange ramp — Payload surfaces this as its primary action color */
+  --color-success-50: #fdf0ec;
+  --color-success-100: #fadfd7;
+  --color-success-200: #f7bfae;
+  --color-success-300: #f39d85;
+  --color-success-400: #f1765c;
+  --color-success-450: #f06344;
+  --color-success-500: #f15533;
+  --color-success-550: #d94a2c;
+  --color-success-600: #c04226;
+  --color-success-650: #a63a20;
+  --color-success-700: #8b311b;
+  --color-success-750: #6f2715;
+  --color-success-800: #5c2011;
+  --color-success-850: #471a0e;
+  --color-success-900: #33130a;
+  --color-success-950: #220d06;
+
+  --theme-input-bg: #ffffff;
+  --theme-overlay: rgba(7, 13, 20, 0.5);
+
+  --theme-success: var(--color-success-500);
+  --theme-warning: #c77b1e;
+  --theme-error: #c73a2e;
+
+  --theme-warning-500: #c77b1e;
+  --theme-error-500: #c73a2e;
+}
+
+html[data-theme='dark'] {
+  --theme-bg: #11161d;
+  --theme-text: #f5f7f9;
+  --theme-border: #232a33;
+
+  --theme-elevation-0: #11161d;
+  --theme-elevation-50: #161c25;
+  --theme-elevation-100: #161c25;
+  --theme-elevation-150: #11161d;
+  --theme-elevation-200: #161c25;
+  --theme-elevation-300: #232a33;
+  --theme-elevation-400: #a8adb4;
+  --theme-elevation-500: #f5f7f9;
+  --theme-elevation-600: #f5f7f9;
+  --theme-elevation-700: #f5f7f9;
+  --theme-elevation-800: #f5f7f9;
+  --theme-elevation-900: #f5f7f9;
+  --theme-elevation-1000: #f5f7f9;
+
+  /* Raw base ramp — mirrors the elevation values above */
+  --color-base-0: #11161d;
+  --color-base-50: #161c25;
+  --color-base-100: #161c25;
+  --color-base-150: #11161d;
+  --color-base-200: #161c25;
+  --color-base-250: #11161d;
+  --color-base-300: #232a33;
+  --color-base-400: #a8adb4;
+  --color-base-500: #c9ced4;
+  --color-base-600: #d4d9de;
+  --color-base-700: #e0e5e9;
+  --color-base-800: #eaeef1;
+  --color-base-850: #f0f3f5;
+  --color-base-900: #f5f7f9;
+  --color-base-950: #f8fafb;
+  --color-base-1000: #f5f7f9;
+
+  --theme-input-bg: #161c25;
+  --theme-overlay: rgba(0, 0, 0, 0.6);
+
+  --theme-warning-500: #e09a3e;
+  --theme-error-500: #e05a4e;
+}
