@@ -19,7 +19,8 @@ export const Projects: CollectionConfig = {
     // Targets the category page containing the project grid until per-project detail pages exist.
     preview: ({ data }) => {
       const base = process.env.WEB_URL ?? 'http://localhost:4321'
-      return data?.slug ? `${base}/work/${data.slug}` : base
+      const slug = (data as { slug?: string })?.slug
+      return slug ? `${base}/work/${slug}` : base
     },
   },
   versions: {

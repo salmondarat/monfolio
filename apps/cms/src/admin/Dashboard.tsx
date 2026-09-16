@@ -7,12 +7,13 @@ import './dashboard.scss'
 
 // Server component: DefaultTemplate requires a `payload` prop (ServerProps),
 // which only server components receive via initPageResult.
-export const Dashboard = async ({ initPageResult, params, searchParams }: AdminViewProps) => {
-  const { req, visibleEntities } = await initPageResult()
+export const Dashboard = ({ initPageResult, params, searchParams }: AdminViewProps) => {
+  const { req, visibleEntities } = initPageResult
 
   return (
     <DefaultTemplate
       payload={req.payload}
+      i18n={req.i18n}
       params={params}
       searchParams={searchParams}
       visibleEntities={visibleEntities}

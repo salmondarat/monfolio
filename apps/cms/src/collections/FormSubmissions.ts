@@ -13,7 +13,7 @@ export const FormSubmissions: CollectionConfig = {
     useAsTitle: 'email',
     defaultColumns: ['name', 'email', 'topic', 'createdAt'],
     listSearchableFields: ['name', 'email', 'topic', 'message'],
-    pagination: { resultsPerPage: 25 },
+    pagination: { defaultLimit: 25 },
     description: 'Contact form requests sent from the website.',
   },
   access: {
