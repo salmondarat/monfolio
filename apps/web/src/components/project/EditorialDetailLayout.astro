@@ -1,0 +1,109 @@
+---
+import type { Category, Project } from '@monfolio/content';
+import NextProject from './NextProject.astro';
+
+const { project, next, category } = Astro.props as {
+  project: Project;
+  next: Project;
+  category?: Category;
+};
+
+const visuals = project.gallery.length > 0
+  ? project.gallery
+  : [{ url: project.image, alt: project.imageAlt }];
+---
+<article class="editorial-detail">
+  <header class="ed-hero">
+    <p class="ed-eyebrow">{category?.name ?? project.category.split('/')[0].trim()} · Case study</p>
+    <h1 class="ed-title">{project.title}</h1>
+  </header>
+
+  <div class="ed-body">
+    <aside class="ed-meta">
+      <div class="ed-meta-block">
+        <span class="ed-label">Year</span>
+        <span class="ed-value">{project.year}</span>
+      </div>
+      {project.deliverables.length > 0 && (
+        <div class="ed-meta-block">
+          <span class="ed-label">Deliverables</span>
+          <ul class="ed-list">
+            {project.deliverables.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      )}
+      {project.metrics.length > 0 && (
+        <div class="ed-meta-block">
+          <span class="ed-label">Results</span>
+          <ul class="ed-list">
+            {project.metrics.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      )}
+    </aside>
+
+    <div class="ed-content">
+      <p class="ed-intro">{project.description}</p>
+      <div class="ed-gallery">
+        {visuals.map((image) => (
+          <figure class="ed-figure">
+            <img src={image.url} alt={image.alt} loading="lazy" decoding="async" />
+          </figure>
+        ))}
+      </div>
+      {project.quote && <blockquote class="ed-quote">{project.quote}</blockquote>}
+    </div>
+  </div>
+
+  <footer class="ed-footer">
+    <NextProject project={next} />
+  </footer>
+</article>
+
+<style>
+  .editorial-detail { display: block; }
+  .ed-hero { max-width: 72rem; margin: 0 auto; padding: 4rem 1.5rem 0; }
+  .ed-eyebrow {
+    font-size: 11px; font-weight: 800; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--color-accent);
+  }
+  .ed-title {
+    margin-top: 0.75rem;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700; letter-spacing: -0.04em; line-height: 1.08;
+    color: var(--color-ink);
+  }
+  .ed-body {
+    max-width: 72rem; margin: 3rem auto 0; padding: 0 1.5rem;
+    display: grid; grid-template-columns: 16rem 1fr; gap: 3rem;
+    align-items: start;
+  }
+  @media (max-width: 64rem) { .ed-body { grid-template-columns: 1fr; gap: 2rem; } }
+  .ed-meta {
+    position: sticky; top: 6rem;
+    display: flex; flex-direction: column; gap: 1.5rem;
+  }
+  .ed-meta-block { border-top: 1px solid var(--color-line); padding-top: 1rem; }
+  .ed-label {
+    display: block;
+    font-size: 10px; font-weight: 800; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--color-muted);
+  }
+  .ed-value { margin-top: 0.5rem; font-size: 0.95rem; font-weight: 600; color: var(--color-ink); }
+  .ed-list { margin: 0.5rem 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
+  .ed-list li { font-size: 0.85rem; line-height: 1.5; color: var(--color-muted); }
+  .ed-intro { font-size: 1.05rem; line-height: 1.75; color: var(--color-muted); max-width: 40rem; }
+  .ed-gallery { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+  .ed-figure { margin: 0; overflow: hidden; border-radius: 1rem; }
+  .ed-figure img { display: block; width: 100%; height: auto; }
+  .ed-quote {
+    margin: 2.5rem 0 0; padding: 0 0 0 1.5rem;
+    border-left: 3px solid var(--color-accent);
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+    font-weight: 600; letter-spacing: -0.02em; line-height: 1.4;
+    color: var(--color-ink);
+  }
+  .ed-footer { max-width: 72rem; margin: 0 auto; padding: 2rem 1.5rem 2rem; }
+</style>

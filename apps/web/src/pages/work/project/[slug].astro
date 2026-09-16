@@ -1,0 +1,58 @@
+---
+import type { Category, Project } from '@monfolio/content';
+import {
+  getAnnouncement,
+  getCategories,
+  getNavigation,
+  getProjects,
+  getSiteSettings,
+} from '@monfolio/content';
+import SiteShell from '../../../layouts/SiteShell.astro';
+import CaseStudyLayout from '../../../components/project/CaseStudyLayout.astro';
+import GalleryLayout from '../../../components/project/GalleryLayout.astro';
+import EditorialDetailLayout from '../../../components/project/EditorialDetailLayout.astro';
+
+export const getStaticPaths = async () => {
+  const projects = await getProjects();
+
+  return projects.map((project, index) => ({
+    params: { slug: project.slug },
+    props: {
+      project,
+      next: projects[(index + 1) % projects.length],
+    },
+  }));
+};
+
+const { project, next } = Astro.props as { project: Project; next: Project };
+
+const categories = await getCategories();
+const category = categories.find((entry) => entry.slug === project.categorySlug);
+const layout = category?.page.layout ?? 'grid';
+
+const [settings, navigation, announcement] = await Promise.all([
+  getSiteSettings(),
+  getNavigation(),
+  getAnnouncement(),
+]);
+
+const layouts = {
+  grid: GalleryLayout,
+  showcase: CaseStudyLayout,
+  editorial: EditorialDetailLayout,
+};
+
+const DetailLayout = layouts[layout] ?? GalleryLayout;
+
+const title = `${project.title} — ${settings.title}`;
+const description = project.description;
+---
+<SiteShell
+  settings={settings}
+  navigation={navigation}
+  announcement={announcement}
+  title={title}
+  description={description}
+>
+  <DetailLayout project={project} next={next} category={category} />
+</SiteShell>
