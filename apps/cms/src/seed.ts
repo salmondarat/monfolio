@@ -142,8 +142,16 @@ const seed = async (): Promise<void> => {
 
   payload.logger.info('Uploading imagery…')
   const projectImages = new Map<string, Id | undefined>()
+  const projectGalleries = new Map<string, Id[]>()
   for (const project of projects) {
     projectImages.set(project.title, await uploadImage(payload, project.image, project.imageAlt))
+
+    const galleryIds: Id[] = []
+    for (const item of project.gallery ?? []) {
+      const id = await uploadImage(payload, item.url, item.alt)
+      if (id !== undefined) galleryIds.push(id)
+    }
+    projectGalleries.set(project.title, galleryIds)
   }
   const featuredBackId = await uploadImage(payload, featuredBackImage.url, featuredBackImage.alt)
   const slideIds: (Id | undefined)[] = []
@@ -192,6 +200,7 @@ const seed = async (): Promise<void> => {
         description: project.description,
         image: projectImages.get(project.title),
         imageAlt: project.imageAlt,
+        gallery: projectGalleries.get(project.title) ?? [],
         size: project.size as 'wide' | 'tall' | 'standard',
         metrics: project.metrics,
         deliverables: project.deliverables,
