@@ -10,6 +10,11 @@ export type Marker = {
 
 export type ProjectSize = 'wide' | 'tall' | 'standard'
 
+export type ProjectGalleryImage = {
+  url: string
+  alt: string
+}
+
 export type Project = {
   title: string
   slug: string
@@ -23,6 +28,8 @@ export type Project = {
   year: string
   image: string
   imageAlt: string
+  /** Case study images in display order; empty when the project has no gallery. */
+  gallery: ProjectGalleryImage[]
   size: ProjectSize
   metrics: string[]
   deliverables: string[]

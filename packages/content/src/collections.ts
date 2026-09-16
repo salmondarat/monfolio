@@ -7,6 +7,7 @@ import type {
   Faq,
   JournalEntry,
   Project,
+  ProjectGalleryImage,
   ProjectSize,
   Service,
   Testimonial,
@@ -27,6 +28,7 @@ type RawProject = {
   description?: unknown
   image?: unknown
   imageAlt?: unknown
+  gallery?: unknown
   size?: unknown
   metrics?: unknown
   deliverables?: unknown
@@ -35,6 +37,13 @@ type RawProject = {
 }
 
 const PROJECT_SIZES: ProjectSize[] = ['wide', 'tall', 'standard']
+
+export const mapGallery = (value: unknown): ProjectGalleryImage[] =>
+  Array.isArray(value)
+    ? value
+        .map((item) => ({ url: mediaUrl(item, 'wide'), alt: mediaAlt(item) }))
+        .filter((item): item is ProjectGalleryImage => item.url !== '')
+    : []
 
 const toSize = (value: unknown): ProjectSize =>
   PROJECT_SIZES.includes(value as ProjectSize) ? (value as ProjectSize) : 'standard'
@@ -56,6 +65,7 @@ export const mapProject = (doc: RawProject): Project => {
     year,
     image: mediaUrl(doc.image, 'card'),
     imageAlt: imageAlt || mediaAlt(doc.image),
+    gallery: mapGallery(doc.gallery),
     size: toSize(doc.size),
     metrics: textArray(doc.metrics),
     deliverables: textArray(doc.deliverables),
@@ -73,6 +83,18 @@ export const getProjects = async (): Promise<Project[]> => {
   })
 
   return docs.map(mapProject)
+}
+
+export const getProjectBySlug = async (slug: string): Promise<Project | undefined> => {
+  const docs = await fetchCollection<RawProject>('projects', {
+    ...publishedOnly,
+    depth: 1,
+    limit: 1,
+    'where[slug][equals]': slug,
+  })
+
+  const doc = docs[0]
+  return doc ? mapProject(doc) : undefined
 }
 
 type RawService = {
